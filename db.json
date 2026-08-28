@@ -1198,8 +1198,8 @@
     },
     {
       "id": "func-7",
-      "tmdbId": 1339713,
-      "movieTitle": "Obsesión",
+      "tmdbId": 1084244,
+      "movieTitle": "Toy Story 5",
       "roomId": "room-1",
       "date": "2026-08-28",
       "time": "21:30",
@@ -1209,8 +1209,8 @@
     },
     {
       "id": "func-8",
-      "tmdbId": 1084244,
-      "movieTitle": "Toy Story 5",
+      "tmdbId": 1339713,
+      "movieTitle": "Obsesión",
       "roomId": "room-2",
       "date": "2026-08-28",
       "time": "21:30",
@@ -1352,8 +1352,8 @@
     },
     {
       "id": "func-21",
-      "tmdbId": 1339713,
-      "movieTitle": "Obsesión",
+      "tmdbId": 1084244,
+      "movieTitle": "Toy Story 5",
       "roomId": "room-3",
       "date": "2026-08-30",
       "time": "15:00",
@@ -1363,8 +1363,8 @@
     },
     {
       "id": "func-22",
-      "tmdbId": 1084244,
-      "movieTitle": "Toy Story 5",
+      "tmdbId": 1339713,
+      "movieTitle": "Obsesión",
       "roomId": "room-1",
       "date": "2026-08-30",
       "time": "18:30",
@@ -1506,8 +1506,8 @@
     },
     {
       "id": "func-35",
-      "tmdbId": 1339713,
-      "movieTitle": "Obsesión",
+      "tmdbId": 1084244,
+      "movieTitle": "Toy Story 5",
       "roomId": "room-2",
       "date": "2026-08-31",
       "time": "21:30",
@@ -1517,8 +1517,8 @@
     },
     {
       "id": "func-36",
-      "tmdbId": 1084244,
-      "movieTitle": "Toy Story 5",
+      "tmdbId": 1339713,
+      "movieTitle": "Obsesión",
       "roomId": "room-3",
       "date": "2026-08-31",
       "time": "21:30",
@@ -1660,8 +1660,8 @@
     },
     {
       "id": "func-49",
-      "tmdbId": 1339713,
-      "movieTitle": "Obsesión",
+      "tmdbId": 1084244,
+      "movieTitle": "Toy Story 5",
       "roomId": "room-1",
       "date": "2026-09-02",
       "time": "18:30",
@@ -1671,8 +1671,8 @@
     },
     {
       "id": "func-50",
-      "tmdbId": 1084244,
-      "movieTitle": "Toy Story 5",
+      "tmdbId": 1339713,
+      "movieTitle": "Obsesión",
       "roomId": "room-2",
       "date": "2026-09-02",
       "time": "18:30",
@@ -1814,8 +1814,8 @@
     },
     {
       "id": "func-63",
-      "tmdbId": 1339713,
-      "movieTitle": "Obsesión",
+      "tmdbId": 1084244,
+      "movieTitle": "Toy Story 5",
       "roomId": "room-3",
       "date": "2026-09-03",
       "time": "21:30",
@@ -18988,7 +18988,7 @@
       "pricePerTicket": 18000,
       "total": 54000,
       "status": "reserved",
-      "createdAt": "2026-08-28T19:21:22.147Z"
+      "createdAt": "2026-08-28T22:04:06.130Z"
     },
     {
       "id": "res-seed-2",
@@ -19013,7 +19013,7 @@
       "pricePerTicket": 25000,
       "total": 50000,
       "status": "reserved",
-      "createdAt": "2026-08-28T18:21:22.147Z"
+      "createdAt": "2026-08-28T21:04:06.130Z"
     },
     {
       "id": "res-seed-3",
@@ -19042,7 +19042,7 @@
       "pricePerTicket": 18000,
       "total": 72000,
       "status": "reserved",
-      "createdAt": "2026-08-28T17:21:22.147Z"
+      "createdAt": "2026-08-28T20:04:06.130Z"
     },
     {
       "id": "res-seed-4",
@@ -19067,7 +19067,7 @@
       "pricePerTicket": 25000,
       "total": 50000,
       "status": "reserved",
-      "createdAt": "2026-08-28T16:21:22.147Z"
+      "createdAt": "2026-08-28T19:04:06.130Z"
     },
     {
       "id": "res-seed-5",
@@ -19094,9 +19094,10 @@
       "pricePerTicket": 18000,
       "total": 54000,
       "status": "reserved",
-      "createdAt": "2026-08-28T15:21:22.147Z"
+      "createdAt": "2026-08-28T18:04:06.130Z"
     }
   ],
   "purchases": [],
+  "favorites": [],
   "ratings": []
 }

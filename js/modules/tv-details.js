@@ -15,6 +15,7 @@ import { $ } from "../utils/dom.js";
 import { setError } from "../ui/states.js";
 import { playTrailer } from "./trailers.js";
 import { createCastCard } from "../ui/render.js";
+import { createFavoriteButton } from "../ui/favorite-button.js";
 import {
   formatRating,
   formatReleaseDate,
@@ -111,6 +112,15 @@ function render(main, { show, credits, videos }) {
   if (trailer) {
     main.querySelector("[data-trailer]").addEventListener("click", () => playTrailer(trailer.key));
   }
+
+  main.querySelector(".movie-hero__actions").append(
+    createFavoriteButton({
+      mediaType: "tv",
+      tmdbId: show.id,
+      title: show.name,
+      posterPath: show.poster_path,
+    })
+  );
 
   renderCast(main.querySelector("#cast-list"), credits.cast ?? []);
 }

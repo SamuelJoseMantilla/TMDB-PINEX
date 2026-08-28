@@ -136,6 +136,7 @@ class SiteHeader extends HTMLElement {
         <div class="user-menu__dropdown" hidden>
           <a href="${sitePath("pages/reservations.html")}">My Reservations</a>
           <a href="${sitePath("pages/tickets.html")}">My Tickets</a>
+          <a href="${sitePath("pages/favorites.html")}">Favoritos</a>
           <button type="button" class="user-menu__logout">Cerrar sesión</button>
         </div>
       </div>`;

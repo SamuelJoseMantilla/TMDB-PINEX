@@ -352,6 +352,7 @@ async function seed() {
     functionSeats,
     reservations,
     purchases,
+    favorites: [],
     ratings: [],
   };
 
