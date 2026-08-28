@@ -229,6 +229,70 @@
   text-align: center;
 }
 
+.surprise-reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+.surprise-reveal__label {
+  color: var(--color-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+.surprise-reveal__poster {
+  width: 190px;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface-3);
+  box-shadow: var(--shadow-md);
+}
+.surprise-reveal__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.surprise-reveal__title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-black);
+  min-height: 1.2em;
+}
+.surprise-reveal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+.surprise-reveal__again {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  transition: color var(--transition-fast);
+}
+.surprise-reveal__again:hover {
+  color: var(--color-primary);
+}
+
+/* Estado "girando": el poster late y se difumina un poco */
+.surprise-reveal.is-spinning .surprise-reveal__poster {
+  animation: surprise-pulse 0.55s ease-in-out infinite;
+}
+.surprise-reveal.is-spinning .surprise-reveal__img {
+  filter: blur(1px) brightness(0.75);
+}
+@keyframes surprise-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
 /* ======================================================== CATEGORÍAS ==== */
 .category-list {
   display: grid;
