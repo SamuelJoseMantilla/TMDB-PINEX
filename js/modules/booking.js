@@ -12,9 +12,10 @@ import "../components/cinema-seat.js";
 
 import { isLoggedIn, requireAuth } from "./auth.js";
 import { getFunctionContext, checkSeatsAvailable } from "./seats.js";
+import { createReservation } from "./reservations.js";
 import { $ } from "../utils/dom.js";
 import { setError } from "../ui/states.js";
-import { formatMoney, dateOptionLabel } from "../utils/helpers.js";
+import { formatMoney, dateOptionLabel, sitePath } from "../utils/helpers.js";
 
 const MAX_SEATS = 8;
 const LOCATION_ES = { front: "Frontal", center: "Centro", back: "Posterior" };
@@ -262,10 +263,10 @@ async function onReserve() {
     return;
   }
 
-  showFinalSummary(check.functionSeatIds);
+  showFinalSummary();
 }
 
-function showFinalSummary(functionSeatIds) {
+function showFinalSummary() {
   const { fn, room } = state.ctx;
   const seatsSorted = state.selected
     .slice()
@@ -286,6 +287,7 @@ function showFinalSummary(functionSeatIds) {
       <div><dt>Precio unitario</dt><dd>${formatMoney(fn.price)}</dd></div>
       <div class="final-summary__total"><dt>Total</dt><dd>${formatMoney(total)}</dd></div>
     </dl>
+    <p class="final-summary__error" id="final-error" hidden></p>
     <div class="final-summary__actions">
       <button type="button" class="button button--primary" id="confirm-btn">Confirmar reserva</button>
       <button type="button" class="button button--ghost" id="cancel-final">Cancelar</button>
@@ -298,16 +300,55 @@ function showFinalSummary(functionSeatIds) {
     box.innerHTML = "";
   });
 
-  $("#confirm-btn").addEventListener("click", () => {
-    // Fase 17: crear la reserva + PATCH functionSeats a "reserved" + redirigir.
-    console.log("Confirmar reserva (Fase 17):", {
-      functionId: fn.id,
-      seatIds: state.selected.map((s) => s.seatId),
-      functionSeatIds,
-      total,
+  $("#confirm-btn").addEventListener("click", onConfirm);
+}
+
+async function onConfirm() {
+  const btn = $("#confirm-btn");
+  const errEl = $("#final-error");
+  btn.disabled = true;
+  btn.textContent = "Reservando…";
+  errEl.hidden = true;
+
+  try {
+    const reservation = await createReservation({
+      ctx: state.ctx,
+      selectedSeats: state.selected,
     });
-    alert("Reserva validada. Guardarla (y bloquear las butacas) llega en la Fase 17.");
-  });
+    showReservationSuccess(reservation);
+  } catch (error) {
+    errEl.textContent = error.message;
+    errEl.hidden = false;
+    btn.disabled = false;
+    btn.textContent = "Confirmar reserva";
+  }
+}
+
+function showReservationSuccess(reservation) {
+  // Bloquear visualmente las butacas y el panel
+  for (const seat of state.selected) {
+    document
+      .querySelector(`cinema-seat[seat-code="${seat.seatCode}"]`)
+      ?.setAttribute("status", "reserved");
+  }
+  $("#reserve-btn").disabled = true;
+  $("#qty-minus").disabled = true;
+  $("#qty-plus").disabled = true;
+  state.selected = [];
+
+  const box = $("#final-summary");
+  box.innerHTML = `
+    <h2 class="final-summary__title">¡Reserva confirmada! 🎟️</h2>
+    <p>Butacas <strong>${reservation.seatCodes.join(", ")}</strong> reservadas para
+    <strong>${reservation.movieTitle}</strong> · ${dateOptionLabel(reservation.date)} · ${reservation.time}.</p>
+    <p class="final-summary__note">
+      La reserva está sin pagar. Puedes pagarla o cancelarla desde "Mis reservas".
+    </p>
+    <div class="final-summary__actions">
+      <a class="button button--primary" href="${sitePath("pages/reservations.html")}">Ver mis reservas</a>
+      <a class="button button--ghost" href="${sitePath("index.html")}">Volver al inicio</a>
+    </div>
+  `;
 }
 
 /* --------------------------------------------------------------- gate */
