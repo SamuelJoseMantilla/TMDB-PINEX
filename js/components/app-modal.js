@@ -13,6 +13,8 @@
 //   modal.open();                  // muestra
 //   modal.close();                 // oculta y limpia el contenido
 
+import { gsap, canAnimate } from "../lib/gsap.js";
+
 class AppModal extends HTMLElement {
   constructor() {
     super();
@@ -90,9 +92,36 @@ class AppModal extends HTMLElement {
     document.addEventListener("keydown", this._handleKeydown);
     document.body.style.overflow = "hidden";
     this.shadowRoot.querySelector(".close").focus();
+
+    if (canAnimate) {
+      const backdrop = this.shadowRoot.querySelector(".backdrop");
+      const dialog = this.shadowRoot.querySelector(".dialog");
+      gsap.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 });
+      gsap.fromTo(
+        dialog,
+        { y: 24, scale: 0.92, autoAlpha: 0 },
+        { y: 0, scale: 1, autoAlpha: 1, duration: 0.35, ease: "power3.out" }
+      );
+    }
   }
 
   close() {
+    if (canAnimate) {
+      const dialog = this.shadowRoot.querySelector(".dialog");
+      gsap.to(dialog, {
+        y: 16,
+        scale: 0.94,
+        autoAlpha: 0,
+        duration: 0.2,
+        ease: "power2.in",
+        onComplete: () => this.#finishClose(),
+      });
+    } else {
+      this.#finishClose();
+    }
+  }
+
+  #finishClose() {
     this.removeAttribute("open");
     document.removeEventListener("keydown", this._handleKeydown);
     document.body.style.overflow = "";

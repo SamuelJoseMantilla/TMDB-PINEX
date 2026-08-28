@@ -5,6 +5,7 @@
 import { getNowPlaying, getTrending, imageUrl } from "../services/tmdb.service.js";
 import { $ } from "../utils/dom.js";
 import { POSTER_PLACEHOLDER } from "../utils/helpers.js";
+import { gsap, canAnimate } from "../lib/gsap.js";
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -98,6 +99,21 @@ function showFinal(movie, reveal) {
   reveal.viewShowtimes.href = `pages/movie.html?id=${movie.id}#showtimes`;
   reveal.actions.hidden = false;
   reveal.again.hidden = false;
+
+  if (canAnimate) {
+    gsap.fromTo(
+      reveal.poster,
+      { scale: 0.82, rotateY: -14 },
+      { scale: 1, rotateY: 0, duration: 0.55, ease: "back.out(1.6)" }
+    );
+    gsap.from([reveal.label, reveal.title, reveal.actions], {
+      y: 14,
+      autoAlpha: 0,
+      duration: 0.4,
+      stagger: 0.08,
+      ease: "power2.out",
+    });
+  }
 }
 
 function buildReveal() {
@@ -119,6 +135,7 @@ function buildReveal() {
   return {
     root,
     label: root.querySelector(".surprise-reveal__label"),
+    poster: root.querySelector(".surprise-reveal__poster"),
     img: root.querySelector(".surprise-reveal__img"),
     title: root.querySelector(".surprise-reveal__title"),
     actions: root.querySelector(".surprise-reveal__actions"),

@@ -14,6 +14,7 @@ import { initTrailers } from "./modules/trailers.js";
 import { initSurprise } from "./modules/surprise.js";
 import { initQuickBooking } from "./modules/quick-booking.js";
 import { initPopular } from "./modules/popular.js";
+import { animateHero, animateOnScroll } from "./modules/animations.js";
 
 console.log("CINEHUB · Homepage");
 
@@ -31,12 +32,20 @@ async function bootHome() {
     console.warn("No se pudo cargar la lista de géneros de TMDB.");
   }
 
-  initHero();
-  initNowShowing(genreMap);
-  initTrending(genreMap);
-  initComingSoon(genreMap);
+  initHero().finally(animateHero);
   initTrailers();
   initSurprise();
+
+  // Secciones con aparición escalonada al hacer scroll: animar cuando ya
+  // tienen las tarjetas dentro.
+  await Promise.allSettled([
+    initNowShowing(genreMap),
+    initTrending(genreMap),
+    initComingSoon(genreMap),
+  ]);
+  animateOnScroll("#now-showing-grid", ".movie-card");
+  animateOnScroll("#trending-list", ".trending-item");
+  animateOnScroll("#coming-soon-grid", ".movie-card");
 }
 
 bootHome();
