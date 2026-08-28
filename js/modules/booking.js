@@ -7,6 +7,7 @@
 
 import "../components/site-header.js";
 import "../components/site-footer.js";
+import "../components/cinema-seat.js";
 
 import { isLoggedIn, requireAuth } from "./auth.js";
 import { getFunctionContext } from "./seats.js";
@@ -54,10 +55,48 @@ function render(main, { fn, room, rows }) {
       </section>
 
       <section class="seat-map-wrap" aria-label="Mapa de butacas">
-        <p class="state">El mapa de butacas llega en la Fase 15 (Web Component &lt;cinema-seat&gt;).</p>
+        <div class="screen">Pantalla</div>
+        <div class="seat-map" id="seat-map"></div>
+
+        <ul class="seat-legend">
+          <li><span class="legend-swatch legend-swatch--available"></span> Disponible</li>
+          <li><span class="legend-swatch legend-swatch--selected"></span> Seleccionada</li>
+          <li><span class="legend-swatch legend-swatch--reserved"></span> Reservada</li>
+          <li><span class="legend-swatch legend-swatch--sold"></span> Ocupada</li>
+          <li><span class="legend-swatch legend-swatch--best"></span> Mejor vista</li>
+        </ul>
       </section>
     </div>
   `;
+
+  renderSeatMap(main.querySelector("#seat-map"), rows);
+}
+
+function renderSeatMap(mapEl, rows) {
+  for (const { row, seats } of rows) {
+    const rowEl = document.createElement("div");
+    rowEl.className = "seat-row";
+    rowEl.innerHTML = `<span class="seat-row__label">${row}</span>`;
+
+    for (const seat of seats) {
+      const seatEl = document.createElement("cinema-seat");
+      seatEl.setAttribute("seat-code", seat.seatCode);
+      seatEl.setAttribute("status", seat.status);
+      seatEl.setAttribute("location", seat.location);
+      if (seat.recommended) seatEl.setAttribute("recommended", "");
+      seatEl.seatId = seat.seatId;
+      seatEl.functionSeatId = seat.functionSeatId;
+      rowEl.append(seatEl);
+    }
+
+    mapEl.append(rowEl);
+  }
+
+  // Fase 15: solo registramos el evento. La selección real (array, resumen,
+  // límite de tickets, botón Reservar) llega en la Fase 16.
+  mapEl.addEventListener("seat-toggle", (event) => {
+    console.log("seat-toggle:", event.detail);
+  });
 }
 
 if (!isLoggedIn()) {
