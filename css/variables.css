@@ -1,43 +1,88 @@
 /* css/variables.css
-   Design tokens de CINEHUB. Cualquier color, espaciado o radio se define AQUÍ
-   y se reutiliza con var(--nombre). No repetir valores sueltos en otros archivos. */
+   Design tokens de CINEHUB. Todo color / medida / radio se define AQUÍ y se
+   reutiliza con var(--nombre). No repetir valores sueltos en otros archivos. */
 
 :root {
-  /* ---- Colores ---- */
-  --color-background: #0d0d0f;      /* fondo principal, casi negro */
-  --color-surface: #1a1a1e;        /* tarjetas y superficies */
-  --color-surface-2: #26262b;      /* superficies elevadas / hover */
-  --color-border: #303036;
+  /* ---------------------------------------------------------------- Colores */
+  --color-background: #0b0b0d;   /* fondo principal, casi negro */
+  --color-surface: #161618;      /* tarjetas y secciones alternas */
+  --color-surface-2: #1f1f23;    /* superficies elevadas / hover */
+  --color-surface-3: #2a2a31;    /* controles, chips */
+  --color-border: #2c2c33;
+  --color-border-strong: #3c3c45;
 
   --color-text: #ffffff;
-  --color-text-muted: #a1a1aa;     /* texto secundario */
+  --color-text-muted: #9a9aa5;   /* texto secundario */
+  --color-text-dim: #67676f;     /* texto terciario / metadatos */
 
-  --color-primary: #f5a623;        /* naranja de acento (ajustaremos en Fase 8) */
-  --color-primary-hover: #ffb845;
-  --color-primary-contrast: #0d0d0f;
+  --color-primary: #ff9000;      /* naranja de acento (identidad CINEHUB) */
+  --color-primary-hover: #ffa733;
+  --color-primary-soft: rgba(255, 144, 0, 0.14);
+  --color-primary-border: rgba(255, 144, 0, 0.4);
+  --color-on-primary: #140c00;   /* texto sobre botones naranjas */
 
   --color-success: #3ecf8e;
-  --color-danger: #e5484d;
+  --color-danger: #ef4444;
 
-  /* ---- Tipografía ---- */
-  --font-base: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-  --font-heading: var(--font-base);
+  --gradient-hero: linear-gradient(
+    90deg,
+    rgba(11, 11, 13, 0.92) 0%,
+    rgba(11, 11, 13, 0.72) 40%,
+    rgba(11, 11, 13, 0.35) 100%
+  );
+  --gradient-hero-bottom: linear-gradient(
+    0deg,
+    var(--color-background) 0%,
+    rgba(11, 11, 13, 0) 45%
+  );
 
-  /* ---- Espaciado ---- */
-  --space-xs: 4px;
-  --space-sm: 8px;
+  /* ----------------------------------------------------------- Tipografía */
+  --font-base: "Inter", "Segoe UI", system-ui, -apple-system, "Roboto", "Helvetica Neue",
+    Arial, sans-serif;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 800;
+
+  --fs-xs: 0.75rem;    /* 12 */
+  --fs-sm: 0.875rem;   /* 14 */
+  --fs-md: 1rem;       /* 16 */
+  --fs-lg: 1.25rem;    /* 20 */
+  --fs-xl: 1.75rem;    /* 28 */
+  --fs-2xl: 2.25rem;   /* 36 */
+  --fs-hero: clamp(2.5rem, 6vw, 4.25rem);
+
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.14em;
+
+  /* ------------------------------------------------------------- Espaciado */
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
   --space-md: 16px;
   --space-lg: 24px;
   --space-xl: 40px;
   --space-2xl: 64px;
+  --space-3xl: 96px;
 
-  /* ---- Bordes y sombras ---- */
-  --radius-sm: 6px;
+  /* ----------------------------------------------------- Bordes y sombras */
+  --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 20px;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --radius-lg: 18px;
+  --radius-pill: 999px;
 
-  /* ---- Layout ---- */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --shadow-primary: 0 8px 24px rgba(255, 144, 0, 0.25);
+
+  /* ---------------------------------------------------------------- Layout */
   --container-max: 1200px;
+  --header-height: 64px;
+
+  /* --------------------------------------------------------------- Motion */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
 }

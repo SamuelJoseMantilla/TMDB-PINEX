@@ -1,0 +1,529 @@
+/* css/home.css
+   Layout de cada sección de la Homepage. Las piezas reutilizables (botones,
+   badges, movie-card, header, footer) están en components.css. */
+
+/* ============================================================== HERO ==== */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(420px, 62vh, 620px);
+  overflow: hidden;
+  padding-block: 0;
+}
+.hero__backdrop {
+  position: absolute;
+  inset: 0;
+  /* Fondo por defecto hasta que la Fase 9 ponga el backdrop real de TMDB */
+  background-color: var(--color-surface-2);
+  background-image: radial-gradient(
+      1200px 500px at 75% 10%,
+      rgba(255, 144, 0, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(160deg, #1c1c22, #0b0b0d 70%);
+  background-size: cover;
+  background-position: center 20%;
+  background-repeat: no-repeat;
+}
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-hero), var(--gradient-hero-bottom);
+}
+.hero__content {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--space-2xl);
+}
+.hero__eyebrow {
+  color: var(--color-primary);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-sm);
+}
+.hero__title {
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  max-width: 18ch;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+}
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-block: var(--space-md);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+.hero__meta li {
+  display: flex;
+  align-items: center;
+}
+.hero__meta li:not(:first-child)::before {
+  content: "•";
+  margin-right: var(--space-sm);
+  color: var(--color-text-dim);
+}
+.hero__rating {
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+}
+.hero__overview {
+  max-width: 54ch;
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-lg);
+}
+.hero__overview:empty {
+  display: none;
+}
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* ==================================================== QUICK BOOKING ===== */
+.quick-booking {
+  position: relative;
+  z-index: 2;
+  padding-bottom: var(--space-2xl);
+}
+.quick-booking__form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  align-items: end;
+  gap: var(--space-md);
+  margin-top: calc(-1 * var(--space-xl));
+  padding: var(--space-lg);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+.quick-booking__submit {
+  min-height: 44px;
+}
+.quick-booking__feedback {
+  margin-top: var(--space-sm);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+.quick-booking__feedback[data-state="error"] {
+  color: var(--color-danger);
+}
+
+/* ==================================================== GRID PELÍCULAS ==== */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+.movie-grid > .state {
+  grid-column: 1 / -1;
+}
+
+/* ========================================================== TRENDING ==== */
+.trending-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+.trending-list > .state {
+  grid-column: 1 / -1;
+}
+.trending-item {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.trending-item__rank {
+  position: absolute;
+  right: var(--space-sm);
+  bottom: -14px;
+  font-size: 5rem;
+  font-weight: var(--fw-black);
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+.trending-item__link {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-sm);
+  width: 100%;
+}
+.trending-item__img {
+  width: 56px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-3);
+  flex-shrink: 0;
+}
+.trending-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  justify-content: center;
+}
+.trending-item__title {
+  font-weight: var(--fw-semibold);
+}
+.trending-item__rating {
+  color: var(--color-primary);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+}
+.trending-item__genre {
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* ========================================================== SURPRISE ==== */
+.surprise {
+  padding-block: var(--space-2xl);
+}
+.surprise__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-2xl);
+  background: linear-gradient(135deg, var(--color-primary-soft), transparent 60%),
+    var(--color-surface-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+}
+.surprise__icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+.surprise__body {
+  flex: 1;
+}
+.surprise__title {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+.surprise__text {
+  color: var(--color-text-muted);
+  margin-top: var(--space-2xs);
+}
+.surprise__result {
+  margin-top: var(--space-lg);
+  padding: var(--space-lg);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+/* ======================================================== CATEGORÍAS ==== */
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+.category-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 88px;
+  padding: var(--space-md);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-align: center;
+  transition: border-color var(--transition-fast), color var(--transition-fast),
+    background var(--transition-fast);
+}
+.category-chip svg {
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+}
+.category-chip:hover {
+  border-color: var(--color-primary-border);
+  background: var(--color-surface-3);
+  color: var(--color-primary);
+}
+.category-chip:hover svg {
+  color: var(--color-primary);
+}
+
+/* ========================================================== TRAILERS ==== */
+.trailers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.trailer-feature {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 16 / 9;
+  max-height: 460px;
+  overflow: hidden;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+.trailer-feature__badge {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-md);
+  z-index: 2;
+}
+.trailer-feature__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow-primary);
+  transition: transform var(--transition-fast);
+}
+.trailer-feature__play:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+.trailer-feature__info {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: var(--space-lg);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent);
+}
+.trailer-feature__title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+}
+.trailer-feature__meta {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  margin-top: var(--space-2xs);
+}
+.trailer-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+.trailer-list > .state {
+  grid-column: 1 / -1;
+}
+.trailer-thumb__button {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  overflow: hidden;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding-bottom: var(--space-sm);
+  transition: border-color var(--transition-fast);
+}
+.trailer-thumb__button:hover {
+  border-color: var(--color-primary-border);
+}
+.trailer-thumb__img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: var(--color-surface-3);
+}
+.trailer-thumb__play {
+  position: absolute;
+  top: calc(50% - var(--space-md));
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+.trailer-thumb__title {
+  display: block;
+  padding: var(--space-sm) var(--space-sm) 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+.trailer-thumb__duration {
+  display: block;
+  padding-inline: var(--space-sm);
+  color: var(--color-text-dim);
+  font-size: var(--fs-xs);
+}
+
+/* =========================================== POPULAR AT CINEHUB ========= */
+.popular-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+.popular-list > .state {
+  grid-column: 1 / -1;
+}
+.popular-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  overflow: hidden;
+  padding: var(--space-lg);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.popular-item:first-child {
+  border-color: var(--color-primary-border);
+  box-shadow: inset 0 0 0 1px var(--color-primary-border);
+}
+.popular-item__rank {
+  position: absolute;
+  right: var(--space-xs);
+  bottom: -18px;
+  font-size: 5.5rem;
+  font-weight: var(--fw-black);
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.05);
+}
+.popular-item:first-child .popular-item__rank {
+  color: var(--color-primary-soft);
+}
+.popular-item__img {
+  position: relative;
+  z-index: 1;
+  width: 52px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-3);
+  flex-shrink: 0;
+}
+.popular-item__info {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2xs);
+}
+.popular-item__title {
+  font-weight: var(--fw-semibold);
+}
+.popular-item__count {
+  color: var(--color-text-muted);
+  font-size: var(--fs-xs);
+}
+
+/* ================================================ PREMIUM EXPERIENCE ==== */
+.premium-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+.premium-card {
+  padding: var(--space-lg);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.premium-card__icon {
+  display: inline-flex;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+.premium-card__title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--space-2xs);
+}
+.premium-card__text {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* ===================================================== RESPONSIVE ======= */
+@media (min-width: 600px) {
+  .movie-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .category-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .trending-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .trailer-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .popular-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .premium-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .movie-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .category-list {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Móvil: la reserva rápida se apila y el resumen del hero se centra menos */
+@media (max-width: 860px) {
+  .quick-booking__form {
+    grid-template-columns: 1fr 1fr;
+    margin-top: var(--space-lg);
+  }
+  .quick-booking__submit {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 620px) {
+  .quick-booking__form {
+    grid-template-columns: 1fr;
+  }
+  .surprise__inner {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-xl);
+  }
+}

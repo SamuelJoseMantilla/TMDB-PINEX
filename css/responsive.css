@@ -1,0 +1,41 @@
+/* css/responsive.css
+   Ajustes de layout transversales a toda la app. Las media queries propias de
+   cada componente/sección viven en components.css y home.css (decisión D10).
+
+   Breakpoints de referencia:
+     - móvil     : < 600px   (base, sin media query)
+     - tablet    : >= 768px
+     - desktop   : >= 900px
+     - desktop L : >= 1200px  (ancho máximo del container) */
+
+/* Más aire lateral en pantallas grandes */
+@media (min-width: 768px) {
+  .container {
+    padding-inline: var(--space-lg);
+  }
+}
+
+/* Secciones un poco más compactas en móvil */
+@media (max-width: 600px) {
+  .section,
+  .surprise {
+    padding-block: var(--space-xl);
+  }
+  .section__title {
+    font-size: var(--fs-lg);
+  }
+  .hero__content {
+    padding-block: var(--space-xl);
+  }
+}
+
+/* Respeta a quien pide menos animación */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
