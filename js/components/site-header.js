@@ -27,6 +27,11 @@ const USER_SVG = `
     <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
   </svg>`;
 
+const MENU_SVG = `
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <line x1="4" y1="7" x2="20" y2="7" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="17" x2="20" y2="17" />
+  </svg>`;
+
 const NAV_ITEMS = [
   { key: "home", label: "Home", href: "index.html" },
   { key: "movies", label: "Movies", href: "pages/movies.html" },
@@ -49,12 +54,17 @@ class SiteHeader extends HTMLElement {
     this.innerHTML = `
       <header class="site-header">
         <div class="site-header__inner container">
+          <button type="button" class="icon-button nav-toggle" id="nav-toggle"
+            aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav">
+            ${MENU_SVG}
+          </button>
+
           <a class="logo" href="${sitePath("index.html")}" aria-label="CINEHUB, inicio">
             <span class="logo__icon" aria-hidden="true">${LOGO_SVG}</span>
             <span class="logo__text">CINEHUB</span>
           </a>
 
-          <nav class="main-nav" aria-label="Navegación principal">
+          <nav class="main-nav" id="main-nav" aria-label="Navegación principal">
             <ul class="main-nav__list">${navHtml}</ul>
           </nav>
 
@@ -78,6 +88,28 @@ class SiteHeader extends HTMLElement {
 
     this.#wireSearch();
     this.#wireUserMenu();
+    this.#wireNavToggle();
+  }
+
+  #wireNavToggle() {
+    const toggle = this.querySelector("#nav-toggle");
+    const nav = this.querySelector("#main-nav");
+
+    toggle.addEventListener("click", () => {
+      const open = !nav.classList.contains("is-open");
+      nav.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    });
+
+    // Cerrar al pulsar un enlace del menú
+    nav.addEventListener("click", (event) => {
+      if (event.target.closest("a")) {
+        nav.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Abrir menú");
+      }
+    });
   }
 
   /** Zona derecha del header: "Login" si no hay sesión, menú de usuario si la hay. */

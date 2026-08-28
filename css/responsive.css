@@ -24,9 +24,30 @@
   .section__title {
     font-size: var(--fs-lg);
   }
+  .hero {
+    min-height: clamp(360px, 70vh, 480px);
+  }
   .hero__content {
     padding-block: var(--space-xl);
   }
+  /* la cabecera de sección: título arriba, enlace debajo si no cabe */
+  .section__head {
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+}
+
+/* La barra de scroll de las filas deslizables, discreta */
+.movie-row::-webkit-scrollbar,
+.trending-list::-webkit-scrollbar,
+.cast-list::-webkit-scrollbar {
+  height: 6px;
+}
+.movie-row::-webkit-scrollbar-thumb,
+.trending-list::-webkit-scrollbar-thumb,
+.cast-list::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-pill);
 }
 
 /* Respeta a quien pide menos animación */
