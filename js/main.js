@@ -14,7 +14,7 @@ import { initTrailers } from "./modules/trailers.js";
 import { initSurprise } from "./modules/surprise.js";
 import { initQuickBooking } from "./modules/quick-booking.js";
 import { initPopular } from "./modules/popular.js";
-import { animateHero, animateOnScroll } from "./modules/animations.js";
+import { animateHero, animateSectionOnScroll } from "./modules/animations.js";
 
 console.log("CINEHUB · Homepage");
 
@@ -43,9 +43,9 @@ async function bootHome() {
     initTrending(genreMap),
     initComingSoon(genreMap),
   ]);
-  animateOnScroll("#now-showing-grid", ".movie-card");
-  animateOnScroll("#trending-list", ".trending-item");
-  animateOnScroll("#coming-soon-grid", ".movie-card");
+  animateSectionOnScroll("#now-showing");
+  animateSectionOnScroll("#trending");
+  animateSectionOnScroll("#coming-soon");
 }
 
 bootHome();

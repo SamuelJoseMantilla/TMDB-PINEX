@@ -183,9 +183,12 @@
    usan search / category / movies.) */
 .movie-row {
   display: flex;
+  align-items: flex-start;
   gap: var(--space-md);
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x proximity;
+  scroll-padding-left: var(--space-md);
   padding-bottom: var(--space-sm);
   scrollbar-width: thin;
 }
@@ -202,7 +205,9 @@
   display: flex;
   gap: var(--space-md);
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x proximity;
+  scroll-padding-left: var(--space-md);
   padding-bottom: var(--space-sm);
   scrollbar-width: thin;
 }
@@ -221,22 +226,27 @@
 }
 .trending-item__rank {
   position: absolute;
-  right: var(--space-sm);
-  bottom: -14px;
-  font-size: 5rem;
+  right: var(--space-xs);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3.2rem;
   font-weight: var(--fw-black);
   line-height: 1;
-  color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.06);
   pointer-events: none;
+  user-select: none;
 }
 .trending-item__link {
+  position: relative;
+  z-index: 1;
   display: flex;
   gap: var(--space-md);
   padding: var(--space-sm);
+  padding-right: var(--space-xl);
   width: 100%;
 }
 .trending-item__img {
-  width: 56px;
+  width: 52px;
   aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: var(--radius-sm);
@@ -248,9 +258,15 @@
   flex-direction: column;
   gap: var(--space-3xs);
   justify-content: center;
+  min-width: 0;
 }
 .trending-item__title {
   font-weight: var(--fw-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .trending-item__rating {
   color: var(--color-primary);
@@ -533,7 +549,7 @@
   align-items: center;
   gap: var(--space-md);
   overflow: hidden;
-  padding: var(--space-lg);
+  padding: var(--space-md) var(--space-2xl) var(--space-md) var(--space-md);
   background: var(--color-surface-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -544,15 +560,18 @@
 }
 .popular-item__rank {
   position: absolute;
-  right: var(--space-xs);
-  bottom: -18px;
-  font-size: 5.5rem;
+  right: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3.4rem;
   font-weight: var(--fw-black);
   line-height: 1;
-  color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+  user-select: none;
 }
 .popular-item:first-child .popular-item__rank {
-  color: var(--color-primary-soft);
+  color: color-mix(in srgb, var(--color-primary) 25%, transparent);
 }
 .popular-item__img {
   position: relative;

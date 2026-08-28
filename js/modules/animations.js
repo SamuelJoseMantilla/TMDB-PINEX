@@ -28,7 +28,9 @@ export function animateHero() {
 
 /**
  * Aparición escalonada de los hijos de un contenedor cuando entra en pantalla.
- * @param {string} containerSelector  p.ej. "#now-showing-grid"
+ * Para rejillas que hacen wrap (search / category / movies), NO para las filas
+ * scroll-snap (ahí interfiere con el desplazamiento).
+ * @param {string} containerSelector  p.ej. "#results-grid"
  * @param {string} itemSelector       p.ej. ".movie-card"
  */
 export function animateOnScroll(containerSelector, itemSelector) {
@@ -42,10 +44,30 @@ export function animateOnScroll(containerSelector, itemSelector) {
 
   gsap.from(items, {
     scrollTrigger: { trigger: container, start: "top 85%", once: true },
-    y: 28,
+    y: 24,
     autoAlpha: 0,
     duration: 0.5,
-    stagger: 0.07,
+    stagger: 0.06,
+    ease: "power2.out",
+  });
+}
+
+/**
+ * Aparición de una sección entera (fade + subida) al entrar en pantalla.
+ * Se usa en las filas deslizables de la Home para no tocar sus hijos.
+ * @param {string} sectionSelector  p.ej. "#now-showing"
+ */
+export function animateSectionOnScroll(sectionSelector) {
+  if (!canAnimate) return;
+
+  const section = $(sectionSelector);
+  if (!section) return;
+
+  gsap.from(section, {
+    scrollTrigger: { trigger: section, start: "top 88%", once: true },
+    y: 24,
+    autoAlpha: 0,
+    duration: 0.6,
     ease: "power2.out",
   });
 }

@@ -209,17 +209,17 @@ const USERS = [
 ];
 
 /* -------------------------------------------------------------------------- */
-/*  RESERVAS Y COMPRAS DE EJEMPLO                                            */
-/*  Para que "Popular at CINEHUB" y "Mis reservas" tengan datos al arrancar. */
+/*  RESERVAS DE EJEMPLO                                                      */
+/*  Solo para que "Popular at CINEHUB" tenga datos al arrancar. Sin compras: */
+/*  "Mis tickets" empieza vacío. Todas son del usuario user-1 (vale).        */
 /* -------------------------------------------------------------------------- */
 
-// movieIndex apunta a la película (movies[i]); seatCount = nº de butacas;
-// paid = si además genera una compra.
+// movieIndex apunta a la película (movies[i]); seatCount = nº de butacas.
 const SEED_BOOKINGS = [
-  { movieIndex: 0, seatCount: 3, paid: true },
+  { movieIndex: 0, seatCount: 3, paid: false },
   { movieIndex: 0, seatCount: 2, paid: false },
-  { movieIndex: 1, seatCount: 4, paid: true },
-  { movieIndex: 2, seatCount: 2, paid: true },
+  { movieIndex: 1, seatCount: 4, paid: false },
+  { movieIndex: 2, seatCount: 2, paid: false },
   { movieIndex: 3, seatCount: 3, paid: false },
 ];
 

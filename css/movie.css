@@ -104,8 +104,10 @@
   display: flex;
   gap: var(--space-md);
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: var(--space-sm);
   scroll-snap-type: x proximity;
+  scrollbar-width: thin;
 }
 .cast-card {
   flex: 0 0 120px;

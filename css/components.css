@@ -298,6 +298,10 @@
 
 /* =============================================== TARJETA DE PELÍCULA ==== */
 .movie-card {
+  /* min-width: 0 permite que la tarjeta (flex/grid item) se ajuste a su hueco
+     aunque el título en una línea sea muy largo. Sin esto, un título largo
+     ensancha la tarjeta y descuadra el póster. */
+  min-width: 0;
   transition: transform var(--transition-base);
 }
 .movie-card:hover {
@@ -308,15 +312,21 @@
 }
 .movie-card__poster {
   position: relative;
-  aspect-ratio: 2 / 3;
+  width: 100%;
+  height: 0;
+  padding-top: 150%; /* alto = 150% del ancho  ->  relación 2:3, siempre */
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--color-surface-2);
 }
 .movie-card__img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  max-width: none;
   object-fit: cover;
+  display: block;
 }
 .movie-card__badge {
   position: absolute;
@@ -325,6 +335,7 @@
 }
 .movie-card__body {
   padding-top: var(--space-sm);
+  min-width: 0;
 }
 .movie-card__title {
   font-size: var(--fs-sm);
@@ -351,6 +362,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-lg);
+  align-items: start;
 }
 .movie-grid > .state {
   grid-column: 1 / -1;

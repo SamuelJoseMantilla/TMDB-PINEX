@@ -22,7 +22,7 @@ export async function initNowShowing(genreMap) {
   setLoading(grid, "Loading movies…");
   try {
     const functions = await getAll("functions");
-    const tmdbIds = [...new Set(functions.map((f) => f.tmdbId))];
+    const tmdbIds = [...new Set(functions.map((f) => f.tmdbId))].slice(0, 12);
 
     const details = await Promise.all(
       tmdbIds.map((id) => getMovieDetails(id).catch(() => null))
@@ -67,18 +67,22 @@ export async function initComingSoon(genreMap) {
   setLoading(grid, "Loading upcoming…");
   try {
     const today = new Date().toISOString().slice(0, 10);
-    // "upcoming" a veces trae películas ya estrenadas: filtramos por fecha futura.
-    const movies = (await getUpcoming())
+    const all = (await getUpcoming()).filter((m) => m.poster_path);
+
+    // Preferimos las de fecha futura; si no hay (TMDB a veces mezcla), mostramos
+    // igualmente las más recientes de la lista de "upcoming".
+    const future = all
       .filter((m) => m.release_date && m.release_date > today)
       .sort((a, b) => a.release_date.localeCompare(b.release_date));
+    const movies = future.length > 0 ? future : all;
 
-    if (!movies.length) return setEmpty(grid, "No upcoming movies.");
+    if (!movies.length) return setEmpty(grid, "No hay estrenos próximos.");
 
     grid.replaceChildren(
-      ...movies.slice(0, 8).map((movie) => createMovieCard(movie, { genreMap, badge: "Soon" }))
+      ...movies.slice(0, 10).map((movie) => createMovieCard(movie, { genreMap, badge: "Soon" }))
     );
     setReady(grid);
   } catch {
-    setError(grid, "Couldn't load upcoming movies.", () => initComingSoon(genreMap));
+    setError(grid, "No se pudieron cargar los próximos estrenos.", () => initComingSoon(genreMap));
   }
 }
