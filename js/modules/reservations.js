@@ -1,7 +1,7 @@
 // js/modules/reservations.js
 // Crear y consultar reservas. La cancelación (liberar butacas) va en la Fase 19.
 
-import { getAll, create, remove } from "../services/api.service.js";
+import { getAll, getById, create, update, remove } from "../services/api.service.js";
 import { getCurrentUser } from "./auth.js";
 import { setSeatStatus, checkSeatsAvailable, SEAT_STATUS } from "./seats.js";
 
@@ -82,4 +82,35 @@ export async function createReservation({ ctx, selectedSeats }) {
 export async function getUserReservations(userId) {
   const list = await getAll("reservations", { userId });
   return list.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+/**
+ * Cancela una reserva sin pagar.
+ * Orden: (1) liberar butacas -> "available", (2) marcar la reserva "cancelled".
+ * Si la liberación falla no se marca cancelada, para no dejar butacas bloqueadas
+ * sin reserva que las libere.
+ * @param {string} reservationId
+ * @returns {Promise<object>} la reserva actualizada
+ */
+export async function cancelReservation(reservationId) {
+  const reservation = await getById("reservations", reservationId);
+
+  if (reservation.status !== RESERVATION_STATUS.RESERVED) {
+    throw new Error("Solo se pueden cancelar reservas sin pagar.");
+  }
+
+  // 1. Liberar las butacas PRIMERO
+  const results = await Promise.allSettled(
+    (reservation.functionSeatIds ?? []).map((id) =>
+      setSeatStatus(id, SEAT_STATUS.AVAILABLE)
+    )
+  );
+  if (results.some((r) => r.status === "rejected")) {
+    throw new Error("No se pudieron liberar todas las butacas. Inténtalo de nuevo.");
+  }
+
+  // 2. Marcar la reserva como cancelada (soft delete)
+  return update("reservations", reservationId, {
+    status: RESERVATION_STATUS.CANCELLED,
+  });
 }
