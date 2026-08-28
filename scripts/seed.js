@@ -300,6 +300,27 @@ function buildSeedBookings(functions, seats, movies) {
   return { reservations, purchases };
 }
 
+/**
+ * Deja `functionSeats` coherente con las reservas/compras de ejemplo:
+ *   butaca en una compra   -> "sold"
+ *   butaca en una reserva  -> "reserved"
+ * (Solo en la generación del seed; en runtime la app deriva el estado.)
+ */
+function applyBookingStatus(functionSeats, reservations, purchases) {
+  const wanted = new Map(); // "functionId|seatId" -> status
+  for (const r of reservations) {
+    for (const seatId of r.seatIds) wanted.set(`${r.functionId}|${seatId}`, "reserved");
+  }
+  for (const p of purchases) {
+    for (const seatId of p.seatIds) wanted.set(`${p.functionId}|${seatId}`, "sold");
+  }
+
+  for (const fs of functionSeats) {
+    const status = wanted.get(`${fs.functionId}|${fs.seatId}`);
+    if (status) fs.status = status;
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /*  5. CONSTRUIR Y ESCRIBIR db.json                                          */
 /* -------------------------------------------------------------------------- */
@@ -321,6 +342,7 @@ async function seed() {
   const functions = buildFunctions(days, movies);
   const functionSeats = buildFunctionSeats(functions, seats);
   const { reservations, purchases } = buildSeedBookings(functions, seats, movies);
+  applyBookingStatus(functionSeats, reservations, purchases);
 
   const db = {
     users: USERS,
