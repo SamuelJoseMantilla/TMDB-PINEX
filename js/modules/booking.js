@@ -1,21 +1,34 @@
 // js/modules/booking.js · pages/booking.html?functionId=<id>
 //
-// Fase 14: carga la función y muestra su resumen (prueba de getFunctionContext).
-// Fase 15: el mapa de sillas usará el Web Component <cinema-seat>.
-// Fase 16: selección de sillas + resumen en vivo.
-// Fase 17: crear la reserva.
+// Fase 14: resumen de la función (getFunctionContext).
+// Fase 15: mapa de sillas con <cinema-seat>.
+// Fase 16: selección real -> array selectedSeats, cantidad de tickets, resumen
+//          en vivo, validaciones y botón Reservar (re-chequea disponibilidad).
+// Fase 17: "Confirmar reserva" creará la reserva y bloqueará las butacas.
 
 import "../components/site-header.js";
 import "../components/site-footer.js";
 import "../components/cinema-seat.js";
 
 import { isLoggedIn, requireAuth } from "./auth.js";
-import { getFunctionContext } from "./seats.js";
+import { getFunctionContext, checkSeatsAvailable } from "./seats.js";
 import { $ } from "../utils/dom.js";
 import { setError } from "../ui/states.js";
 import { formatMoney, dateOptionLabel } from "../utils/helpers.js";
 
+const MAX_SEATS = 8;
+const LOCATION_ES = { front: "Frontal", center: "Centro", back: "Posterior" };
+
 const functionId = new URLSearchParams(location.search).get("functionId");
+
+// Estado de la página
+const state = {
+  ctx: null, // { fn, room, rows }
+  selected: [], // [{ seatId, functionSeatId, seatCode, location }]
+  quantity: 2,
+};
+
+/* ------------------------------------------------------------ arranque */
 
 async function init() {
   const main = $("#main");
@@ -26,17 +39,20 @@ async function init() {
   }
 
   try {
-    const ctx = await getFunctionContext(functionId);
-    render(main, ctx);
+    state.ctx = await getFunctionContext(functionId);
+    render(main);
   } catch {
     setError(main, "No se pudo cargar la función.", init);
   }
 }
 
-function render(main, { fn, room, rows }) {
-  const totalSeats = rows.reduce((sum, r) => sum + r.seats.length, 0);
-  const available = rows.reduce(
-    (sum, r) => sum + r.seats.filter((s) => s.status === "available").length,
+/* ------------------------------------------------------------- render */
+
+function render(main) {
+  const { fn, room, rows } = state.ctx;
+  const total = rows.reduce((n, r) => n + r.seats.length, 0);
+  const free = rows.reduce(
+    (n, r) => n + r.seats.filter((s) => s.status === "available").length,
     0
   );
 
@@ -50,26 +66,57 @@ function render(main, { fn, room, rows }) {
           <div><dt>Hora</dt><dd>${fn.time}</dd></div>
           <div><dt>Sala</dt><dd>${room.name} · ${fn.format}</dd></div>
           <div><dt>Precio</dt><dd>${formatMoney(fn.price)} / boleto</dd></div>
-          <div><dt>Disponibles</dt><dd>${available} / ${totalSeats}</dd></div>
+          <div><dt>Disponibles</dt><dd>${free} / ${total}</dd></div>
         </dl>
       </section>
 
-      <section class="seat-map-wrap" aria-label="Mapa de butacas">
-        <div class="screen">Pantalla</div>
-        <div class="seat-map" id="seat-map"></div>
+      <div class="booking-grid">
+        <section class="seat-map-wrap" aria-label="Mapa de butacas">
+          <div class="screen">Pantalla</div>
+          <div class="seat-map" id="seat-map"></div>
+          <ul class="seat-legend">
+            <li><span class="legend-swatch legend-swatch--available"></span> Disponible</li>
+            <li><span class="legend-swatch legend-swatch--selected"></span> Seleccionada</li>
+            <li><span class="legend-swatch legend-swatch--reserved"></span> Reservada</li>
+            <li><span class="legend-swatch legend-swatch--sold"></span> Ocupada</li>
+            <li><span class="legend-swatch legend-swatch--best"></span> Mejor vista</li>
+          </ul>
+        </section>
 
-        <ul class="seat-legend">
-          <li><span class="legend-swatch legend-swatch--available"></span> Disponible</li>
-          <li><span class="legend-swatch legend-swatch--selected"></span> Seleccionada</li>
-          <li><span class="legend-swatch legend-swatch--reserved"></span> Reservada</li>
-          <li><span class="legend-swatch legend-swatch--sold"></span> Ocupada</li>
-          <li><span class="legend-swatch legend-swatch--best"></span> Mejor vista</li>
-        </ul>
-      </section>
+        <aside class="booking-sidebar" aria-label="Tu selección">
+          <div class="ticket-count">
+            <span class="ticket-count__label">Tickets</span>
+            <div class="ticket-count__controls">
+              <button type="button" id="qty-minus" aria-label="Menos tickets">−</button>
+              <span id="qty-value" aria-live="polite">${state.quantity}</span>
+              <button type="button" id="qty-plus" aria-label="Más tickets">+</button>
+            </div>
+          </div>
+
+          <div class="selection">
+            <h2 class="selection__title">Butacas seleccionadas</h2>
+            <ul class="selection__list" id="selection-list"></ul>
+          </div>
+
+          <dl class="totals">
+            <div><dt>Precio unitario</dt><dd>${formatMoney(fn.price)}</dd></div>
+            <div class="totals__total"><dt>Total</dt><dd id="total-value">${formatMoney(0)}</dd></div>
+          </dl>
+
+          <p class="booking-hint" id="booking-hint" role="status" aria-live="polite"></p>
+          <button type="button" class="button button--primary booking-reserve" id="reserve-btn" disabled>
+            Reservar
+          </button>
+        </aside>
+      </div>
+
+      <section class="final-summary" id="final-summary" hidden aria-live="polite"></section>
     </div>
   `;
 
-  renderSeatMap(main.querySelector("#seat-map"), rows);
+  renderSeatMap($("#seat-map"), rows);
+  wireControls();
+  updateSidebar();
 }
 
 function renderSeatMap(mapEl, rows) {
@@ -88,19 +135,185 @@ function renderSeatMap(mapEl, rows) {
       seatEl.functionSeatId = seat.functionSeatId;
       rowEl.append(seatEl);
     }
-
     mapEl.append(rowEl);
   }
 
-  // Fase 15: solo registramos el evento. La selección real (array, resumen,
-  // límite de tickets, botón Reservar) llega en la Fase 16.
-  mapEl.addEventListener("seat-toggle", (event) => {
-    console.log("seat-toggle:", event.detail);
+  mapEl.addEventListener("seat-toggle", onSeatToggle);
+}
+
+/* --------------------------------------------------------- interacción */
+
+function onSeatToggle(event) {
+  const { seatId, functionSeatId, seatCode, location, selected } = event.detail;
+
+  if (selected) {
+    state.selected.push({ seatId, functionSeatId, seatCode, location });
+
+    if (state.selected.length > state.quantity) {
+      if (state.quantity < MAX_SEATS) {
+        state.quantity = state.selected.length; // subir tickets automáticamente
+      } else {
+        state.selected.pop(); // al máximo: revertir esta selección
+        event.target.setAttribute("status", "available");
+        showHint(`Máximo ${MAX_SEATS} butacas por reserva.`);
+        return;
+      }
+    }
+  } else {
+    state.selected = state.selected.filter((s) => s.seatId !== seatId);
+  }
+
+  updateSidebar();
+}
+
+function wireControls() {
+  $("#qty-minus").addEventListener("click", () => changeQuantity(-1));
+  $("#qty-plus").addEventListener("click", () => changeQuantity(1));
+  $("#reserve-btn").addEventListener("click", onReserve);
+}
+
+function changeQuantity(delta) {
+  const next = Math.min(MAX_SEATS, Math.max(1, state.quantity + delta));
+  state.quantity = next;
+
+  // Si sobran butacas seleccionadas, quitar las últimas.
+  while (state.selected.length > state.quantity) {
+    const removed = state.selected.pop();
+    const el = document.querySelector(`cinema-seat[seat-code="${removed.seatCode}"]`);
+    el?.setAttribute("status", "available");
+  }
+
+  updateSidebar();
+}
+
+/* ------------------------------------------------------ panel lateral */
+
+function updateSidebar() {
+  const { fn } = state.ctx;
+
+  $("#qty-value").textContent = state.quantity;
+
+  const list = $("#selection-list");
+  if (state.selected.length === 0) {
+    list.innerHTML = `<li class="selection__empty">Ninguna butaca seleccionada</li>`;
+  } else {
+    list.innerHTML = state.selected
+      .slice()
+      .sort((a, b) => a.seatCode.localeCompare(b.seatCode))
+      .map(
+        (s) =>
+          `<li><span class="selection__code">${s.seatCode}</span>
+           <span class="selection__loc">${LOCATION_ES[s.location] ?? s.location}</span></li>`
+      )
+      .join("");
+  }
+
+  $("#total-value").textContent = formatMoney(fn.price * state.selected.length);
+
+  const hint = $("#booking-hint");
+  const reserveBtn = $("#reserve-btn");
+  const missing = state.quantity - state.selected.length;
+
+  if (state.selected.length === 0) {
+    hint.textContent = "Selecciona tus butacas en el mapa.";
+    reserveBtn.disabled = true;
+  } else if (missing > 0) {
+    hint.textContent = `Selecciona ${missing} butaca${missing > 1 ? "s" : ""} más.`;
+    reserveBtn.disabled = true;
+  } else {
+    hint.textContent = "";
+    reserveBtn.disabled = false;
+  }
+}
+
+function showHint(message) {
+  const hint = $("#booking-hint");
+  hint.textContent = message;
+  hint.dataset.state = "warn";
+  setTimeout(() => {
+    hint.dataset.state = "";
+    updateSidebar();
+  }, 2500);
+}
+
+/* --------------------------------------------------------- reservar */
+
+async function onReserve() {
+  if (state.selected.length === 0 || state.selected.length !== state.quantity) return;
+
+  const btn = $("#reserve-btn");
+  btn.disabled = true;
+  btn.textContent = "Comprobando…";
+
+  // RF-15: re-consultar disponibilidad justo antes de confirmar
+  const seatIds = state.selected.map((s) => s.seatId);
+  const check = await checkSeatsAvailable(state.ctx.fn.id, seatIds).catch(() => null);
+
+  btn.textContent = "Reservar";
+
+  if (!check) {
+    showHint("Error al comprobar disponibilidad. Inténtalo de nuevo.");
+    btn.disabled = false;
+    return;
+  }
+  if (!check.ok) {
+    showHint(`Ya no están libres: ${check.unavailable.join(", ")}. Recarga la página.`);
+    btn.disabled = false;
+    return;
+  }
+
+  showFinalSummary(check.functionSeatIds);
+}
+
+function showFinalSummary(functionSeatIds) {
+  const { fn, room } = state.ctx;
+  const seatsSorted = state.selected
+    .slice()
+    .sort((a, b) => a.seatCode.localeCompare(b.seatCode));
+  const total = fn.price * seatsSorted.length;
+
+  const box = $("#final-summary");
+  box.hidden = false;
+  box.innerHTML = `
+    <h2 class="final-summary__title">Resumen de la reserva</h2>
+    <dl class="final-summary__grid">
+      <div><dt>Película</dt><dd>${fn.movieTitle}</dd></div>
+      <div><dt>Sala</dt><dd>${room.name}</dd></div>
+      <div><dt>Fecha</dt><dd>${dateOptionLabel(fn.date)}</dd></div>
+      <div><dt>Hora</dt><dd>${fn.time}</dd></div>
+      <div><dt>Butacas</dt><dd>${seatsSorted.map((s) => s.seatCode).join(", ")}</dd></div>
+      <div><dt>Cantidad</dt><dd>${seatsSorted.length}</dd></div>
+      <div><dt>Precio unitario</dt><dd>${formatMoney(fn.price)}</dd></div>
+      <div class="final-summary__total"><dt>Total</dt><dd>${formatMoney(total)}</dd></div>
+    </dl>
+    <div class="final-summary__actions">
+      <button type="button" class="button button--primary" id="confirm-btn">Confirmar reserva</button>
+      <button type="button" class="button button--ghost" id="cancel-final">Cancelar</button>
+    </div>
+  `;
+  box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  $("#cancel-final").addEventListener("click", () => {
+    box.hidden = true;
+    box.innerHTML = "";
+  });
+
+  $("#confirm-btn").addEventListener("click", () => {
+    // Fase 17: crear la reserva + PATCH functionSeats a "reserved" + redirigir.
+    console.log("Confirmar reserva (Fase 17):", {
+      functionId: fn.id,
+      seatIds: state.selected.map((s) => s.seatId),
+      functionSeatIds,
+      total,
+    });
+    alert("Reserva validada. Guardarla (y bloquear las butacas) llega en la Fase 17.");
   });
 }
 
+/* --------------------------------------------------------------- gate */
+
 if (!isLoggedIn()) {
-  requireAuth(); // redirige a login guardando ?next=
+  requireAuth();
 } else {
   init();
 }
