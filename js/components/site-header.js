@@ -10,6 +10,7 @@
 // El atributo `active` marca el enlace de navegación correspondiente.
 
 import { sitePath } from "../utils/helpers.js";
+import { getCurrentUser, logout } from "../modules/auth.js";
 
 const LOGO_SVG = `
   <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -62,12 +63,7 @@ class SiteHeader extends HTMLElement {
               aria-label="Buscar películas" aria-expanded="false" aria-controls="search-bar">
               ${SEARCH_SVG}
             </button>
-            <a class="icon-button" href="${sitePath("pages/login.html")}" id="user-menu" aria-label="Mi cuenta">
-              ${USER_SVG}
-            </a>
-            <a class="button button--primary button--sm" href="${sitePath("pages/login.html")}" id="login-button">
-              Login
-            </a>
+            ${this.#renderAuthArea()}
           </div>
         </div>
 
@@ -81,6 +77,61 @@ class SiteHeader extends HTMLElement {
     `;
 
     this.#wireSearch();
+    this.#wireUserMenu();
+  }
+
+  /** Zona derecha del header: "Login" si no hay sesión, menú de usuario si la hay. */
+  #renderAuthArea() {
+    const user = getCurrentUser();
+
+    if (!user) {
+      return `
+        <a class="icon-button" href="${sitePath("pages/login.html")}" id="user-menu" aria-label="Mi cuenta">
+          ${USER_SVG}
+        </a>
+        <a class="button button--primary button--sm" href="${sitePath("pages/login.html")}" id="login-button">
+          Login
+        </a>`;
+    }
+
+    const firstName = user.name.split(" ")[0];
+    return `
+      <div class="user-menu" id="user-menu">
+        <button type="button" class="user-menu__trigger" aria-expanded="false" aria-haspopup="true">
+          ${USER_SVG}<span>${firstName}</span>
+        </button>
+        <div class="user-menu__dropdown" hidden>
+          <a href="${sitePath("pages/reservations.html")}">My Reservations</a>
+          <a href="${sitePath("pages/tickets.html")}">My Tickets</a>
+          <button type="button" class="user-menu__logout">Cerrar sesión</button>
+        </div>
+      </div>`;
+  }
+
+  #wireUserMenu() {
+    const trigger = this.querySelector(".user-menu__trigger");
+    if (!trigger) return;
+
+    const dropdown = this.querySelector(".user-menu__dropdown");
+
+    trigger.addEventListener("click", () => {
+      const willOpen = dropdown.hasAttribute("hidden");
+      dropdown.toggleAttribute("hidden", !willOpen);
+      trigger.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    // Cerrar al hacer clic fuera
+    document.addEventListener("click", (event) => {
+      if (!this.contains(event.target)) {
+        dropdown.setAttribute("hidden", "");
+        trigger.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    this.querySelector(".user-menu__logout").addEventListener("click", () => {
+      logout();
+      window.location.href = sitePath("index.html");
+    });
   }
 
   #guessActive() {

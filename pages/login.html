@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Inicia sesión en CINEHUB" />
+    <title>Iniciar sesión · CINEHUB</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/auth.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+
+    <site-header active=""></site-header>
+
+    <main id="main" class="auth-page">
+      <div class="auth-card">
+        <h1 class="auth-card__title">Iniciar sesión</h1>
+        <p class="auth-card__subtitle">Accede para reservar y comprar tus boletos.</p>
+
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label class="field__label" for="login-email">Correo</label>
+            <input
+              class="field__control"
+              type="email"
+              id="login-email"
+              name="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="login-password">Contraseña</label>
+            <input
+              class="field__control"
+              type="password"
+              id="login-password"
+              name="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <p class="auth-feedback" id="auth-feedback" role="alert"></p>
+
+          <button type="submit" class="button button--primary auth-submit">Iniciar sesión</button>
+        </form>
+
+        <p class="auth-alt">¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
+        <p class="auth-hint">Cuenta de prueba: <strong>vale@cinehub.com</strong> / <strong>cinehub123</strong></p>
+      </div>
+    </main>
+
+    <site-footer></site-footer>
+
+    <script type="module" src="../js/modules/login.js"></script>
+  </body>
+</html>
