@@ -1829,19 +1829,19 @@
       "id": "fs-1",
       "functionId": "func-1",
       "seatId": "seat-room-1-A1",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-2",
       "functionId": "func-1",
       "seatId": "seat-room-1-A2",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-3",
       "functionId": "func-1",
       "seatId": "seat-room-1-A3",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-4",
@@ -2117,25 +2117,25 @@
       "id": "fs-49",
       "functionId": "func-2",
       "seatId": "seat-room-2-A1",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-50",
       "functionId": "func-2",
       "seatId": "seat-room-2-A2",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-51",
       "functionId": "func-2",
       "seatId": "seat-room-2-A3",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-52",
       "functionId": "func-2",
       "seatId": "seat-room-2-A4",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-53",
@@ -2405,13 +2405,13 @@
       "id": "fs-97",
       "functionId": "func-3",
       "seatId": "seat-room-3-A1",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-98",
       "functionId": "func-3",
       "seatId": "seat-room-3-A2",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-99",
@@ -2645,19 +2645,19 @@
       "id": "fs-137",
       "functionId": "func-4",
       "seatId": "seat-room-1-A1",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-138",
       "functionId": "func-4",
       "seatId": "seat-room-1-A2",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-139",
       "functionId": "func-4",
       "seatId": "seat-room-1-A3",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-140",
@@ -5669,13 +5669,13 @@
       "id": "fs-641",
       "functionId": "func-15",
       "seatId": "seat-room-3-A1",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-642",
       "functionId": "func-15",
       "seatId": "seat-room-3-A2",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-643",
@@ -18988,7 +18988,7 @@
       "pricePerTicket": 18000,
       "total": 54000,
       "status": "reserved",
-      "createdAt": "2026-08-28T18:13:01.384Z"
+      "createdAt": "2026-08-28T18:59:50.769Z"
     },
     {
       "id": "res-seed-2",
@@ -19013,7 +19013,7 @@
       "pricePerTicket": 25000,
       "total": 50000,
       "status": "reserved",
-      "createdAt": "2026-08-28T17:13:01.385Z"
+      "createdAt": "2026-08-28T17:59:50.769Z"
     },
     {
       "id": "res-seed-3",
@@ -19042,7 +19042,7 @@
       "pricePerTicket": 18000,
       "total": 72000,
       "status": "reserved",
-      "createdAt": "2026-08-28T16:13:01.385Z"
+      "createdAt": "2026-08-28T16:59:50.769Z"
     },
     {
       "id": "res-seed-4",
@@ -19067,7 +19067,7 @@
       "pricePerTicket": 25000,
       "total": 50000,
       "status": "reserved",
-      "createdAt": "2026-08-28T15:13:01.385Z"
+      "createdAt": "2026-08-28T15:59:50.769Z"
     },
     {
       "id": "res-seed-5",
@@ -19094,7 +19094,7 @@
       "pricePerTicket": 18000,
       "total": 54000,
       "status": "reserved",
-      "createdAt": "2026-08-28T14:13:01.385Z"
+      "createdAt": "2026-08-28T14:59:50.769Z"
     }
   ],
   "purchases": [],

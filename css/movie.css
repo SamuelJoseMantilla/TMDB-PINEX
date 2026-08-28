@@ -111,9 +111,16 @@
 }
 .cast-card {
   flex: 0 0 120px;
+  min-width: 0;
   scroll-snap-align: start;
+}
+.cast-card__link {
   display: flex;
   flex-direction: column;
+  color: inherit;
+}
+.cast-card__link:hover .cast-card__name {
+  color: var(--color-primary);
 }
 .cast-card__img {
   width: 100%;
@@ -125,6 +132,7 @@
 .cast-card__name {
   margin-top: var(--space-xs);
   font-size: var(--fs-sm);
+  transition: color var(--transition-fast);
   font-weight: var(--fw-semibold);
 }
 .cast-card__role {

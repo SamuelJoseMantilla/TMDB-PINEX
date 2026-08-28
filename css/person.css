@@ -1,0 +1,72 @@
+/* css/person.css · Ficha de persona (pages/person.html) */
+
+.person-page {
+  padding-block: var(--space-2xl);
+  min-height: 60vh;
+}
+.person-page > .state {
+  display: block;
+  text-align: center;
+  padding-block: var(--space-3xl);
+}
+
+.person-hero {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+  margin-bottom: var(--space-2xl);
+}
+.person-hero__photo {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-3);
+}
+.person-hero__name {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-black);
+  line-height: 1.15;
+}
+.person-hero__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+  margin: var(--space-md) 0;
+}
+.person-hero__facts dt {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-dim);
+}
+.person-hero__facts dd {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+}
+.person-hero__bio {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  max-width: 68ch;
+  white-space: pre-line;
+}
+
+.person-films .section__head {
+  margin-bottom: var(--space-lg);
+}
+.person-films > .state,
+#films-grid > .state {
+  display: block;
+  padding-block: var(--space-xl);
+}
+
+@media (max-width: 620px) {
+  .person-hero {
+    grid-template-columns: 140px 1fr;
+    gap: var(--space-lg);
+  }
+  .person-hero__name {
+    font-size: var(--fs-xl);
+  }
+}

@@ -15,6 +15,7 @@ import {
 // Rutas a las fichas, válidas desde "/" o desde "/pages/".
 const moviePath = (id) => sitePath(`pages/movie.html?id=${id}`);
 const tvPath = (id) => sitePath(`pages/tv.html?id=${id}`);
+const personPath = (id) => sitePath(`pages/person.html?id=${id}`);
 
 /**
  * Tarjeta base de póster (película o serie). Sin <template>, funciona en cualquier página.
@@ -135,18 +136,21 @@ export function createTrailerThumb(video) {
 }
 
 /**
- * Tarjeta de una persona del reparto. Template-free (funciona en movie.html y
- * tv.html). En la feature de filmografía se convierte en enlace a person.html.
+ * Tarjeta de una persona del reparto. Enlaza a su ficha (person.html).
  * @param {object} person  objeto de credits.cast (película) o aggregate_credits (TV)
  */
 export function createCastCard(person) {
   const li = document.createElement("li");
   li.className = "cast-card";
   li.innerHTML = `
-    <img class="cast-card__img" loading="lazy" />
-    <span class="cast-card__name"></span>
-    <span class="cast-card__role"></span>
+    <a class="cast-card__link">
+      <img class="cast-card__img" loading="lazy" />
+      <span class="cast-card__name"></span>
+      <span class="cast-card__role"></span>
+    </a>
   `;
+
+  li.querySelector(".cast-card__link").href = personPath(person.id);
 
   const img = li.querySelector(".cast-card__img");
   img.src = imageUrl(person.profile_path, "w185") || POSTER_PLACEHOLDER;
