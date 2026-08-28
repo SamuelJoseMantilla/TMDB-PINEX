@@ -10,6 +10,7 @@ import { initHeaderSearch } from "./modules/search.js";
 import { initHero } from "./modules/hero.js";
 import { initNowShowing, initTrending, initComingSoon } from "./modules/movies.js";
 import { initTrailers } from "./modules/trailers.js";
+import { initSurprise } from "./modules/surprise.js";
 
 console.log("CINEHUB · Homepage (Fase 9 · TMDB conectado)");
 
@@ -31,6 +32,7 @@ async function bootHome() {
   initTrending(genreMap);
   initComingSoon(genreMap);
   initTrailers();
+  initSurprise();
 }
 
 bootHome();
