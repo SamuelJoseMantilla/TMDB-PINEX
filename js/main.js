@@ -1,36 +1,36 @@
 // js/main.js
-// Punto de entrada de la Homepage.
-//
-// Fase 7: solo la estructura HTML. Aquí de momento vive únicamente una
-// interacción sencilla y sin datos: abrir / cerrar la barra de búsqueda.
-//
-// En la Fase 9 este archivo pasará a orquestar las secciones (Hero, Now Showing,
-// Trending, etc.) importando sus módulos desde js/modules/.
+// Orquestador de la Homepage: registra el Web Component del modal, obtiene la
+// tabla de géneros (compartida) y arranca cada sección de forma independiente.
+// Si una sección falla, las demás siguen funcionando (cada init maneja su error).
 
-console.log("CINEHUB · Homepage cargada (Fase 7 · solo estructura)");
+import "./components/app-modal.js";
 
-/* ---- Barra de búsqueda del header (mostrar / ocultar) ------------------- */
-function initSearchToggle() {
-  const toggle = document.getElementById("search-toggle");
-  const bar = document.getElementById("search-bar");
-  const input = document.getElementById("search-input");
-  if (!toggle || !bar || !input) return;
+import { getGenres } from "./services/tmdb.service.js";
+import { initHeaderSearch } from "./modules/search.js";
+import { initHero } from "./modules/hero.js";
+import { initNowShowing, initTrending, initComingSoon } from "./modules/movies.js";
+import { initTrailers } from "./modules/trailers.js";
 
-  toggle.addEventListener("click", () => {
-    const willOpen = bar.hasAttribute("hidden");
-    bar.toggleAttribute("hidden", !willOpen);
-    toggle.setAttribute("aria-expanded", String(willOpen));
-    if (willOpen) input.focus();
-  });
+console.log("CINEHUB · Homepage (Fase 9 · TMDB conectado)");
 
-  // Cerrar con la tecla Escape mientras se escribe
-  input.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      bar.setAttribute("hidden", "");
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.focus();
-    }
-  });
+initHeaderSearch();
+
+async function bootHome() {
+  // La lista de géneros traduce los genre_ids de las películas a nombres.
+  // Es decorativa: si falla, seguimos sin nombres de género.
+  let genreMap = new Map();
+  try {
+    const genres = await getGenres();
+    genreMap = new Map(genres.map((g) => [g.id, g.name]));
+  } catch {
+    console.warn("No se pudo cargar la lista de géneros de TMDB.");
+  }
+
+  initHero();
+  initNowShowing(genreMap);
+  initTrending(genreMap);
+  initComingSoon(genreMap);
+  initTrailers();
 }
 
-initSearchToggle();
+bootHome();
