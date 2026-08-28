@@ -2495,13 +2495,13 @@
       "id": "fs-111",
       "functionId": "func-3",
       "seatId": "seat-room-3-B7",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-112",
       "functionId": "func-3",
       "seatId": "seat-room-3-B8",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-113",
@@ -2549,7 +2549,7 @@
       "id": "fs-120",
       "functionId": "func-3",
       "seatId": "seat-room-3-C8",
-      "status": "available"
+      "status": "reserved"
     },
     {
       "id": "fs-121",
@@ -18968,7 +18968,66 @@
       "status": "available"
     }
   ],
-  "reservations": [],
+  "reservations": [
+    {
+      "id": "res-2722c66d",
+      "userId": "user-acfd78bd",
+      "tmdbId": 533535,
+      "movieTitle": "Deadpool & Wolverine",
+      "functionId": "func-3",
+      "roomId": "room-3",
+      "roomName": "Room 3 · IMAX",
+      "date": "2026-08-28",
+      "time": "15:00",
+      "format": "IMAX",
+      "seatIds": [
+        "seat-room-3-B8",
+        "seat-room-3-A8"
+      ],
+      "seatCodes": [
+        "A8",
+        "B8"
+      ],
+      "functionSeatIds": [
+        "fs-112",
+        "fs-104"
+      ],
+      "quantity": 2,
+      "pricePerTicket": 25000,
+      "total": 50000,
+      "status": "reserved",
+      "createdAt": "2026-08-28T14:56:40.771Z"
+    },
+    {
+      "id": "res-cf3a26e7",
+      "userId": "user-acfd78bd",
+      "tmdbId": 533535,
+      "movieTitle": "Deadpool & Wolverine",
+      "functionId": "func-3",
+      "roomId": "room-3",
+      "roomName": "Room 3 · IMAX",
+      "date": "2026-08-28",
+      "time": "15:00",
+      "format": "IMAX",
+      "seatIds": [
+        "seat-room-3-C8",
+        "seat-room-3-B7"
+      ],
+      "seatCodes": [
+        "B7",
+        "C8"
+      ],
+      "functionSeatIds": [
+        "fs-120",
+        "fs-111"
+      ],
+      "quantity": 2,
+      "pricePerTicket": 25000,
+      "total": 50000,
+      "status": "reserved",
+      "createdAt": "2026-08-28T14:56:59.374Z"
+    }
+  ],
   "purchases": [],
   "ratings": []
 }
