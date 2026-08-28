@@ -209,6 +209,98 @@ const USERS = [
 ];
 
 /* -------------------------------------------------------------------------- */
+/*  RESERVAS Y COMPRAS DE EJEMPLO                                            */
+/*  Para que "Popular at CINEHUB" y "Mis reservas" tengan datos al arrancar. */
+/* -------------------------------------------------------------------------- */
+
+// movieIndex apunta a la película (movies[i]); seatCount = nº de butacas;
+// paid = si además genera una compra.
+const SEED_BOOKINGS = [
+  { movieIndex: 0, seatCount: 3, paid: true },
+  { movieIndex: 0, seatCount: 2, paid: false },
+  { movieIndex: 1, seatCount: 4, paid: true },
+  { movieIndex: 2, seatCount: 2, paid: true },
+  { movieIndex: 3, seatCount: 3, paid: false },
+];
+
+function buildSeedBookings(functions, seats, movies) {
+  const seatsByRoom = {};
+  for (const s of seats) (seatsByRoom[s.roomId] ||= []).push(s);
+
+  const roomName = (id) => ROOMS.find((r) => r.id === id).name;
+  const usedByFunction = {}; // functionId -> Set(seatId) ya reservados
+
+  const reservations = [];
+  const purchases = [];
+  let rc = 1;
+  let pc = 1;
+
+  for (const plan of SEED_BOOKINGS) {
+    const movie = movies[plan.movieIndex % movies.length];
+    const fn = functions.find(
+      (f) => f.tmdbId === movie.tmdbId && (usedByFunction[f.id]?.size ?? 0) === 0
+    );
+    if (!fn) continue;
+
+    const used = (usedByFunction[fn.id] ||= new Set());
+    const picked = seatsByRoom[fn.roomId]
+      .filter((s) => !used.has(s.id))
+      .slice(0, plan.seatCount);
+    picked.forEach((s) => used.add(s.id));
+
+    const total = fn.price * picked.length;
+    const createdAt = new Date(Date.now() - rc * 3_600_000).toISOString();
+
+    const reservation = {
+      id: `res-seed-${rc}`,
+      userId: "user-1",
+      tmdbId: fn.tmdbId,
+      movieTitle: fn.movieTitle,
+      functionId: fn.id,
+      roomId: fn.roomId,
+      roomName: roomName(fn.roomId),
+      date: fn.date,
+      time: fn.time,
+      format: fn.format,
+      seatIds: picked.map((s) => s.id),
+      seatCodes: picked.map((s) => s.seatCode).sort(),
+      quantity: picked.length,
+      pricePerTicket: fn.price,
+      total,
+      status: "reserved",
+      createdAt,
+    };
+    reservations.push(reservation);
+
+    if (plan.paid) {
+      purchases.push({
+        id: `pur-seed-${pc}`,
+        ticketId: `CH-2026-${String(100000 + pc * 12345).slice(0, 6)}`,
+        userId: "user-1",
+        reservationId: reservation.id,
+        tmdbId: reservation.tmdbId,
+        movieTitle: reservation.movieTitle,
+        functionId: reservation.functionId,
+        roomId: reservation.roomId,
+        roomName: reservation.roomName,
+        date: reservation.date,
+        time: reservation.time,
+        format: reservation.format,
+        seatIds: reservation.seatIds,
+        seatCodes: reservation.seatCodes,
+        quantity: reservation.quantity,
+        total: reservation.total,
+        purchasedAt: createdAt,
+      });
+      pc += 1;
+    }
+    rc += 1;
+  }
+
+  return { reservations, purchases };
+}
+
+/* -------------------------------------------------------------------------- */
 /*  5. CONSTRUIR Y ESCRIBIR db.json                                          */
 /* -------------------------------------------------------------------------- */
 
@@ -228,6 +320,7 @@ async function seed() {
   const seats = buildSeats();
   const functions = buildFunctions(days, movies);
   const functionSeats = buildFunctionSeats(functions, seats);
+  const { reservations, purchases } = buildSeedBookings(functions, seats, movies);
 
   const db = {
     users: USERS,
@@ -235,8 +328,8 @@ async function seed() {
     seats,
     functions,
     functionSeats,
-    reservations: [],
-    purchases: [],
+    reservations,
+    purchases,
     ratings: [],
   };
 
@@ -249,6 +342,8 @@ async function seed() {
   console.log(`  movies (TMDB)  : ${movies.length}`);
   console.log(`  functions      : ${db.functions.length}  (${days[0]} -> ${days[days.length - 1]})`);
   console.log(`  functionSeats  : ${db.functionSeats.length}`);
+  console.log(`  reservations   : ${db.reservations.length}  (ejemplo)`);
+  console.log(`  purchases      : ${db.purchases.length}  (ejemplo)`);
 }
 
 seed();

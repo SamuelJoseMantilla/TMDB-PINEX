@@ -18964,7 +18964,7 @@
   ],
   "reservations": [
     {
-      "id": "res-b4e21df7",
+      "id": "res-seed-1",
       "userId": "user-1",
       "tmdbId": 969681,
       "movieTitle": "Spider-Man: Brand New Day",
@@ -18987,18 +18987,122 @@
       "quantity": 3,
       "pricePerTicket": 18000,
       "total": 54000,
-      "status": "paid",
-      "createdAt": "2026-08-28T17:08:50.253Z",
-      "paidAt": "2026-08-28T17:09:12.352Z",
-      "purchaseId": "pur-4abd49f7"
+      "status": "reserved",
+      "createdAt": "2026-08-28T16:17:26.321Z"
+    },
+    {
+      "id": "res-seed-2",
+      "userId": "user-1",
+      "tmdbId": 969681,
+      "movieTitle": "Spider-Man: Brand New Day",
+      "functionId": "func-15",
+      "roomId": "room-3",
+      "roomName": "Room 3 · IMAX",
+      "date": "2026-08-29",
+      "time": "18:30",
+      "format": "IMAX",
+      "seatIds": [
+        "seat-room-3-A1",
+        "seat-room-3-A2"
+      ],
+      "seatCodes": [
+        "A1",
+        "A2"
+      ],
+      "quantity": 2,
+      "pricePerTicket": 25000,
+      "total": 50000,
+      "status": "reserved",
+      "createdAt": "2026-08-28T15:17:26.321Z"
+    },
+    {
+      "id": "res-seed-3",
+      "userId": "user-1",
+      "tmdbId": 1368337,
+      "movieTitle": "La Odisea",
+      "functionId": "func-2",
+      "roomId": "room-2",
+      "roomName": "Room 2",
+      "date": "2026-08-28",
+      "time": "15:00",
+      "format": "2D",
+      "seatIds": [
+        "seat-room-2-A1",
+        "seat-room-2-A2",
+        "seat-room-2-A3",
+        "seat-room-2-A4"
+      ],
+      "seatCodes": [
+        "A1",
+        "A2",
+        "A3",
+        "A4"
+      ],
+      "quantity": 4,
+      "pricePerTicket": 18000,
+      "total": 72000,
+      "status": "reserved",
+      "createdAt": "2026-08-28T14:17:26.321Z"
+    },
+    {
+      "id": "res-seed-4",
+      "userId": "user-1",
+      "tmdbId": 1288445,
+      "movieTitle": "El motín",
+      "functionId": "func-3",
+      "roomId": "room-3",
+      "roomName": "Room 3 · IMAX",
+      "date": "2026-08-28",
+      "time": "15:00",
+      "format": "IMAX",
+      "seatIds": [
+        "seat-room-3-A1",
+        "seat-room-3-A2"
+      ],
+      "seatCodes": [
+        "A1",
+        "A2"
+      ],
+      "quantity": 2,
+      "pricePerTicket": 25000,
+      "total": 50000,
+      "status": "reserved",
+      "createdAt": "2026-08-28T13:17:26.321Z"
+    },
+    {
+      "id": "res-seed-5",
+      "userId": "user-1",
+      "tmdbId": 1621552,
+      "movieTitle": "La captura",
+      "functionId": "func-4",
+      "roomId": "room-1",
+      "roomName": "Room 1",
+      "date": "2026-08-28",
+      "time": "18:30",
+      "format": "2D",
+      "seatIds": [
+        "seat-room-1-A1",
+        "seat-room-1-A2",
+        "seat-room-1-A3"
+      ],
+      "seatCodes": [
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "quantity": 3,
+      "pricePerTicket": 18000,
+      "total": 54000,
+      "status": "reserved",
+      "createdAt": "2026-08-28T12:17:26.321Z"
     }
   ],
   "purchases": [
     {
-      "id": "pur-4abd49f7",
-      "ticketId": "CH-2026-348190",
+      "id": "pur-seed-1",
+      "ticketId": "CH-2026-112345",
       "userId": "user-1",
-      "reservationId": "res-b4e21df7",
+      "reservationId": "res-seed-1",
       "tmdbId": 969681,
       "movieTitle": "Spider-Man: Brand New Day",
       "functionId": "func-1",
@@ -19019,7 +19123,61 @@
       ],
       "quantity": 3,
       "total": 54000,
-      "purchasedAt": "2026-08-28T17:09:12.352Z"
+      "purchasedAt": "2026-08-28T16:17:26.321Z"
+    },
+    {
+      "id": "pur-seed-2",
+      "ticketId": "CH-2026-124690",
+      "userId": "user-1",
+      "reservationId": "res-seed-3",
+      "tmdbId": 1368337,
+      "movieTitle": "La Odisea",
+      "functionId": "func-2",
+      "roomId": "room-2",
+      "roomName": "Room 2",
+      "date": "2026-08-28",
+      "time": "15:00",
+      "format": "2D",
+      "seatIds": [
+        "seat-room-2-A1",
+        "seat-room-2-A2",
+        "seat-room-2-A3",
+        "seat-room-2-A4"
+      ],
+      "seatCodes": [
+        "A1",
+        "A2",
+        "A3",
+        "A4"
+      ],
+      "quantity": 4,
+      "total": 72000,
+      "purchasedAt": "2026-08-28T14:17:26.321Z"
+    },
+    {
+      "id": "pur-seed-3",
+      "ticketId": "CH-2026-137035",
+      "userId": "user-1",
+      "reservationId": "res-seed-4",
+      "tmdbId": 1288445,
+      "movieTitle": "El motín",
+      "functionId": "func-3",
+      "roomId": "room-3",
+      "roomName": "Room 3 · IMAX",
+      "date": "2026-08-28",
+      "time": "15:00",
+      "format": "IMAX",
+      "seatIds": [
+        "seat-room-3-A1",
+        "seat-room-3-A2"
+      ],
+      "seatCodes": [
+        "A1",
+        "A2"
+      ],
+      "quantity": 2,
+      "total": 50000,
+      "purchasedAt": "2026-08-28T13:17:26.321Z"
     }
   ],
   "ratings": []

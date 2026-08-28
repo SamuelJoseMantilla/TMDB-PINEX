@@ -13,10 +13,12 @@ import { initNowShowing, initTrending, initComingSoon } from "./modules/movies.j
 import { initTrailers } from "./modules/trailers.js";
 import { initSurprise } from "./modules/surprise.js";
 import { initQuickBooking } from "./modules/quick-booking.js";
+import { initPopular } from "./modules/popular.js";
 
 console.log("CINEHUB · Homepage");
 
 initQuickBooking(); // solo depende de JSON Server
+initPopular(); // datos propios (reservations) + TMDB solo para el póster
 
 async function bootHome() {
   // La lista de géneros traduce los genre_ids de las películas a nombres.
