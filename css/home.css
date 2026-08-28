@@ -556,6 +556,14 @@
   color: var(--color-text-muted);
   font-size: var(--fs-xs);
 }
+.popular-item--link {
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.popular-item--link:hover {
+  border-color: var(--color-primary-border);
+  background: var(--color-surface-2);
+}
 
 /* ================================================ PREMIUM EXPERIENCE ==== */
 .premium-list {
