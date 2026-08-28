@@ -20,6 +20,7 @@ import { $ } from "../utils/dom.js";
 import { setError } from "../ui/states.js";
 import { playTrailer } from "./trailers.js";
 import { createCastCard } from "../ui/render.js";
+import { createFavoriteButton } from "../ui/favorite-button.js";
 import {
   formatRuntime,
   formatRating,
@@ -124,6 +125,16 @@ function render(main, { movie, credits, videos, functions, rooms }) {
   if (trailer) {
     main.querySelector("[data-trailer]").addEventListener("click", () => playTrailer(trailer.key));
   }
+
+  // Botón de favorito
+  main.querySelector(".movie-hero__actions").append(
+    createFavoriteButton({
+      mediaType: "movie",
+      tmdbId: movie.id,
+      title: movie.title,
+      posterPath: movie.poster_path,
+    })
+  );
 
   renderCast(main.querySelector("#cast-list"), credits.cast ?? []);
   renderShowtimes(main.querySelector("#showtimes-body"), functions, rooms);

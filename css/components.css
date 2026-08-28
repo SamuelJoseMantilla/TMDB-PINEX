@@ -194,6 +194,19 @@
   font-size: var(--fs-xs);
 }
 
+/* Botón de favorito ♥ */
+.fav-button.is-fav {
+  color: var(--color-primary);
+  border-color: var(--color-primary-border);
+  background: var(--color-primary-soft);
+}
+.fav-button svg {
+  transition: transform var(--transition-fast);
+}
+.fav-button.is-fav svg {
+  transform: scale(1.15);
+}
+
 /* ============================================================= BADGES === */
 .badge {
   display: inline-flex;
