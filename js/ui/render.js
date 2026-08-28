@@ -12,22 +12,22 @@ import {
   POSTER_PLACEHOLDER,
 } from "../utils/helpers.js";
 
-// Ruta a la ficha de una película, válida desde "/" o desde "/pages/".
+// Rutas a las fichas, válidas desde "/" o desde "/pages/".
 const moviePath = (id) => sitePath(`pages/movie.html?id=${id}`);
+const tvPath = (id) => sitePath(`pages/tv.html?id=${id}`);
 
 /**
- * Tarjeta de película para Now Showing / Coming Soon / Search / Category.
- * Se construye con createElement (no depende de ningún <template>), así funciona
- * en cualquier página.
- * @param {object} movie      objeto de TMDB (endpoint de lista)
- * @param {object} [options]
- * @param {Map}    [options.genreMap]  id de género -> nombre
- * @param {string} [options.badge]     texto de la etiqueta (ej. "Soon")
+ * Tarjeta base de póster (película o serie). Sin <template>, funciona en cualquier página.
+ * @param {object} item     objeto de TMDB
+ * @param {object} opts
+ * @param {string} opts.href       destino al hacer clic
+ * @param {string} opts.title
+ * @param {string} opts.metaText
+ * @param {number} opts.rating
+ * @param {string} [opts.posterPath]
+ * @param {string} [opts.badge]
  */
-export function createMovieCard(movie, { genreMap, badge } = {}) {
-  const title = movie.title ?? movie.name ?? "Sin título";
-  const genres = genreNames(movie, genreMap).slice(0, 2).join(" · ");
-
+function buildPosterCard({ href, title, metaText, rating, posterPath, badge }) {
   const article = document.createElement("article");
   article.className = "movie-card";
   article.innerHTML = `
@@ -44,16 +44,15 @@ export function createMovieCard(movie, { genreMap, badge } = {}) {
     </a>
   `;
 
-  article.querySelector(".movie-card__link").href = moviePath(movie.id);
+  article.querySelector(".movie-card__link").href = href;
 
   const img = article.querySelector(".movie-card__img");
-  img.src = imageUrl(movie.poster_path, "w342") || POSTER_PLACEHOLDER;
+  img.src = imageUrl(posterPath, "w342") || POSTER_PLACEHOLDER;
   img.alt = `Póster de ${title}`;
 
   article.querySelector(".movie-card__title").textContent = title;
-  article.querySelector(".movie-card__meta").textContent =
-    genres || formatYear(movie.release_date);
-  article.querySelector(".movie-card__rating").textContent = formatRating(movie.vote_average);
+  article.querySelector(".movie-card__meta").textContent = metaText;
+  article.querySelector(".movie-card__rating").textContent = formatRating(rating);
 
   if (badge) {
     const badgeEl = article.querySelector(".movie-card__badge");
@@ -62,6 +61,34 @@ export function createMovieCard(movie, { genreMap, badge } = {}) {
   }
 
   return article;
+}
+
+/** Tarjeta de PELÍCULA (Now Showing / Coming Soon / Search / Category / ficha de actor). */
+export function createMovieCard(movie, { genreMap, badge } = {}) {
+  const title = movie.title ?? movie.name ?? "Sin título";
+  const genres = genreNames(movie, genreMap).slice(0, 2).join(" · ");
+  return buildPosterCard({
+    href: moviePath(movie.id),
+    title,
+    metaText: genres || formatYear(movie.release_date),
+    rating: movie.vote_average,
+    posterPath: movie.poster_path,
+    badge,
+  });
+}
+
+/** Tarjeta de SERIE de TV. */
+export function createTvCard(show, { genreMap, badge } = {}) {
+  const title = show.name ?? "Serie";
+  const genres = genreNames(show, genreMap).slice(0, 2).join(" · ");
+  return buildPosterCard({
+    href: tvPath(show.id),
+    title,
+    metaText: genres || formatYear(show.first_air_date),
+    rating: show.vote_average,
+    posterPath: show.poster_path,
+    badge,
+  });
 }
 
 /** Ítem de Trending, con número de ranking. */
@@ -103,6 +130,32 @@ export function createTrailerThumb(video) {
 
   li.querySelector(".trailer-thumb__title").textContent = video.movieTitle ?? video.name;
   li.querySelector(".trailer-thumb__duration").textContent = video.type; // Trailer / Teaser
+
+  return li;
+}
+
+/**
+ * Tarjeta de una persona del reparto. Template-free (funciona en movie.html y
+ * tv.html). En la feature de filmografía se convierte en enlace a person.html.
+ * @param {object} person  objeto de credits.cast (película) o aggregate_credits (TV)
+ */
+export function createCastCard(person) {
+  const li = document.createElement("li");
+  li.className = "cast-card";
+  li.innerHTML = `
+    <img class="cast-card__img" loading="lazy" />
+    <span class="cast-card__name"></span>
+    <span class="cast-card__role"></span>
+  `;
+
+  const img = li.querySelector(".cast-card__img");
+  img.src = imageUrl(person.profile_path, "w185") || POSTER_PLACEHOLDER;
+  img.alt = person.name ?? "";
+
+  li.querySelector(".cast-card__name").textContent = person.name ?? "";
+  // credits de película: person.character ; aggregate_credits de TV: person.roles[0].character
+  li.querySelector(".cast-card__role").textContent =
+    person.character ?? person.roles?.[0]?.character ?? "";
 
   return li;
 }

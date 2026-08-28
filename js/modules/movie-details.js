@@ -16,9 +16,10 @@ import {
   imageUrl,
 } from "../services/tmdb.service.js";
 import { getAll } from "../services/api.service.js";
-import { $, cloneTemplate } from "../utils/dom.js";
+import { $ } from "../utils/dom.js";
 import { setError } from "../ui/states.js";
 import { playTrailer } from "./trailers.js";
+import { createCastCard } from "../ui/render.js";
 import {
   formatRuntime,
   formatRating,
@@ -133,17 +134,7 @@ function renderCast(list, cast) {
     list.innerHTML = `<li class="state">Reparto no disponible.</li>`;
     return;
   }
-  const fragment = document.createDocumentFragment();
-  for (const person of cast.slice(0, 12)) {
-    const card = cloneTemplate("tpl-cast-card");
-    const img = card.querySelector(".cast-card__img");
-    img.src = imageUrl(person.profile_path, "w185") || POSTER_PLACEHOLDER;
-    img.alt = person.name;
-    card.querySelector(".cast-card__name").textContent = person.name;
-    card.querySelector(".cast-card__role").textContent = person.character || "";
-    fragment.append(card);
-  }
-  list.replaceChildren(fragment);
+  list.replaceChildren(...cast.slice(0, 14).map(createCastCard));
 }
 
 function renderShowtimes(body, functions, rooms) {
