@@ -18988,7 +18988,7 @@
       "pricePerTicket": 18000,
       "total": 54000,
       "status": "reserved",
-      "createdAt": "2026-08-28T22:04:06.130Z"
+      "createdAt": "2026-08-28T22:28:23.415Z"
     },
     {
       "id": "res-seed-2",
@@ -19013,7 +19013,7 @@
       "pricePerTicket": 25000,
       "total": 50000,
       "status": "reserved",
-      "createdAt": "2026-08-28T21:04:06.130Z"
+      "createdAt": "2026-08-28T21:28:23.416Z"
     },
     {
       "id": "res-seed-3",
@@ -19042,7 +19042,7 @@
       "pricePerTicket": 18000,
       "total": 72000,
       "status": "reserved",
-      "createdAt": "2026-08-28T20:04:06.130Z"
+      "createdAt": "2026-08-28T20:28:23.416Z"
     },
     {
       "id": "res-seed-4",
@@ -19067,7 +19067,7 @@
       "pricePerTicket": 25000,
       "total": 50000,
       "status": "reserved",
-      "createdAt": "2026-08-28T19:04:06.130Z"
+      "createdAt": "2026-08-28T19:28:23.416Z"
     },
     {
       "id": "res-seed-5",
@@ -19094,10 +19094,21 @@
       "pricePerTicket": 18000,
       "total": 54000,
       "status": "reserved",
-      "createdAt": "2026-08-28T18:04:06.130Z"
+      "createdAt": "2026-08-28T18:28:23.416Z"
     }
   ],
   "purchases": [],
   "favorites": [],
-  "ratings": []
+  "ratings": [
+    {
+      "id": "rat-74147435",
+      "userId": "user-1",
+      "userName": "Valentina Pallares",
+      "mediaType": "movie",
+      "tmdbId": 969681,
+      "score": 5,
+      "comment": "sasa",
+      "createdAt": "2026-08-28T23:29:30.626Z"
+    }
+  ]
 }

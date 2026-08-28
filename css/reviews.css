@@ -1,0 +1,116 @@
+/* css/reviews.css · Sección de reseñas (movie.html y tv.html) */
+
+.reviews__summary {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+.reviews__avg {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-black);
+  color: var(--color-primary);
+}
+.reviews__count {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+.reviews__login {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-lg);
+}
+.reviews__login a {
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+}
+
+/* ---- formulario ---- */
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-width: 560px;
+  margin-bottom: var(--space-xl);
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+}
+.review-form__label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-muted);
+}
+.star-input {
+  display: flex;
+  gap: var(--space-2xs);
+}
+.star-input__star {
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--color-border-strong);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+.star-input__star:hover {
+  transform: scale(1.1);
+}
+.star-input__star.is-on {
+  color: var(--color-primary);
+}
+.review-form__text {
+  resize: vertical;
+  min-height: 60px;
+}
+.review-form__error {
+  color: var(--color-danger);
+  font-size: var(--fs-sm);
+}
+.review-form__actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* ---- lista ---- */
+.reviews__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.review {
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.review--mine {
+  border-color: var(--color-primary-border);
+}
+.review__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.review__author {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+}
+.review__stars {
+  color: var(--color-primary);
+  letter-spacing: 2px;
+  font-size: var(--fs-sm);
+}
+.review__text {
+  margin-top: var(--space-xs);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  white-space: pre-line;
+}
+.review__date {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: var(--fs-xs);
+  color: var(--color-text-dim);
+}
