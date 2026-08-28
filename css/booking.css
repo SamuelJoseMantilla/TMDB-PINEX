@@ -52,3 +52,91 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
 }
+
+/* --------------------------------------------------- Pantalla y mapa -- */
+.screen {
+  width: min(70%, 460px);
+  margin: 0 auto var(--space-xl);
+  padding: var(--space-xs);
+  text-align: center;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-text-dim);
+  background: linear-gradient(var(--color-surface-3), transparent);
+  border-top: 3px solid var(--color-primary);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+.seat-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  overflow-x: auto;
+  padding-bottom: var(--space-sm);
+}
+.seat-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+.seat-row__label {
+  width: 18px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-dim);
+}
+
+/* --------------------------------------------------------- Leyenda --- */
+.seat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+.seat-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+}
+.legend-swatch--available {
+  background: color-mix(in srgb, var(--color-success) 16%, transparent);
+  border-color: var(--color-success);
+}
+.legend-swatch--selected {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.legend-swatch--reserved {
+  background: color-mix(in srgb, #b98a2e 20%, transparent);
+  border-color: #b98a2e;
+}
+.legend-swatch--sold {
+  background: var(--color-surface-2);
+  border-color: var(--color-border);
+}
+.legend-swatch--best {
+  background: transparent;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 55%, transparent);
+}
+
+@media (max-width: 560px) {
+  .seat-map {
+    align-items: flex-start;
+  }
+  cinema-seat {
+    --seat-size: 26px;
+  }
+}
