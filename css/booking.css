@@ -1,0 +1,54 @@
+/* css/booking.css · Página de selección de butacas (pages/booking.html)
+   La Fase 15/16 amplía este archivo con el mapa de sillas y la leyenda. */
+
+.booking-page {
+  padding-block: var(--space-2xl);
+  min-height: 60vh;
+}
+.booking-page > .state {
+  display: block;
+  text-align: center;
+  padding-block: var(--space-3xl);
+}
+
+.booking-layout {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+/* ------------------------------------------------ Resumen de la función */
+.booking-summary {
+  padding: var(--space-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+}
+.booking-summary__movie {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--space-md);
+}
+.booking-summary__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-md);
+}
+.booking-summary__grid dt {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-3xs);
+}
+.booking-summary__grid dd {
+  font-weight: var(--fw-semibold);
+}
+
+.seat-map-wrap {
+  padding: var(--space-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
