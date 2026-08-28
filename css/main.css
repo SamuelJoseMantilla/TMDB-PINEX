@@ -1,0 +1,41 @@
+/* css/main.css
+   Estilos globales base. En la Fase 8 se ampliará y se dividirá el CSS por secciones.
+   Por ahora solo lo mínimo para ver la identidad visual de CINEHUB. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-base);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ---- Pantalla de comprobación de la Fase 3 (temporal) ---- */
+.boot-check {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  text-align: center;
+  padding: var(--space-lg);
+}
+
+.boot-check h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  letter-spacing: 2px;
+  color: var(--color-primary);
+}
+
+.boot-check p {
+  color: var(--color-text-muted);
+}

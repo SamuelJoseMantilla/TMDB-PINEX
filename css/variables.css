@@ -1,0 +1,43 @@
+/* css/variables.css
+   Design tokens de CINEHUB. Cualquier color, espaciado o radio se define AQUÍ
+   y se reutiliza con var(--nombre). No repetir valores sueltos en otros archivos. */
+
+:root {
+  /* ---- Colores ---- */
+  --color-background: #0d0d0f;      /* fondo principal, casi negro */
+  --color-surface: #1a1a1e;        /* tarjetas y superficies */
+  --color-surface-2: #26262b;      /* superficies elevadas / hover */
+  --color-border: #303036;
+
+  --color-text: #ffffff;
+  --color-text-muted: #a1a1aa;     /* texto secundario */
+
+  --color-primary: #f5a623;        /* naranja de acento (ajustaremos en Fase 8) */
+  --color-primary-hover: #ffb845;
+  --color-primary-contrast: #0d0d0f;
+
+  --color-success: #3ecf8e;
+  --color-danger: #e5484d;
+
+  /* ---- Tipografía ---- */
+  --font-base: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --font-heading: var(--font-base);
+
+  /* ---- Espaciado ---- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+
+  /* ---- Bordes y sombras ---- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  /* ---- Layout ---- */
+  --container-max: 1200px;
+}
