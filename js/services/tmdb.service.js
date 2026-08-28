@@ -122,6 +122,71 @@ export async function getGenres() {
   return data.genres; // [{ id: 28, name: "Acción" }, ...]
 }
 
+/* =========================== SERIES DE TV =============================== */
+/* Solo para explorar (no hay reservas de series). Misma API de TMDB. */
+
+export async function getPopularTv(page = 1) {
+  const data = await tmdbRequest("/tv/popular", { page });
+  return data.results;
+}
+
+export async function getTrendingTv(page = 1) {
+  const data = await tmdbRequest("/trending/tv/week", { page });
+  return data.results;
+}
+
+export async function getOnAirTv(page = 1) {
+  const data = await tmdbRequest("/tv/on_the_air", { page });
+  return data.results;
+}
+
+export async function searchTv(query, page = 1) {
+  const q = query.trim();
+  if (!q) return [];
+  const data = await tmdbRequest("/search/tv", { query: q, page, include_adult: false });
+  return data.results;
+}
+
+export async function getTvByGenre(genreId, page = 1) {
+  const data = await tmdbRequest("/discover/tv", {
+    with_genres: genreId,
+    page,
+    sort_by: "popularity.desc",
+  });
+  return data.results;
+}
+
+export function getTvDetails(tvId) {
+  return tmdbRequest(`/tv/${tvId}`);
+}
+
+export function getTvCredits(tvId) {
+  return tmdbRequest(`/tv/${tvId}/aggregate_credits`);
+}
+
+export async function getTvVideos(tvId) {
+  const localized = await tmdbRequest(`/tv/${tvId}/videos`);
+  if (localized.results && localized.results.length > 0) return localized.results;
+  const fallback = await tmdbRequest(`/tv/${tvId}/videos`, { language: "en-US" });
+  return fallback.results ?? [];
+}
+
+export async function getTvGenres() {
+  const data = await tmdbRequest("/genre/tv/list");
+  return data.genres;
+}
+
+/* ============================ PERSONAS ================================= */
+
+export function getPersonDetails(personId) {
+  return tmdbRequest(`/person/${personId}`);
+}
+
+/** Créditos de cine de una persona: { cast: [...], crew: [...] } */
+export function getPersonMovieCredits(personId) {
+  return tmdbRequest(`/person/${personId}/movie_credits`);
+}
+
 /* ------------------------------- IMÁGENES -------------------------------- */
 
 /**

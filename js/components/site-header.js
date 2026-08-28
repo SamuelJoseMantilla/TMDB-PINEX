@@ -35,6 +35,7 @@ const MENU_SVG = `
 const NAV_ITEMS = [
   { key: "home", label: "Home", href: "index.html" },
   { key: "movies", label: "Movies", href: "pages/movies.html" },
+  { key: "series", label: "Series", href: "pages/series.html" },
   { key: "categories", label: "Categories", href: "pages/category.html" },
   { key: "trending", label: "Trending", href: "index.html#trending" },
   { key: "trailers", label: "Trailers", href: "index.html#trailers" },
@@ -169,6 +170,7 @@ class SiteHeader extends HTMLElement {
   #guessActive() {
     const path = location.pathname;
     if (path.endsWith("/") || path.endsWith("index.html")) return "home";
+    if (path.includes("series") || path.includes("/tv.html")) return "series";
     if (path.includes("movie")) return "movies";
     if (path.includes("categor")) return "categories";
     if (path.includes("reservation")) return "reservations";

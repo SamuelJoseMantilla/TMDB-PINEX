@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Detalle de serie · CINEHUB" />
+    <title>Serie · CINEHUB</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../css/variables.css?v=4" />
+    <link rel="stylesheet" href="../css/main.css?v=4" />
+    <link rel="stylesheet" href="../css/components.css?v=4" />
+    <link rel="stylesheet" href="../css/movie.css?v=4" />
+    <link rel="stylesheet" href="../css/responsive.css?v=4" />
+
+    <script defer src="../assets/vendor/gsap.min.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+
+    <site-header active="series"></site-header>
+
+    <main id="main" class="movie-page" data-state="loading">
+      <p class="state state--loading container">Cargando serie…</p>
+    </main>
+
+    <site-footer></site-footer>
+
+    <app-modal id="trailer-modal"></app-modal>
+
+    <script type="module" src="../js/modules/tv-details.js"></script>
+  </body>
+</html>
