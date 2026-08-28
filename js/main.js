@@ -1,22 +1,22 @@
 // js/main.js
-// Orquestador de la Homepage: registra el Web Component del modal, obtiene la
-// tabla de géneros (compartida) y arranca cada sección de forma independiente.
+// Orquestador de la Homepage: registra Web Components, obtiene la tabla de
+// géneros (compartida) y arranca cada sección de forma independiente.
 // Si una sección falla, las demás siguen funcionando (cada init maneja su error).
 
+import "./components/site-header.js";
+import "./components/site-footer.js";
 import "./components/app-modal.js";
 
 import { getGenres } from "./services/tmdb.service.js";
-import { initHeaderSearch } from "./modules/search.js";
 import { initHero } from "./modules/hero.js";
 import { initNowShowing, initTrending, initComingSoon } from "./modules/movies.js";
 import { initTrailers } from "./modules/trailers.js";
 import { initSurprise } from "./modules/surprise.js";
 import { initQuickBooking } from "./modules/quick-booking.js";
 
-console.log("CINEHUB · Homepage (Fase 9 · TMDB conectado)");
+console.log("CINEHUB · Homepage");
 
-initHeaderSearch();
-initQuickBooking(); // solo depende de JSON Server, va aparte de las secciones de TMDB
+initQuickBooking(); // solo depende de JSON Server
 
 async function bootHome() {
   // La lista de géneros traduce los genre_ids de las películas a nombres.
@@ -36,8 +36,5 @@ async function bootHome() {
   initTrailers();
   initSurprise();
 }
-
-// initSurprise no necesita esperar a los géneros; podría ir fuera, pero lo
-// dejamos en bootHome por orden. initQuickBooking sí va aparte (ver arriba).
 
 bootHome();

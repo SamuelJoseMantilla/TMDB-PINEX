@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explora películas por categoría · CINEHUB" />
+    <title>Categorías · CINEHUB</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/listing.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+
+    <site-header active="categories"></site-header>
+
+    <main id="main" class="listing-page">
+      <div class="container listing-head">
+        <h1 class="listing-title" id="listing-title">Categorías</h1>
+      </div>
+
+      <nav class="genre-chips container" id="genre-chips" aria-label="Categorías">
+        <span class="state state--loading">Cargando categorías…</span>
+      </nav>
+
+      <div class="movie-grid container" id="results-grid" data-state="loading">
+        <p class="state state--loading">Cargando películas…</p>
+      </div>
+    </main>
+
+    <site-footer></site-footer>
+
+    <script type="module" src="../js/modules/category.js"></script>
+  </body>
+</html>

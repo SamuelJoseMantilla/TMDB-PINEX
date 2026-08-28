@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Buscar películas · CINEHUB" />
+    <title>Buscar · CINEHUB</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/listing.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+
+    <site-header active=""></site-header>
+
+    <main id="main" class="listing-page">
+      <div class="container listing-head">
+        <h1 class="listing-title" id="listing-title">Buscar películas</h1>
+        <form class="listing-search" id="listing-search" role="search">
+          <label class="visually-hidden" for="listing-input">Buscar películas</label>
+          <input
+            type="search"
+            id="listing-input"
+            name="q"
+            placeholder="Título de la película…"
+            autocomplete="off"
+          />
+          <button type="submit" class="button button--primary">Buscar</button>
+        </form>
+      </div>
+
+      <div class="movie-grid container" id="results-grid" data-state="loading">
+        <p class="state state--loading">Buscando…</p>
+      </div>
+    </main>
+
+    <site-footer></site-footer>
+
+    <script type="module" src="../js/modules/search.js"></script>
+  </body>
+</html>

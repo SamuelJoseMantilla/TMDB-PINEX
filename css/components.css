@@ -283,6 +283,27 @@
   margin-top: var(--space-3xs);
 }
 
+/* ===================================================== GRID PELÍCULAS === */
+/* Rejilla de tarjetas de película. Se usa en Home, Search y Category. */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+.movie-grid > .state {
+  grid-column: 1 / -1;
+}
+@media (min-width: 600px) {
+  .movie-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 900px) {
+  .movie-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 /* ===================================== VÍDEO EMBEBIDO (modal trailer) === */
 /* El contenido va en el "light DOM" del <app-modal>, así que se estila aquí. */
 .video-embed {

@@ -8,10 +8,12 @@ import {
   formatRating,
   formatYear,
   genreNames,
+  sitePath,
   POSTER_PLACEHOLDER,
 } from "../utils/helpers.js";
 
-const MOVIE_PAGE = "pages/movie.html";
+// Ruta a la ficha de una película, válida desde "/" o desde "/pages/".
+const moviePath = (id) => sitePath(`pages/movie.html?id=${id}`);
 
 /**
  * Tarjeta de película para Now Showing / Coming Soon.
@@ -30,7 +32,7 @@ export function createMovieCard(movie, { genreMap, badge } = {}) {
   const rating = card.querySelector(".movie-card__rating");
   const badgeEl = card.querySelector(".movie-card__badge");
 
-  link.href = `${MOVIE_PAGE}?id=${movie.id}`;
+  link.href = moviePath(movie.id);
   img.src = imageUrl(movie.poster_path, "w342") || POSTER_PLACEHOLDER;
   img.alt = movie.title ? `Póster de ${movie.title}` : "";
   title.textContent = movie.title ?? movie.name ?? "Sin título";
@@ -54,7 +56,7 @@ export function createTrendingItem(movie, rank, genreMap) {
   item.querySelector(".trending-item__rank").textContent = `#${rank}`;
 
   const link = item.querySelector(".trending-item__link");
-  link.href = `${MOVIE_PAGE}?id=${movie.id}`;
+  link.href = moviePath(movie.id);
 
   const img = item.querySelector(".trending-item__img");
   img.src = imageUrl(movie.poster_path, "w185") || POSTER_PLACEHOLDER;

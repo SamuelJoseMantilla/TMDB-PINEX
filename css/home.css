@@ -177,15 +177,7 @@
   color: var(--color-primary);
 }
 
-/* ==================================================== GRID PELÍCULAS ==== */
-.movie-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg);
-}
-.movie-grid > .state {
-  grid-column: 1 / -1;
-}
+/* .movie-grid vive ahora en components.css (se usa en home, search y category) */
 
 /* ========================================================== TRENDING ==== */
 .trending-list {
@@ -599,9 +591,6 @@
 
 /* ===================================================== RESPONSIVE ======= */
 @media (min-width: 600px) {
-  .movie-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
   .category-list {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -623,9 +612,6 @@
 }
 
 @media (min-width: 900px) {
-  .movie-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
   .category-list {
     grid-template-columns: repeat(5, 1fr);
   }
