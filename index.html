@@ -123,40 +123,48 @@
       <!--  QUICK BOOKING                                                   -->
       <!-- ================================================================ -->
       <section class="quick-booking" aria-label="Reserva rápida">
-        <form class="quick-booking__form container" id="quick-booking-form">
-          <div class="field">
-            <label class="field__label" for="qb-movie">Select Movie</label>
-            <select class="field__control" id="qb-movie" name="movie" required>
-              <option value="">Elige una película…</option>
-            </select>
-          </div>
+        <div class="quick-booking__inner container">
+          <form class="quick-booking__form" id="quick-booking-form">
+            <div class="field">
+              <label class="field__label" for="qb-movie">Select Movie</label>
+              <select class="field__control" id="qb-movie" name="movie" required>
+                <option value="">Elige una película…</option>
+              </select>
+            </div>
 
-          <div class="field">
-            <label class="field__label" for="qb-date">Select Date</label>
-            <select class="field__control" id="qb-date" name="date" required>
-              <option value="">Elige una fecha…</option>
-            </select>
-          </div>
+            <div class="field">
+              <label class="field__label" for="qb-date">Select Date</label>
+              <select class="field__control" id="qb-date" name="date" required>
+                <option value="">Elige una fecha…</option>
+              </select>
+            </div>
 
-          <div class="field">
-            <label class="field__label" for="qb-time">Select Time</label>
-            <select class="field__control" id="qb-time" name="time" required>
-              <option value="">Elige una hora…</option>
-            </select>
-          </div>
+            <div class="field">
+              <label class="field__label" for="qb-time">Select Time</label>
+              <select class="field__control" id="qb-time" name="time" required>
+                <option value="">Elige una hora…</option>
+              </select>
+            </div>
 
-          <div class="field">
-            <label class="field__label" for="qb-room">Room <span class="field__optional">(opcional)</span></label>
-            <select class="field__control" id="qb-room" name="room">
-              <option value="">Cualquier sala</option>
-            </select>
-          </div>
+            <div class="field">
+              <label class="field__label" for="qb-room">Room <span class="field__optional">(opcional)</span></label>
+              <select class="field__control" id="qb-room" name="room">
+                <option value="">Cualquier sala</option>
+              </select>
+            </div>
 
-          <button type="submit" class="button button--primary quick-booking__submit">
-            Find Showtimes
-          </button>
-        </form>
-        <p class="quick-booking__feedback" id="quick-booking-feedback" role="status" aria-live="polite"></p>
+            <button type="submit" class="button button--primary quick-booking__submit">
+              Find Showtimes
+            </button>
+          </form>
+
+          <div
+            class="quick-booking__feedback"
+            id="quick-booking-feedback"
+            role="status"
+            aria-live="polite"
+          ></div>
+        </div>
       </section>
 
       <!-- ================================================================ -->

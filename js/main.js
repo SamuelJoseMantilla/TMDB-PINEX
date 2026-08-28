@@ -11,10 +11,12 @@ import { initHero } from "./modules/hero.js";
 import { initNowShowing, initTrending, initComingSoon } from "./modules/movies.js";
 import { initTrailers } from "./modules/trailers.js";
 import { initSurprise } from "./modules/surprise.js";
+import { initQuickBooking } from "./modules/quick-booking.js";
 
 console.log("CINEHUB · Homepage (Fase 9 · TMDB conectado)");
 
 initHeaderSearch();
+initQuickBooking(); // solo depende de JSON Server, va aparte de las secciones de TMDB
 
 async function bootHome() {
   // La lista de géneros traduce los genre_ids de las películas a nombres.
@@ -34,5 +36,8 @@ async function bootHome() {
   initTrailers();
   initSurprise();
 }
+
+// initSurprise no necesita esperar a los géneros; podría ir fuera, pero lo
+// dejamos en bootHome por orden. initQuickBooking sí va aparte (ver arriba).
 
 bootHome();
