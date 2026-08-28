@@ -5,7 +5,7 @@ import "../components/site-header.js";
 import "../components/site-footer.js";
 
 import { isLoggedIn, requireAuth, getCurrentUser } from "./auth.js";
-import { getUserReservations } from "./reservations.js";
+import { getUserReservations, cancelReservation } from "./reservations.js";
 import { getMovieDetails, imageUrl } from "../services/tmdb.service.js";
 import { $ } from "../utils/dom.js";
 import { setLoading, setError, setReady } from "../ui/states.js";
@@ -130,10 +130,31 @@ function fillPosters(list, reservations) {
   }
 }
 
-// Los handlers de Cancelar llegan en la Fase 19.
-function onListClick(event) {
-  if (event.target.closest("[data-cancel]")) {
-    alert("La cancelación de reservas se implementa en la Fase 19.");
+async function onListClick(event) {
+  const cancelBtn = event.target.closest("[data-cancel]");
+  if (!cancelBtn) return;
+
+  const card = cancelBtn.closest(".res-card");
+  const reservationId = cancelBtn.dataset.cancel;
+
+  if (!confirm("¿Cancelar esta reserva? Se liberarán las butacas.")) return;
+
+  cancelBtn.disabled = true;
+  cancelBtn.textContent = "Cancelando…";
+
+  try {
+    await cancelReservation(reservationId);
+
+    // Actualizar la tarjeta en el sitio
+    card.dataset.status = "cancelled";
+    const badge = card.querySelector(".badge");
+    badge.className = "badge badge--muted";
+    badge.textContent = "Cancelada";
+    card.querySelector(".res-card__actions")?.remove();
+  } catch (error) {
+    cancelBtn.disabled = false;
+    cancelBtn.textContent = "Cancel reservation";
+    alert(error.message);
   }
 }
 
