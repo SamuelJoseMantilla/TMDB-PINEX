@@ -177,20 +177,43 @@
   color: var(--color-primary);
 }
 
-/* .movie-grid vive ahora en components.css (se usa en home, search y category) */
+/* ================================ FILAS DESLIZABLES (scroll-snap) ======= */
+/* Now Showing y Coming Soon: fila horizontal que se desliza y hace "imán".
+   Solo CSS, sin flechas. (.movie-grid con wrap vive en components.css y lo
+   usan search / category / movies.) */
+.movie-row {
+  display: flex;
+  gap: var(--space-md);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-bottom: var(--space-sm);
+  scrollbar-width: thin;
+}
+.movie-row > .movie-card {
+  flex: 0 0 clamp(150px, 42vw, 190px);
+  scroll-snap-align: start;
+}
+.movie-row > .state {
+  flex: 1;
+}
 
 /* ========================================================== TRENDING ==== */
 .trending-list {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
   gap: var(--space-md);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-bottom: var(--space-sm);
+  scrollbar-width: thin;
 }
 .trending-list > .state {
-  grid-column: 1 / -1;
+  flex: 1;
 }
 .trending-item {
   position: relative;
   display: flex;
+  flex: 0 0 clamp(260px, 85vw, 320px);
+  scroll-snap-align: start;
   overflow: hidden;
   background: var(--color-surface-2);
   border: 1px solid var(--color-border);
@@ -605,9 +628,6 @@
 }
 
 @media (min-width: 768px) {
-  .trending-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .trailer-list {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -616,6 +636,13 @@
   }
   .premium-list {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Trending: en pantallas grandes las tarjetas no necesitan ser tan anchas */
+@media (min-width: 700px) {
+  .trending-item {
+    flex-basis: 300px;
   }
 }
 

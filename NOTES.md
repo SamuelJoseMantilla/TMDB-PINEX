@@ -1,17 +1,14 @@
-# CINEHUB · Notas de diseño y mejoras pendientes
-
-Cambios cosméticos / de pulido para aplicar en la **Fase 24** (revisión general y
-responsive), no ahora. Estructura y funcionalidad sí se resuelven en su fase.
-
-## Pendientes de decidir
-
-- [ ] Carruseles vs grids en "Now Showing" / "Trending" / "Coming Soon".
-      Opción A: scroll-snap CSS (barato, sin JS). Opción B: carrusel con flechas (JS).
-
-## Pulido visual (Fase 24)
-
-- [ ] _(añadir aquí lo que vaya surgiendo)_
+# CINEHUB · Notas de diseño y mejoras
 
 ## Hecho
 
-- [x] Fase 11: mensaje/resultados de Quick Booking movidos dentro del panel (tarjeta bajo el form).
+- [x] Fase 11: mensaje/resultados de Quick Booking dentro del panel.
+- [x] Fase 24: "Now Showing" / "Trending" / "Coming Soon" → filas deslizables scroll-snap (solo CSS).
+- [x] Fase 24: menú hamburguesa en móvil (`<900px`).
+- [x] Fase 24: repaso responsive (hero, cabeceras de sección, barras de scroll).
+
+## Ideas para más adelante (opcional)
+
+- [ ] Carrusel con flechas ‹ › en desktop (ahora es scroll-snap sin flechas).
+- [ ] Skeleton loaders en vez de texto "Loading…".
+- [ ] Fuente display (tipo Bebas Neue) para los títulos — hoy es fuente de sistema.
