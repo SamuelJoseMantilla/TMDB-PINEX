@@ -11,6 +11,12 @@
       "name": "Demo User",
       "email": "demo@cinehub.com",
       "password": "demo1234"
+    },
+    {
+      "id": "user-acfd78bd",
+      "name": "samuel",
+      "email": "samuel@login.com",
+      "password": "Sa1234"
     }
   ],
   "rooms": [
