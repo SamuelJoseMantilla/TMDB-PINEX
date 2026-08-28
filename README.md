@@ -19,12 +19,27 @@ npm install
 
 ## Configuración de TMDB
 
-1. Crea una cuenta en https://www.themoviedb.org/ y solicita una API Key.
-2. Copia tu **API Read Access Token (v4)**.
-3. Pégalo en `js/config.js` (variable `TMDB_TOKEN`).
+1. Crea una cuenta en https://www.themoviedb.org/ y solicita una API Key en
+   https://www.themoviedb.org/settings/api
+2. Copia tu **API Read Access Token (v4)** (el token largo que empieza por `eyJ...`).
+3. Crea tu archivo de configuración a partir de la plantilla:
 
-> El archivo `js/config.js` contiene el token en el frontend porque el proyecto no tiene
-> backend. Es aceptable para un proyecto académico (token de solo lectura).
+   ```powershell
+   Copy-Item js/config.example.js js/config.js   # PowerShell
+   # cp js/config.example.js js/config.js         # Git Bash / Linux / macOS
+   ```
+
+4. Abre `js/config.js` y pega el token en la constante `TMDB_TOKEN`.
+
+> `js/config.js` está en `.gitignore` y **no se sube al repositorio**: cada persona
+> pone su propio token. Se guarda en el frontend porque el proyecto no tiene backend;
+> es aceptable para un proyecto académico (token de solo lectura).
+
+Verifica que el token funciona:
+
+```bash
+npm run check:tmdb
+```
 
 ## Ejecutar el proyecto
 
