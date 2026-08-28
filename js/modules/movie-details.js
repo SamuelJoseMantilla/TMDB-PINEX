@@ -21,6 +21,7 @@ import { setError } from "../ui/states.js";
 import { playTrailer } from "./trailers.js";
 import { createCastCard } from "../ui/render.js";
 import { createFavoriteButton } from "../ui/favorite-button.js";
+import { mountReviews } from "../ui/reviews.js";
 import {
   formatRuntime,
   formatRating,
@@ -113,6 +114,13 @@ function render(main, { movie, credits, videos, functions, rooms }) {
       </div>
       <div class="container" id="showtimes-body"></div>
     </section>
+
+    <section class="section" id="reviews" aria-labelledby="reviews-title">
+      <div class="section__head container">
+        <h2 class="section__title" id="reviews-title">Reseñas</h2>
+      </div>
+      <div class="container" id="reviews-body"></div>
+    </section>
   `;
 
   // Backdrop de fondo
@@ -138,6 +146,7 @@ function render(main, { movie, credits, videos, functions, rooms }) {
 
   renderCast(main.querySelector("#cast-list"), credits.cast ?? []);
   renderShowtimes(main.querySelector("#showtimes-body"), functions, rooms);
+  mountReviews(main.querySelector("#reviews-body"), { mediaType: "movie", tmdbId: movie.id });
 }
 
 function renderCast(list, cast) {

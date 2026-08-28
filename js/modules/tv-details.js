@@ -16,6 +16,7 @@ import { setError } from "../ui/states.js";
 import { playTrailer } from "./trailers.js";
 import { createCastCard } from "../ui/render.js";
 import { createFavoriteButton } from "../ui/favorite-button.js";
+import { mountReviews } from "../ui/reviews.js";
 import {
   formatRating,
   formatReleaseDate,
@@ -102,6 +103,13 @@ function render(main, { show, credits, videos }) {
       </div>
       <ul class="cast-list container" id="cast-list"></ul>
     </section>
+
+    <section class="section section--surface" id="reviews" aria-labelledby="reviews-title">
+      <div class="section__head container">
+        <h2 class="section__title" id="reviews-title">Reseñas</h2>
+      </div>
+      <div class="container" id="reviews-body"></div>
+    </section>
   `;
 
   if (show.backdrop_path) {
@@ -123,6 +131,7 @@ function render(main, { show, credits, videos }) {
   );
 
   renderCast(main.querySelector("#cast-list"), credits.cast ?? []);
+  mountReviews(main.querySelector("#reviews-body"), { mediaType: "tv", tmdbId: show.id });
 }
 
 function renderCast(list, cast) {
