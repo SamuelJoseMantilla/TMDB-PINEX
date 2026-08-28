@@ -25,7 +25,7 @@ const functionId = new URLSearchParams(location.search).get("functionId");
 // Estado de la página
 const state = {
   ctx: null, // { fn, room, rows }
-  selected: [], // [{ seatId, functionSeatId, seatCode, location }]
+  selected: [], // [{ seatId, seatCode, location }]
   quantity: 2,
 };
 
@@ -133,7 +133,6 @@ function renderSeatMap(mapEl, rows) {
       seatEl.setAttribute("location", seat.location);
       if (seat.recommended) seatEl.setAttribute("recommended", "");
       seatEl.seatId = seat.seatId;
-      seatEl.functionSeatId = seat.functionSeatId;
       rowEl.append(seatEl);
     }
     mapEl.append(rowEl);
@@ -145,10 +144,10 @@ function renderSeatMap(mapEl, rows) {
 /* --------------------------------------------------------- interacción */
 
 function onSeatToggle(event) {
-  const { seatId, functionSeatId, seatCode, location, selected } = event.detail;
+  const { seatId, seatCode, location, selected } = event.detail;
 
   if (selected) {
-    state.selected.push({ seatId, functionSeatId, seatCode, location });
+    state.selected.push({ seatId, seatCode, location });
 
     if (state.selected.length > state.quantity) {
       if (state.quantity < MAX_SEATS) {
@@ -258,7 +257,10 @@ async function onReserve() {
     return;
   }
   if (!check.ok) {
-    showHint(`Ya no están libres: ${check.unavailable.join(", ")}. Recarga la página.`);
+    const codes = state.selected
+      .filter((s) => check.unavailable.includes(s.seatId))
+      .map((s) => s.seatCode);
+    showHint(`Ya no están libres: ${codes.join(", ")}. Recarga la página.`);
     btn.disabled = false;
     return;
   }

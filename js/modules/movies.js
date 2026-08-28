@@ -1,12 +1,19 @@
 // js/modules/movies.js
 // Secciones de listas de películas de la Homepage: Now Showing, Trending, Coming Soon.
 
-import { getNowPlaying, getTrending, getUpcoming } from "../services/tmdb.service.js";
+import {
+  getTrending,
+  getUpcoming,
+  getMovieDetails,
+} from "../services/tmdb.service.js";
+import { getAll } from "../services/api.service.js";
 import { $ } from "../utils/dom.js";
 import { setLoading, setError, setEmpty, setReady } from "../ui/states.js";
 import { createMovieCard, createTrendingItem } from "../ui/render.js";
 
 /* --------------------------- Now Showing ------------------------------- */
+// "Now Showing" = la cartelera REAL de CINEHUB: las películas que tienen
+// funciones programadas en JSON Server. Así toda tarjeta es reservable.
 
 export async function initNowShowing(genreMap) {
   const grid = $("#now-showing-grid");
@@ -14,15 +21,20 @@ export async function initNowShowing(genreMap) {
 
   setLoading(grid, "Loading movies…");
   try {
-    const movies = await getNowPlaying();
-    if (!movies.length) return setEmpty(grid, "No movies showing right now.");
+    const functions = await getAll("functions");
+    const tmdbIds = [...new Set(functions.map((f) => f.tmdbId))];
 
-    grid.replaceChildren(
-      ...movies.slice(0, 8).map((movie) => createMovieCard(movie, { genreMap }))
+    const details = await Promise.all(
+      tmdbIds.map((id) => getMovieDetails(id).catch(() => null))
     );
+    const movies = details.filter(Boolean);
+
+    if (!movies.length) return setEmpty(grid, "No hay películas en cartelera.");
+
+    grid.replaceChildren(...movies.slice(0, 10).map((m) => createMovieCard(m, { genreMap })));
     setReady(grid);
   } catch {
-    setError(grid, "Couldn't load movies.", () => initNowShowing(genreMap));
+    setError(grid, "No se pudo cargar la cartelera.", () => initNowShowing(genreMap));
   }
 }
 

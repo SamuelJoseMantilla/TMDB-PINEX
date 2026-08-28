@@ -6,6 +6,7 @@ import "../components/site-footer.js";
 
 import { isLoggedIn, requireAuth, getCurrentUser } from "./auth.js";
 import { getUserReservations, cancelReservation } from "./reservations.js";
+import { getUserPurchases } from "./purchases.js";
 import { getMovieDetails, imageUrl } from "../services/tmdb.service.js";
 import { $ } from "../utils/dom.js";
 import { setLoading, setError, setReady } from "../ui/states.js";
@@ -41,7 +42,11 @@ async function load() {
   setLoading(list, "Cargando tus reservas…");
 
   try {
-    const reservations = await getUserReservations(getCurrentUser().id);
+    const userId = getCurrentUser().id;
+    const [reservations, purchases] = await Promise.all([
+      getUserReservations(userId),
+      getUserPurchases(userId),
+    ]);
 
     if (reservations.length === 0) {
       list.dataset.state = "empty";
@@ -53,9 +58,16 @@ async function load() {
       return;
     }
 
-    list.replaceChildren(...reservations.map(renderCard));
+    // Estado EFECTIVO: pagada si existe una compra para ella.
+    const paidIds = new Set(purchases.map((p) => p.reservationId));
+    const withStatus = reservations.map((r) => ({
+      ...r,
+      status: r.status === "cancelled" ? "cancelled" : paidIds.has(r.id) ? "paid" : "reserved",
+    }));
+
+    list.replaceChildren(...withStatus.map(renderCard));
     setReady(list);
-    fillPosters(list, reservations);
+    fillPosters(list, withStatus);
   } catch {
     setError(list, "No se pudieron cargar tus reservas.", load);
   }

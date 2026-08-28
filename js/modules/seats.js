@@ -1,11 +1,16 @@
 // js/modules/seats.js
-// Capa de acceso a los datos de sillas por función. La usan las Fases 15-20.
+// Disponibilidad de butacas por función.
 //
-// Idea central (functionSeats): el estado de una silla depende de la FUNCIÓN.
-// La misma butaca C5 puede estar "sold" en la función de las 15:00 y "available"
-// en la de las 21:30 -> son registros distintos en functionSeats.
+// FUENTE DE VERDAD: las colecciones `reservations` y `purchases`.
+//   - butaca "sold"      -> está en algún purchase de esta función
+//   - butaca "reserved"  -> está en alguna reservation con status "reserved"
+//   - butaca "available" -> ninguna de las anteriores
+//
+// No se escribe el estado en `functionSeats` (json-server local pierde escrituras
+// cuando van varias seguidas). Derivar el estado = 1 sola escritura por operación
+// y cero inconsistencias.
 
-import { getById, getAll, update } from "../services/api.service.js";
+import { getById, getAll } from "../services/api.service.js";
 
 export const SEAT_STATUS = {
   AVAILABLE: "available",
@@ -14,88 +19,85 @@ export const SEAT_STATUS = {
 };
 
 /**
+ * Devuelve, para una función, qué butacas están ocupadas.
+ * @returns {Promise<{ sold: Set<string>, reserved: Set<string> }>} (seatIds)
+ */
+export async function getTakenSeats(functionId) {
+  const [reservations, purchases] = await Promise.all([
+    getAll("reservations", { functionId }),
+    getAll("purchases", { functionId }),
+  ]);
+
+  const sold = new Set(purchases.flatMap((p) => p.seatIds ?? []));
+  const reserved = new Set(
+    reservations
+      .filter((r) => r.status === SEAT_STATUS.RESERVED)
+      .flatMap((r) => r.seatIds ?? [])
+  );
+  // Si una butaca aparece como vendida y reservada, gana "vendida".
+  for (const id of sold) reserved.delete(id);
+
+  return { sold, reserved };
+}
+
+/**
  * Reúne todo lo necesario para dibujar el mapa de sillas de una función.
- * @param {string} functionId
- * @returns {Promise<{ fn: object, room: object, rows: RowGroup[] }>}
+ * @returns {Promise<{ fn, room, rows: RowGroup[] }>}
  *   RowGroup = { row: "A", seats: SeatCell[] }
- *   SeatCell = { seatId, seatCode, row, number, location, status,
- *                functionSeatId, recommended }
+ *   SeatCell = { seatId, seatCode, row, number, location, status, recommended }
  */
 export async function getFunctionContext(functionId) {
   const fn = await getById("functions", functionId);
 
-  // _expand=seat -> json-server adjunta el objeto seat a cada functionSeat,
-  // así una sola petición trae estado + fila/número/ubicación.
-  const [room, functionSeats] = await Promise.all([
+  const [room, seats, taken] = await Promise.all([
     getById("rooms", fn.roomId),
-    getAll("functionSeats", { functionId, _expand: "seat" }),
+    getAll("seats", { roomId: fn.roomId }),
+    getTakenSeats(functionId),
   ]);
 
-  return { fn, room, rows: groupByRow(functionSeats) };
+  const statusOf = (seatId) => {
+    if (taken.sold.has(seatId)) return SEAT_STATUS.SOLD;
+    if (taken.reserved.has(seatId)) return SEAT_STATUS.RESERVED;
+    return SEAT_STATUS.AVAILABLE;
+  };
+
+  return { fn, room, rows: groupByRow(seats, statusOf) };
 }
 
-function groupByRow(functionSeats) {
+function groupByRow(seats, statusOf) {
   const byRow = new Map();
 
-  for (const fs of functionSeats) {
-    const seat = fs.seat;
-    if (!seat) continue;
-
+  for (const seat of seats) {
     const cell = {
       seatId: seat.id,
       seatCode: seat.seatCode,
       row: seat.row,
       number: seat.number,
       location: seat.location,
-      status: fs.status,
-      functionSeatId: fs.id,
+      status: statusOf(seat.id),
       recommended: seat.location === "center", // "BEST VIEW"
     };
-
     if (!byRow.has(seat.row)) byRow.set(seat.row, []);
     byRow.get(seat.row).push(cell);
   }
 
   return [...byRow.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([row, seats]) => ({
+    .map(([row, list]) => ({
       row,
-      seats: seats.sort((a, b) => a.number - b.number),
+      seats: list.sort((a, b) => a.number - b.number),
     }));
 }
 
 /**
- * Re-consulta la disponibilidad de unas sillas concretas justo antes de
+ * Re-consulta la disponibilidad de unas butacas concretas justo antes de
  * confirmar una reserva o compra (RF-15: previene la doble reserva).
- * @param {string} functionId
- * @param {string[]} seatIds
- * @returns {Promise<{ ok: boolean, unavailable: string[], functionSeatIds: string[] }>}
+ * @returns {Promise<{ ok: boolean, unavailable: string[] }>} unavailable = seatIds
  */
 export async function checkSeatsAvailable(functionId, seatIds) {
-  const functionSeats = await getAll("functionSeats", { functionId, _expand: "seat" });
-  const bySeatId = new Map(functionSeats.map((fs) => [fs.seatId, fs]));
-
-  const unavailable = [];
-  const functionSeatIds = [];
-
-  for (const seatId of seatIds) {
-    const fs = bySeatId.get(seatId);
-    if (!fs || fs.status !== SEAT_STATUS.AVAILABLE) {
-      unavailable.push(fs?.seat?.seatCode ?? seatId);
-    } else {
-      functionSeatIds.push(fs.id);
-    }
-  }
-
-  return { ok: unavailable.length === 0, unavailable, functionSeatIds };
-}
-
-/** Cambia el estado de una silla en una función. */
-export function setSeatStatus(functionSeatId, status) {
-  return update("functionSeats", functionSeatId, { status });
-}
-
-/** Cambia el estado de varias sillas a la vez. */
-export function setSeatsStatus(functionSeatIds, status) {
-  return Promise.all(functionSeatIds.map((id) => setSeatStatus(id, status)));
+  const taken = await getTakenSeats(functionId);
+  const unavailable = seatIds.filter(
+    (id) => taken.sold.has(id) || taken.reserved.has(id)
+  );
+  return { ok: unavailable.length === 0, unavailable };
 }

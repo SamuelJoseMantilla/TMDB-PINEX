@@ -11,12 +11,6 @@
       "name": "Demo User",
       "email": "demo@cinehub.com",
       "password": "demo1234"
-    },
-    {
-      "id": "user-acfd78bd",
-      "name": "samuel",
-      "email": "samuel@login.com",
-      "password": "Sa1234"
     }
   ],
   "rooms": [
@@ -1138,8 +1132,8 @@
   "functions": [
     {
       "id": "func-1",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 969681,
+      "movieTitle": "Spider-Man: Brand New Day",
       "roomId": "room-1",
       "date": "2026-08-28",
       "time": "15:00",
@@ -1149,8 +1143,8 @@
     },
     {
       "id": "func-2",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1368337,
+      "movieTitle": "La Odisea",
       "roomId": "room-2",
       "date": "2026-08-28",
       "time": "15:00",
@@ -1160,8 +1154,8 @@
     },
     {
       "id": "func-3",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 1288445,
+      "movieTitle": "El motín",
       "roomId": "room-3",
       "date": "2026-08-28",
       "time": "15:00",
@@ -1171,8 +1165,8 @@
     },
     {
       "id": "func-4",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1621552,
+      "movieTitle": "La captura",
       "roomId": "room-1",
       "date": "2026-08-28",
       "time": "18:30",
@@ -1182,8 +1176,8 @@
     },
     {
       "id": "func-5",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 1516698,
+      "movieTitle": "Sunrise. El último amanecer",
       "roomId": "room-2",
       "date": "2026-08-28",
       "time": "18:30",
@@ -1193,8 +1187,8 @@
     },
     {
       "id": "func-6",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1323244,
+      "movieTitle": "La señal del apocalipsis",
       "roomId": "room-3",
       "date": "2026-08-28",
       "time": "18:30",
@@ -1204,8 +1198,8 @@
     },
     {
       "id": "func-7",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 1339713,
+      "movieTitle": "Obsesión",
       "roomId": "room-1",
       "date": "2026-08-28",
       "time": "21:30",
@@ -1215,8 +1209,8 @@
     },
     {
       "id": "func-8",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1084244,
+      "movieTitle": "Toy Story 5",
       "roomId": "room-2",
       "date": "2026-08-28",
       "time": "21:30",
@@ -1226,8 +1220,8 @@
     },
     {
       "id": "func-9",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 1108427,
+      "movieTitle": "Vaiana",
       "roomId": "room-3",
       "date": "2026-08-28",
       "time": "21:30",
@@ -1237,8 +1231,8 @@
     },
     {
       "id": "func-10",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1213243,
+      "movieTitle": "Tóxico: Un cuento de hadas para adultos",
       "roomId": "room-1",
       "date": "2026-08-29",
       "time": "15:00",
@@ -1248,8 +1242,8 @@
     },
     {
       "id": "func-11",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 1315772,
+      "movieTitle": "Minions & Monsters",
       "roomId": "room-2",
       "date": "2026-08-29",
       "time": "15:00",
@@ -1259,8 +1253,8 @@
     },
     {
       "id": "func-12",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1232569,
+      "movieTitle": "Pinocho esta Desquiciado",
       "roomId": "room-3",
       "date": "2026-08-29",
       "time": "15:00",
@@ -1270,8 +1264,8 @@
     },
     {
       "id": "func-13",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 1375646,
+      "movieTitle": "Colony",
       "roomId": "room-1",
       "date": "2026-08-29",
       "time": "18:30",
@@ -1281,8 +1275,8 @@
     },
     {
       "id": "func-14",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1130948,
+      "movieTitle": "Rosebush Pruning",
       "roomId": "room-2",
       "date": "2026-08-29",
       "time": "18:30",
@@ -1292,8 +1286,8 @@
     },
     {
       "id": "func-15",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 969681,
+      "movieTitle": "Spider-Man: Brand New Day",
       "roomId": "room-3",
       "date": "2026-08-29",
       "time": "18:30",
@@ -1303,8 +1297,8 @@
     },
     {
       "id": "func-16",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1368337,
+      "movieTitle": "La Odisea",
       "roomId": "room-1",
       "date": "2026-08-29",
       "time": "21:30",
@@ -1314,8 +1308,8 @@
     },
     {
       "id": "func-17",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 1288445,
+      "movieTitle": "El motín",
       "roomId": "room-2",
       "date": "2026-08-29",
       "time": "21:30",
@@ -1325,8 +1319,8 @@
     },
     {
       "id": "func-18",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1621552,
+      "movieTitle": "La captura",
       "roomId": "room-3",
       "date": "2026-08-29",
       "time": "21:30",
@@ -1336,8 +1330,8 @@
     },
     {
       "id": "func-19",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 1516698,
+      "movieTitle": "Sunrise. El último amanecer",
       "roomId": "room-1",
       "date": "2026-08-30",
       "time": "15:00",
@@ -1347,8 +1341,8 @@
     },
     {
       "id": "func-20",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1323244,
+      "movieTitle": "La señal del apocalipsis",
       "roomId": "room-2",
       "date": "2026-08-30",
       "time": "15:00",
@@ -1358,8 +1352,8 @@
     },
     {
       "id": "func-21",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 1339713,
+      "movieTitle": "Obsesión",
       "roomId": "room-3",
       "date": "2026-08-30",
       "time": "15:00",
@@ -1369,8 +1363,8 @@
     },
     {
       "id": "func-22",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1084244,
+      "movieTitle": "Toy Story 5",
       "roomId": "room-1",
       "date": "2026-08-30",
       "time": "18:30",
@@ -1380,8 +1374,8 @@
     },
     {
       "id": "func-23",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 1108427,
+      "movieTitle": "Vaiana",
       "roomId": "room-2",
       "date": "2026-08-30",
       "time": "18:30",
@@ -1391,8 +1385,8 @@
     },
     {
       "id": "func-24",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1213243,
+      "movieTitle": "Tóxico: Un cuento de hadas para adultos",
       "roomId": "room-3",
       "date": "2026-08-30",
       "time": "18:30",
@@ -1402,8 +1396,8 @@
     },
     {
       "id": "func-25",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 1315772,
+      "movieTitle": "Minions & Monsters",
       "roomId": "room-1",
       "date": "2026-08-30",
       "time": "21:30",
@@ -1413,8 +1407,8 @@
     },
     {
       "id": "func-26",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1232569,
+      "movieTitle": "Pinocho esta Desquiciado",
       "roomId": "room-2",
       "date": "2026-08-30",
       "time": "21:30",
@@ -1424,8 +1418,8 @@
     },
     {
       "id": "func-27",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 1375646,
+      "movieTitle": "Colony",
       "roomId": "room-3",
       "date": "2026-08-30",
       "time": "21:30",
@@ -1435,8 +1429,8 @@
     },
     {
       "id": "func-28",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1130948,
+      "movieTitle": "Rosebush Pruning",
       "roomId": "room-1",
       "date": "2026-08-31",
       "time": "15:00",
@@ -1446,8 +1440,8 @@
     },
     {
       "id": "func-29",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 969681,
+      "movieTitle": "Spider-Man: Brand New Day",
       "roomId": "room-2",
       "date": "2026-08-31",
       "time": "15:00",
@@ -1457,8 +1451,8 @@
     },
     {
       "id": "func-30",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1368337,
+      "movieTitle": "La Odisea",
       "roomId": "room-3",
       "date": "2026-08-31",
       "time": "15:00",
@@ -1468,8 +1462,8 @@
     },
     {
       "id": "func-31",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 1288445,
+      "movieTitle": "El motín",
       "roomId": "room-1",
       "date": "2026-08-31",
       "time": "18:30",
@@ -1479,8 +1473,8 @@
     },
     {
       "id": "func-32",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1621552,
+      "movieTitle": "La captura",
       "roomId": "room-2",
       "date": "2026-08-31",
       "time": "18:30",
@@ -1490,8 +1484,8 @@
     },
     {
       "id": "func-33",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 1516698,
+      "movieTitle": "Sunrise. El último amanecer",
       "roomId": "room-3",
       "date": "2026-08-31",
       "time": "18:30",
@@ -1501,8 +1495,8 @@
     },
     {
       "id": "func-34",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1323244,
+      "movieTitle": "La señal del apocalipsis",
       "roomId": "room-1",
       "date": "2026-08-31",
       "time": "21:30",
@@ -1512,8 +1506,8 @@
     },
     {
       "id": "func-35",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 1339713,
+      "movieTitle": "Obsesión",
       "roomId": "room-2",
       "date": "2026-08-31",
       "time": "21:30",
@@ -1523,8 +1517,8 @@
     },
     {
       "id": "func-36",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1084244,
+      "movieTitle": "Toy Story 5",
       "roomId": "room-3",
       "date": "2026-08-31",
       "time": "21:30",
@@ -1534,8 +1528,8 @@
     },
     {
       "id": "func-37",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 1108427,
+      "movieTitle": "Vaiana",
       "roomId": "room-1",
       "date": "2026-09-01",
       "time": "15:00",
@@ -1545,8 +1539,8 @@
     },
     {
       "id": "func-38",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1213243,
+      "movieTitle": "Tóxico: Un cuento de hadas para adultos",
       "roomId": "room-2",
       "date": "2026-09-01",
       "time": "15:00",
@@ -1556,8 +1550,8 @@
     },
     {
       "id": "func-39",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 1315772,
+      "movieTitle": "Minions & Monsters",
       "roomId": "room-3",
       "date": "2026-09-01",
       "time": "15:00",
@@ -1567,8 +1561,8 @@
     },
     {
       "id": "func-40",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1232569,
+      "movieTitle": "Pinocho esta Desquiciado",
       "roomId": "room-1",
       "date": "2026-09-01",
       "time": "18:30",
@@ -1578,8 +1572,8 @@
     },
     {
       "id": "func-41",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 1375646,
+      "movieTitle": "Colony",
       "roomId": "room-2",
       "date": "2026-09-01",
       "time": "18:30",
@@ -1589,8 +1583,8 @@
     },
     {
       "id": "func-42",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1130948,
+      "movieTitle": "Rosebush Pruning",
       "roomId": "room-3",
       "date": "2026-09-01",
       "time": "18:30",
@@ -1600,8 +1594,8 @@
     },
     {
       "id": "func-43",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 969681,
+      "movieTitle": "Spider-Man: Brand New Day",
       "roomId": "room-1",
       "date": "2026-09-01",
       "time": "21:30",
@@ -1611,8 +1605,8 @@
     },
     {
       "id": "func-44",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1368337,
+      "movieTitle": "La Odisea",
       "roomId": "room-2",
       "date": "2026-09-01",
       "time": "21:30",
@@ -1622,8 +1616,8 @@
     },
     {
       "id": "func-45",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 1288445,
+      "movieTitle": "El motín",
       "roomId": "room-3",
       "date": "2026-09-01",
       "time": "21:30",
@@ -1633,8 +1627,8 @@
     },
     {
       "id": "func-46",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1621552,
+      "movieTitle": "La captura",
       "roomId": "room-1",
       "date": "2026-09-02",
       "time": "15:00",
@@ -1644,8 +1638,8 @@
     },
     {
       "id": "func-47",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 1516698,
+      "movieTitle": "Sunrise. El último amanecer",
       "roomId": "room-2",
       "date": "2026-09-02",
       "time": "15:00",
@@ -1655,8 +1649,8 @@
     },
     {
       "id": "func-48",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1323244,
+      "movieTitle": "La señal del apocalipsis",
       "roomId": "room-3",
       "date": "2026-09-02",
       "time": "15:00",
@@ -1666,8 +1660,8 @@
     },
     {
       "id": "func-49",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 1339713,
+      "movieTitle": "Obsesión",
       "roomId": "room-1",
       "date": "2026-09-02",
       "time": "18:30",
@@ -1677,8 +1671,8 @@
     },
     {
       "id": "func-50",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1084244,
+      "movieTitle": "Toy Story 5",
       "roomId": "room-2",
       "date": "2026-09-02",
       "time": "18:30",
@@ -1688,8 +1682,8 @@
     },
     {
       "id": "func-51",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 1108427,
+      "movieTitle": "Vaiana",
       "roomId": "room-3",
       "date": "2026-09-02",
       "time": "18:30",
@@ -1699,8 +1693,8 @@
     },
     {
       "id": "func-52",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1213243,
+      "movieTitle": "Tóxico: Un cuento de hadas para adultos",
       "roomId": "room-1",
       "date": "2026-09-02",
       "time": "21:30",
@@ -1710,8 +1704,8 @@
     },
     {
       "id": "func-53",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 1315772,
+      "movieTitle": "Minions & Monsters",
       "roomId": "room-2",
       "date": "2026-09-02",
       "time": "21:30",
@@ -1721,8 +1715,8 @@
     },
     {
       "id": "func-54",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1232569,
+      "movieTitle": "Pinocho esta Desquiciado",
       "roomId": "room-3",
       "date": "2026-09-02",
       "time": "21:30",
@@ -1732,8 +1726,8 @@
     },
     {
       "id": "func-55",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 1375646,
+      "movieTitle": "Colony",
       "roomId": "room-1",
       "date": "2026-09-03",
       "time": "15:00",
@@ -1743,8 +1737,8 @@
     },
     {
       "id": "func-56",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1130948,
+      "movieTitle": "Rosebush Pruning",
       "roomId": "room-2",
       "date": "2026-09-03",
       "time": "15:00",
@@ -1754,8 +1748,8 @@
     },
     {
       "id": "func-57",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 969681,
+      "movieTitle": "Spider-Man: Brand New Day",
       "roomId": "room-3",
       "date": "2026-09-03",
       "time": "15:00",
@@ -1765,8 +1759,8 @@
     },
     {
       "id": "func-58",
-      "tmdbId": 1022789,
-      "movieTitle": "Inside Out 2",
+      "tmdbId": 1368337,
+      "movieTitle": "La Odisea",
       "roomId": "room-1",
       "date": "2026-09-03",
       "time": "18:30",
@@ -1776,8 +1770,8 @@
     },
     {
       "id": "func-59",
-      "tmdbId": 1184918,
-      "movieTitle": "The Wild Robot",
+      "tmdbId": 1288445,
+      "movieTitle": "El motín",
       "roomId": "room-2",
       "date": "2026-09-03",
       "time": "18:30",
@@ -1787,8 +1781,8 @@
     },
     {
       "id": "func-60",
-      "tmdbId": 157336,
-      "movieTitle": "Interstellar",
+      "tmdbId": 1621552,
+      "movieTitle": "La captura",
       "roomId": "room-3",
       "date": "2026-09-03",
       "time": "18:30",
@@ -1798,8 +1792,8 @@
     },
     {
       "id": "func-61",
-      "tmdbId": 693134,
-      "movieTitle": "Dune: Part Two",
+      "tmdbId": 1516698,
+      "movieTitle": "Sunrise. El último amanecer",
       "roomId": "room-1",
       "date": "2026-09-03",
       "time": "21:30",
@@ -1809,8 +1803,8 @@
     },
     {
       "id": "func-62",
-      "tmdbId": 558449,
-      "movieTitle": "Gladiator II",
+      "tmdbId": 1323244,
+      "movieTitle": "La señal del apocalipsis",
       "roomId": "room-2",
       "date": "2026-09-03",
       "time": "21:30",
@@ -1820,8 +1814,8 @@
     },
     {
       "id": "func-63",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
+      "tmdbId": 1339713,
+      "movieTitle": "Obsesión",
       "roomId": "room-3",
       "date": "2026-09-03",
       "time": "21:30",
@@ -2495,13 +2489,13 @@
       "id": "fs-111",
       "functionId": "func-3",
       "seatId": "seat-room-3-B7",
-      "status": "reserved"
+      "status": "available"
     },
     {
       "id": "fs-112",
       "functionId": "func-3",
       "seatId": "seat-room-3-B8",
-      "status": "reserved"
+      "status": "available"
     },
     {
       "id": "fs-113",
@@ -2549,7 +2543,7 @@
       "id": "fs-120",
       "functionId": "func-3",
       "seatId": "seat-room-3-C8",
-      "status": "reserved"
+      "status": "available"
     },
     {
       "id": "fs-121",
@@ -18970,64 +18964,63 @@
   ],
   "reservations": [
     {
-      "id": "res-2722c66d",
-      "userId": "user-acfd78bd",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
-      "functionId": "func-3",
-      "roomId": "room-3",
-      "roomName": "Room 3 · IMAX",
+      "id": "res-b4e21df7",
+      "userId": "user-1",
+      "tmdbId": 969681,
+      "movieTitle": "Spider-Man: Brand New Day",
+      "functionId": "func-1",
+      "roomId": "room-1",
+      "roomName": "Room 1",
       "date": "2026-08-28",
       "time": "15:00",
-      "format": "IMAX",
+      "format": "2D",
       "seatIds": [
-        "seat-room-3-B8",
-        "seat-room-3-A8"
+        "seat-room-1-A1",
+        "seat-room-1-A2",
+        "seat-room-1-A3"
       ],
       "seatCodes": [
-        "A8",
-        "B8"
+        "A1",
+        "A2",
+        "A3"
       ],
-      "functionSeatIds": [
-        "fs-112",
-        "fs-104"
-      ],
-      "quantity": 2,
-      "pricePerTicket": 25000,
-      "total": 50000,
-      "status": "reserved",
-      "createdAt": "2026-08-28T14:56:40.771Z"
-    },
-    {
-      "id": "res-cf3a26e7",
-      "userId": "user-acfd78bd",
-      "tmdbId": 533535,
-      "movieTitle": "Deadpool & Wolverine",
-      "functionId": "func-3",
-      "roomId": "room-3",
-      "roomName": "Room 3 · IMAX",
-      "date": "2026-08-28",
-      "time": "15:00",
-      "format": "IMAX",
-      "seatIds": [
-        "seat-room-3-C8",
-        "seat-room-3-B7"
-      ],
-      "seatCodes": [
-        "B7",
-        "C8"
-      ],
-      "functionSeatIds": [
-        "fs-120",
-        "fs-111"
-      ],
-      "quantity": 2,
-      "pricePerTicket": 25000,
-      "total": 50000,
-      "status": "reserved",
-      "createdAt": "2026-08-28T14:56:59.374Z"
+      "quantity": 3,
+      "pricePerTicket": 18000,
+      "total": 54000,
+      "status": "paid",
+      "createdAt": "2026-08-28T17:08:50.253Z",
+      "paidAt": "2026-08-28T17:09:12.352Z",
+      "purchaseId": "pur-4abd49f7"
     }
   ],
-  "purchases": [],
+  "purchases": [
+    {
+      "id": "pur-4abd49f7",
+      "ticketId": "CH-2026-348190",
+      "userId": "user-1",
+      "reservationId": "res-b4e21df7",
+      "tmdbId": 969681,
+      "movieTitle": "Spider-Man: Brand New Day",
+      "functionId": "func-1",
+      "roomId": "room-1",
+      "roomName": "Room 1",
+      "date": "2026-08-28",
+      "time": "15:00",
+      "format": "2D",
+      "seatIds": [
+        "seat-room-1-A1",
+        "seat-room-1-A2",
+        "seat-room-1-A3"
+      ],
+      "seatCodes": [
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "quantity": 3,
+      "total": 54000,
+      "purchasedAt": "2026-08-28T17:09:12.352Z"
+    }
+  ],
   "ratings": []
 }

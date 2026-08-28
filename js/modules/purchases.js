@@ -1,14 +1,16 @@
 // js/modules/purchases.js
 // Convierte una reserva pagada en una compra.
 //
-// D4: la reserva NO se borra -> pasa a status "paid" y se crea un registro en
-// `purchases` enlazado por reservationId. El ticket (Fase 22) se puede
-// reconstruir desde cualquiera de los dos.
+// Pagar = UNA escritura bloqueante: POST /purchases. Una reserva se considera
+// "pagada" si existe una compra para ella (estado DERIVADO, no guardado), igual
+// que la disponibilidad de butacas. Esto evita encadenar escrituras (json-server
+// local en Windows se atasca al hacerlo). D4 se sigue cumpliendo: la reserva no
+// se borra; además se intenta marcar status "paid" en segundo plano.
 
-import { getAll, getById, create, update, remove } from "../services/api.service.js";
+import { getAll, getById, create, update } from "../services/api.service.js";
 import { getCurrentUser } from "./auth.js";
-import { setSeatStatus, SEAT_STATUS } from "./seats.js";
 import { RESERVATION_STATUS } from "./reservations.js";
+import { checkSeatsAvailable } from "./seats.js";
 
 function makeTicketId() {
   const year = new Date().getFullYear();
@@ -16,27 +18,8 @@ function makeTicketId() {
   return `CH-${year}-${n}`;
 }
 
-/**
- * Paga una reserva: crea el recibo, marca las butacas como vendidas y la reserva
- * como pagada. Rollback si algo falla a mitad.
- * @param {string} reservationId
- * @returns {Promise<object>} el registro de compra
- */
-export async function payReservation(reservationId) {
-  const user = getCurrentUser();
-  if (!user) throw new Error("Necesitas iniciar sesión.");
-
-  const reservation = await getById("reservations", reservationId);
-  if (reservation.userId !== user.id) throw new Error("Esta reserva no es tuya.");
-  if (reservation.status === RESERVATION_STATUS.PAID) {
-    throw new Error("Esta reserva ya está pagada.");
-  }
-  if (reservation.status !== RESERVATION_STATUS.RESERVED) {
-    throw new Error("Esta reserva no se puede pagar.");
-  }
-
-  const purchasedAt = new Date().toISOString();
-  const purchase = {
+function buildPurchase(user, reservation) {
+  return {
     id: `pur-${crypto.randomUUID().slice(0, 8)}`,
     ticketId: makeTicketId(),
     userId: user.id,
@@ -53,39 +36,49 @@ export async function payReservation(reservationId) {
     seatCodes: reservation.seatCodes,
     quantity: reservation.quantity,
     total: reservation.total,
-    purchasedAt,
+    purchasedAt: new Date().toISOString(),
   };
+}
 
-  // 1. Recibo primero
-  const created = await create("purchases", purchase);
+/**
+ * Paga una reserva. Devuelve el registro de compra.
+ * @param {string} reservationId
+ * @returns {Promise<object>}
+ */
+export async function payReservation(reservationId) {
+  const user = getCurrentUser();
+  if (!user) throw new Error("Necesitas iniciar sesión.");
 
-  const functionSeatIds = reservation.functionSeatIds ?? [];
-
-  // 2. Butacas -> sold
-  const patched = [];
-  try {
-    for (const fsId of functionSeatIds) {
-      await setSeatStatus(fsId, SEAT_STATUS.SOLD);
-      patched.push(fsId);
-    }
-  } catch {
-    await Promise.allSettled(patched.map((id) => setSeatStatus(id, SEAT_STATUS.RESERVED)));
-    await remove("purchases", created.id).catch(() => {});
-    throw new Error("No se pudo completar el pago. Inténtalo de nuevo.");
+  const reservation = await getById("reservations", reservationId);
+  if (reservation.userId !== user.id) throw new Error("Esta reserva no es tuya.");
+  if (reservation.status === RESERVATION_STATUS.CANCELLED) {
+    throw new Error("Esta reserva está cancelada.");
   }
 
-  // 3. Reserva -> paid
-  try {
-    await update("reservations", reservation.id, {
-      status: RESERVATION_STATUS.PAID,
-      paidAt: purchasedAt,
-      purchaseId: created.id,
-    });
-  } catch {
-    await Promise.allSettled(functionSeatIds.map((id) => setSeatStatus(id, SEAT_STATUS.RESERVED)));
-    await remove("purchases", created.id).catch(() => {});
-    throw new Error("No se pudo completar el pago. Inténtalo de nuevo.");
+  // ¿Ya hay compra(s) para esta reserva? (doble clic, intento previo a medias)
+  const existing = await getAll("purchases", { reservationId });
+  let purchase = existing[0] ?? null;
+
+  if (purchase) return purchase; // ya pagada (doble clic / reintento)
+
+  // RF-13 · comprobar que las butacas no las haya comprado OTRO
+  const check = await checkSeatsAvailable(reservation.functionId, reservation.seatIds);
+  const conflict = check.unavailable.filter((id) => !reservation.seatIds.includes(id));
+  if (conflict.length > 0) {
+    throw new Error("Algunas butacas de esta reserva ya no están disponibles.");
   }
+
+  // ÚNICA escritura bloqueante: crear la compra.
+  const created = await create("purchases", buildPurchase(user, reservation));
+
+  // Marcar la reserva "paid" es solo cosmético (el estado real se deriva de que
+  // exista la compra). Lo intentamos SIN bloquear ni esperar: si json-server se
+  // atasca, da igual.
+  update("reservations", reservationId, {
+    status: RESERVATION_STATUS.PAID,
+    paidAt: created.purchasedAt,
+    purchaseId: created.id,
+  }).catch(() => {});
 
   return created;
 }

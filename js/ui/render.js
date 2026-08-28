@@ -16,37 +16,52 @@ import {
 const moviePath = (id) => sitePath(`pages/movie.html?id=${id}`);
 
 /**
- * Tarjeta de película para Now Showing / Coming Soon.
+ * Tarjeta de película para Now Showing / Coming Soon / Search / Category.
+ * Se construye con createElement (no depende de ningún <template>), así funciona
+ * en cualquier página.
  * @param {object} movie      objeto de TMDB (endpoint de lista)
  * @param {object} [options]
  * @param {Map}    [options.genreMap]  id de género -> nombre
  * @param {string} [options.badge]     texto de la etiqueta (ej. "Soon")
  */
 export function createMovieCard(movie, { genreMap, badge } = {}) {
-  const card = cloneTemplate("tpl-movie-card");
-
-  const link = card.querySelector(".movie-card__link");
-  const img = card.querySelector(".movie-card__img");
-  const title = card.querySelector(".movie-card__title");
-  const meta = card.querySelector(".movie-card__meta");
-  const rating = card.querySelector(".movie-card__rating");
-  const badgeEl = card.querySelector(".movie-card__badge");
-
-  link.href = moviePath(movie.id);
-  img.src = imageUrl(movie.poster_path, "w342") || POSTER_PLACEHOLDER;
-  img.alt = movie.title ? `Póster de ${movie.title}` : "";
-  title.textContent = movie.title ?? movie.name ?? "Sin título";
-
+  const title = movie.title ?? movie.name ?? "Sin título";
   const genres = genreNames(movie, genreMap).slice(0, 2).join(" · ");
-  meta.textContent = genres || formatYear(movie.release_date);
-  rating.textContent = formatRating(movie.vote_average);
+
+  const article = document.createElement("article");
+  article.className = "movie-card";
+  article.innerHTML = `
+    <a class="movie-card__link">
+      <div class="movie-card__poster">
+        <img class="movie-card__img" loading="lazy" />
+        <span class="badge movie-card__badge" hidden></span>
+      </div>
+      <div class="movie-card__body">
+        <h3 class="movie-card__title"></h3>
+        <p class="movie-card__meta"></p>
+        <p class="movie-card__rating"></p>
+      </div>
+    </a>
+  `;
+
+  article.querySelector(".movie-card__link").href = moviePath(movie.id);
+
+  const img = article.querySelector(".movie-card__img");
+  img.src = imageUrl(movie.poster_path, "w342") || POSTER_PLACEHOLDER;
+  img.alt = `Póster de ${title}`;
+
+  article.querySelector(".movie-card__title").textContent = title;
+  article.querySelector(".movie-card__meta").textContent =
+    genres || formatYear(movie.release_date);
+  article.querySelector(".movie-card__rating").textContent = formatRating(movie.vote_average);
 
   if (badge) {
+    const badgeEl = article.querySelector(".movie-card__badge");
     badgeEl.textContent = badge;
     badgeEl.hidden = false;
   }
 
-  return card;
+  return article;
 }
 
 /** Ítem de Trending, con número de ranking. */

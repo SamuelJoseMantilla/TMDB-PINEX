@@ -13,8 +13,12 @@ import { writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { TMDB_TOKEN, TMDB_BASE_URL } from "../js/config.js";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_PATH = join(__dirname, "..", "db.json");
+
+const MOVIE_COUNT = 14; // películas de la cartelera de CINEHUB
 
 /* -------------------------------------------------------------------------- */
 /*  1. CONFIGURACIÓN                                                          */
@@ -27,11 +31,9 @@ const ROOMS = [
   { id: "room-3", name: "Room 3 · IMAX", rows: 5, seatsPerRow: 8, type: "imax" },
 ];
 
-// Películas en cartelera. Son IDs REALES de TMDB.
-// En la Fase 6 (conexión con TMDB) verificamos que todos resuelven y cambiamos
-// el que falle. El resto de la info (poster, sinopsis, reparto...) se pide a
-// TMDB en vivo; aquí solo guardamos el vínculo (tmdbId) + el título como copia.
-const MOVIES = [
+// Películas de reserva (fallback si TMDB no responde). El seed intenta primero
+// traer las de "now playing" + "popular" de TMDB en vivo (ver getMovies()).
+const FALLBACK_MOVIES = [
   { tmdbId: 693134, title: "Dune: Part Two" },
   { tmdbId: 558449, title: "Gladiator II" },
   { tmdbId: 533535, title: "Deadpool & Wolverine" },
@@ -39,6 +41,36 @@ const MOVIES = [
   { tmdbId: 1184918, title: "The Wild Robot" },
   { tmdbId: 157336, title: "Interstellar" },
 ];
+
+/** Trae películas reales de TMDB para la cartelera. */
+async function getMovies() {
+  if (!TMDB_TOKEN) return FALLBACK_MOVIES;
+
+  try {
+    const headers = { Authorization: `Bearer ${TMDB_TOKEN}`, accept: "application/json" };
+    const endpoints = ["/movie/now_playing", "/movie/popular"];
+    const lists = await Promise.all(
+      endpoints.map((path) =>
+        fetch(`${TMDB_BASE_URL}${path}?language=es-ES&page=1`, { headers }).then((r) => r.json())
+      )
+    );
+
+    const byId = new Map();
+    for (const list of lists) {
+      for (const m of list.results ?? []) {
+        if (m.poster_path && !byId.has(m.id)) {
+          byId.set(m.id, { tmdbId: m.id, title: m.title });
+        }
+      }
+    }
+
+    const movies = [...byId.values()].slice(0, MOVIE_COUNT);
+    return movies.length >= 6 ? movies : FALLBACK_MOVIES;
+  } catch {
+    console.warn("  (TMDB no respondió, uso películas de reserva)");
+    return FALLBACK_MOVIES;
+  }
+}
 
 // Horarios de cada día y precios por tipo de sala.
 const SHOW_TIMES = ["15:00", "18:30", "21:30"];
@@ -110,8 +142,8 @@ function buildSeats() {
 }
 
 // FUNCTIONS: por cada día × horario × sala se programa UNA película.
-// Se van rotando las películas de MOVIES para repartirlas por días/horas/salas.
-function buildFunctions(days) {
+// Se van rotando las películas para repartirlas por días/horas/salas.
+function buildFunctions(days, movies) {
   const functions = [];
   let counter = 1;
   let movieIndex = 0;
@@ -119,7 +151,7 @@ function buildFunctions(days) {
   for (const date of days) {
     for (const time of SHOW_TIMES) {
       for (const room of ROOMS) {
-        const movie = MOVIES[movieIndex % MOVIES.length];
+        const movie = movies[movieIndex % movies.length];
         movieIndex++;
 
         functions.push({
@@ -180,8 +212,9 @@ const USERS = [
 /*  5. CONSTRUIR Y ESCRIBIR db.json                                          */
 /* -------------------------------------------------------------------------- */
 
-function seed() {
+async function seed() {
   const days = buildDays();
+  const movies = await getMovies();
 
   const rooms = ROOMS.map((r) => ({
     id: r.id,
@@ -193,7 +226,7 @@ function seed() {
   }));
 
   const seats = buildSeats();
-  const functions = buildFunctions(days);
+  const functions = buildFunctions(days, movies);
   const functionSeats = buildFunctionSeats(functions, seats);
 
   const db = {
@@ -213,11 +246,9 @@ function seed() {
   console.log(`  users          : ${db.users.length}`);
   console.log(`  rooms          : ${db.rooms.length}`);
   console.log(`  seats          : ${db.seats.length}`);
+  console.log(`  movies (TMDB)  : ${movies.length}`);
   console.log(`  functions      : ${db.functions.length}  (${days[0]} -> ${days[days.length - 1]})`);
   console.log(`  functionSeats  : ${db.functionSeats.length}`);
-  console.log(`  reservations   : ${db.reservations.length}`);
-  console.log(`  purchases      : ${db.purchases.length}`);
-  console.log(`  ratings        : ${db.ratings.length}`);
 }
 
 seed();

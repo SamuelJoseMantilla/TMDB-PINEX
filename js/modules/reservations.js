@@ -1,9 +1,12 @@
 // js/modules/reservations.js
-// Crear y consultar reservas. La cancelación (liberar butacas) va en la Fase 19.
+// Crear, consultar y cancelar reservas.
+//
+// La disponibilidad de butacas se DERIVA de reservations + purchases (ver
+// seats.js), así que crear/cancelar una reserva es UNA sola escritura.
 
-import { getAll, getById, create, update, remove } from "../services/api.service.js";
+import { getAll, getById, create, update } from "../services/api.service.js";
 import { getCurrentUser } from "./auth.js";
-import { setSeatStatus, checkSeatsAvailable, SEAT_STATUS } from "./seats.js";
+import { checkSeatsAvailable } from "./seats.js";
 
 export const RESERVATION_STATUS = {
   RESERVED: "reserved",
@@ -13,11 +16,7 @@ export const RESERVATION_STATUS = {
 
 /**
  * Crea una reserva para la función y butacas seleccionadas.
- *
- * Orden: (1) re-chequear disponibilidad, (2) POST reserva, (3) PATCH butacas a
- * "reserved". Si un PATCH falla -> rollback (revertir butacas + borrar la reserva).
- *
- * @param {{ ctx: {fn, room}, selectedSeats: Array, functionSeatIds: string[] }} args
+ * @param {{ ctx: {fn, room}, selectedSeats: Array }} args
  * @returns {Promise<object>} la reserva creada
  */
 export async function createReservation({ ctx, selectedSeats }) {
@@ -28,14 +27,16 @@ export async function createReservation({ ctx, selectedSeats }) {
   const { fn, room } = ctx;
   const seatIds = selectedSeats.map((s) => s.seatId);
 
-  // 1. RF-15 · re-consultar justo antes de escribir
+  // RF-15 · re-consultar disponibilidad justo antes de escribir
   const check = await checkSeatsAvailable(fn.id, seatIds);
   if (!check.ok) {
-    throw new Error(`Estas butacas ya no están libres: ${check.unavailable.join(", ")}.`);
+    const codes = selectedSeats
+      .filter((s) => check.unavailable.includes(s.seatId))
+      .map((s) => s.seatCode);
+    throw new Error(`Estas butacas ya no están libres: ${codes.join(", ")}.`);
   }
-  const functionSeatIds = check.functionSeatIds;
 
-  // 2. Crear la reserva PRIMERO
+  // UNA escritura
   const reservation = {
     id: `res-${crypto.randomUUID().slice(0, 8)}`,
     userId: user.id,
@@ -49,7 +50,6 @@ export async function createReservation({ ctx, selectedSeats }) {
     format: fn.format,
     seatIds,
     seatCodes: selectedSeats.map((s) => s.seatCode).sort(),
-    functionSeatIds,
     quantity: selectedSeats.length,
     pricePerTicket: fn.price,
     total: fn.price * selectedSeats.length,
@@ -57,25 +57,7 @@ export async function createReservation({ ctx, selectedSeats }) {
     createdAt: new Date().toISOString(),
   };
 
-  const created = await create("reservations", reservation);
-
-  // 3. Bloquear butacas (secuencial, para poder revertir con precisión)
-  const patched = [];
-  try {
-    for (const fsId of functionSeatIds) {
-      await setSeatStatus(fsId, SEAT_STATUS.RESERVED);
-      patched.push(fsId);
-    }
-  } catch {
-    // rollback
-    await Promise.allSettled(
-      patched.map((id) => setSeatStatus(id, SEAT_STATUS.AVAILABLE))
-    );
-    await remove("reservations", created.id).catch(() => {});
-    throw new Error("No se pudo completar la reserva. Inténtalo de nuevo.");
-  }
-
-  return created;
+  return create("reservations", reservation);
 }
 
 /** Reservas de un usuario, de la más reciente a la más antigua. */
@@ -85,31 +67,24 @@ export async function getUserReservations(userId) {
 }
 
 /**
- * Cancela una reserva sin pagar.
- * Orden: (1) liberar butacas -> "available", (2) marcar la reserva "cancelled".
- * Si la liberación falla no se marca cancelada, para no dejar butacas bloqueadas
- * sin reserva que las libere.
+ * Cancela una reserva sin pagar. UNA escritura: la reserva pasa a "cancelled" y
+ * sus butacas quedan libres automáticamente (ya no cuentan como "reserved").
  * @param {string} reservationId
- * @returns {Promise<object>} la reserva actualizada
+ * @returns {Promise<object>}
  */
 export async function cancelReservation(reservationId) {
   const reservation = await getById("reservations", reservationId);
 
-  if (reservation.status !== RESERVATION_STATUS.RESERVED) {
-    throw new Error("Solo se pueden cancelar reservas sin pagar.");
+  if (reservation.status === RESERVATION_STATUS.CANCELLED) {
+    throw new Error("Esta reserva ya está cancelada.");
   }
 
-  // 1. Liberar las butacas PRIMERO
-  const results = await Promise.allSettled(
-    (reservation.functionSeatIds ?? []).map((id) =>
-      setSeatStatus(id, SEAT_STATUS.AVAILABLE)
-    )
-  );
-  if (results.some((r) => r.status === "rejected")) {
-    throw new Error("No se pudieron liberar todas las butacas. Inténtalo de nuevo.");
+  // "pagada" = existe una compra para ella (estado derivado)
+  const purchases = await getAll("purchases", { reservationId });
+  if (purchases.length > 0) {
+    throw new Error("No se puede cancelar una reserva ya pagada.");
   }
 
-  // 2. Marcar la reserva como cancelada (soft delete)
   return update("reservations", reservationId, {
     status: RESERVATION_STATUS.CANCELLED,
   });

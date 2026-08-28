@@ -6,7 +6,7 @@ import "../components/site-footer.js";
 
 import { isLoggedIn, requireAuth, getCurrentUser } from "./auth.js";
 import { getById } from "../services/api.service.js";
-import { payReservation } from "./purchases.js";
+import { payReservation, getPurchaseByReservation } from "./purchases.js";
 import { $ } from "../utils/dom.js";
 import { setError } from "../ui/states.js";
 import { formatMoney, dateOptionLabel, sitePath } from "../utils/helpers.js";
@@ -22,19 +22,22 @@ async function init() {
   }
 
   try {
-    const reservation = await getById("reservations", reservationId);
+    const [reservation, purchase] = await Promise.all([
+      getById("reservations", reservationId),
+      getPurchaseByReservation(reservationId),
+    ]);
     const user = getCurrentUser();
 
     if (reservation.userId !== user.id) {
       setError(main, "Esta reserva no es tuya.");
       return;
     }
-    if (reservation.status === "paid") {
+    if (purchase) {
       renderAlreadyPaid(main, reservation);
       return;
     }
-    if (reservation.status !== "reserved") {
-      setError(main, "Esta reserva no se puede pagar (¿cancelada?).");
+    if (reservation.status === "cancelled") {
+      setError(main, "Esta reserva está cancelada.");
       return;
     }
 

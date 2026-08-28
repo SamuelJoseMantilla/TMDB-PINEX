@@ -1,6 +1,9 @@
 // js/utils/helpers.js
 // Funciones puras de formato y utilidades. Sin DOM, sin fetch.
 
+/** Pausa `ms` milisegundos. Se usa para espaciar escrituras a JSON Server. */
+export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 /** 154  ->  "2h 34m"  ·  95  ->  "1h 35m"  ·  0/undefined  ->  "" */
 export function formatRuntime(minutes) {
   if (!minutes) return "";
