@@ -5,10 +5,11 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "api": "json-server --watch db.json --port 3000",
+    "api": "json-server db.json",
     "dev": "live-server --port=5500",
     "start": "concurrently -n API,WEB -c magenta,green \"npm:api\" \"npm:dev\"",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "check:tmdb": "node scripts/check-tmdb.js"
   },
   "keywords": [
     "cinehub",

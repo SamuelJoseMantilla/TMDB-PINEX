@@ -9,6 +9,9 @@ npm-debug.log*
 .env
 .env.local
 
+# Config con el token de TMDB (cada persona pone el suyo a partir de config.example.js)
+js/config.js
+
 # Sistema operativo
 .DS_Store
 Thumbs.db
