@@ -95,12 +95,14 @@
   z-index: 2;
   padding-bottom: var(--space-2xl);
 }
+.quick-booking__inner {
+  margin-top: calc(-1 * var(--space-xl));
+}
 .quick-booking__form {
   display: grid;
   grid-template-columns: repeat(4, 1fr) auto;
   align-items: end;
   gap: var(--space-md);
-  margin-top: calc(-1 * var(--space-xl));
   padding: var(--space-lg);
   background: var(--color-surface-2);
   border: 1px solid var(--color-border-strong);
@@ -110,13 +112,69 @@
 .quick-booking__submit {
   min-height: 44px;
 }
+
+/* Tarjeta de resultados, encajada bajo el formulario */
+.quick-booking__feedback:empty {
+  display: none;
+}
 .quick-booking__feedback {
   margin-top: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
   font-size: var(--fs-sm);
   color: var(--color-text-muted);
 }
 .quick-booking__feedback[data-state="error"] {
   color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--color-danger) 40%, var(--color-border-strong));
+}
+.quick-booking__feedback > p {
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+  font-weight: var(--fw-semibold);
+}
+
+.qb-matches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+.qb-match {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-xs) var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.qb-match:hover {
+  border-color: var(--color-primary-border);
+  background: var(--color-surface-2);
+}
+.qb-match__time {
+  font-weight: var(--fw-bold);
+}
+.qb-match__room {
+  color: var(--color-text-muted);
+}
+.qb-match__price {
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+}
+.qb-match__go {
+  grid-column: 1 / -1;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-primary);
 }
 
 /* ==================================================== GRID PELÍCULAS ==== */
@@ -575,9 +633,11 @@
 
 /* Móvil: la reserva rápida se apila y el resumen del hero se centra menos */
 @media (max-width: 860px) {
+  .quick-booking__inner {
+    margin-top: var(--space-lg);
+  }
   .quick-booking__form {
     grid-template-columns: 1fr 1fr;
-    margin-top: var(--space-lg);
   }
   .quick-booking__submit {
     grid-column: 1 / -1;

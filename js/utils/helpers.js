@@ -29,6 +29,38 @@ export function formatReleaseDate(dateStr, locale = "es-ES") {
 }
 
 /**
+ * Etiqueta amigable para una fecha ISO en un <select>.
+ * "2026-08-28" -> "Hoy · vie 28 ago"   ·   mañana -> "Mañana · ..."
+ */
+export function dateOptionLabel(iso, locale = "es-ES") {
+  const date = new Date(`${iso}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return iso;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diffDays = Math.round((date - today) / 86_400_000);
+
+  const nice = date.toLocaleDateString(locale, {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+
+  if (diffDays === 0) return `Hoy · ${nice}`;
+  if (diffDays === 1) return `Mañana · ${nice}`;
+  return nice;
+}
+
+/** 18000 -> "$18.000"  (pesos colombianos, sin decimales) */
+export function formatMoney(amount, currency = "COP", locale = "es-CO") {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
+/**
  * Nombres de género de una película.
  * - endpoint de detalle:  movie.genres = [{id, name}]
  * - endpoints de lista:    movie.genre_ids = [28, 12]  (hay que traducir con genreMap)
