@@ -3,19 +3,483 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CINEHUB</title>
+    <meta
+      name="description"
+      content="CINEHUB · consulta la cartelera, mira trailers y compra tus boletos de cine."
+    />
+    <title>CINEHUB · Cartelera y boletos de cine</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/home.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
-    <main class="boot-check">
-      <h1>CINEHUB</h1>
-      <p>Configuración inicial · Fase 3</p>
-      <p id="status">Comprobando conexión con JSON Server…</p>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+
+    <!-- ================================================================== -->
+    <!--  HEADER                                                            -->
+    <!-- ================================================================== -->
+    <header class="site-header">
+      <div class="site-header__inner container">
+        <a class="logo" href="index.html" aria-label="CINEHUB, inicio">
+          <span class="logo__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M4 4h16a1 1 0 0 1 1 1v3H3V5a1 1 0 0 1 1-1Zm-1 6h18v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9Zm4-4-2 2h3l2-2H7Zm5 0-2 2h3l2-2h-3Zm5 0-2 2h3l2-2h-3Z" />
+            </svg>
+          </span>
+          <span class="logo__text">CINEHUB</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Navegación principal">
+          <ul class="main-nav__list">
+            <li><a class="main-nav__link is-active" href="index.html">Home</a></li>
+            <li><a class="main-nav__link" href="pages/movies.html">Movies</a></li>
+            <li><a class="main-nav__link" href="pages/category.html">Categories</a></li>
+            <li><a class="main-nav__link" href="#trending">Trending</a></li>
+            <li><a class="main-nav__link" href="#trailers">Trailers</a></li>
+            <li><a class="main-nav__link" href="pages/reservations.html">My Reservations</a></li>
+          </ul>
+        </nav>
+
+        <div class="site-header__actions">
+          <button
+            type="button"
+            class="icon-button"
+            id="search-toggle"
+            aria-label="Buscar películas"
+            aria-expanded="false"
+            aria-controls="search-bar"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+
+          <a class="icon-button" href="pages/login.html" id="user-menu" aria-label="Mi cuenta">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+            </svg>
+          </a>
+
+          <a class="button button--primary button--sm" href="pages/login.html" id="login-button">
+            Login
+          </a>
+        </div>
+      </div>
+
+      <!-- Barra de búsqueda desplegable (funcionalidad en Fase 9/17) -->
+      <form class="search-bar container" id="search-bar" role="search" hidden>
+        <label class="visually-hidden" for="search-input">Buscar películas</label>
+        <input
+          type="search"
+          id="search-input"
+          name="q"
+          class="search-bar__input"
+          placeholder="Busca una película por título…"
+          autocomplete="off"
+        />
+        <button type="submit" class="button button--primary button--sm">Buscar</button>
+      </form>
+    </header>
+
+    <main id="main">
+      <!-- ================================================================ -->
+      <!--  HERO · película destacada                                       -->
+      <!-- ================================================================ -->
+      <section class="hero" id="hero" aria-label="Película destacada" data-featured-movie>
+        <div class="hero__backdrop" data-hero-backdrop></div>
+        <div class="hero__overlay"></div>
+
+        <div class="hero__content container">
+          <p class="hero__eyebrow">Ahora en cartelera</p>
+          <h1 class="hero__title" data-hero-title>Cargando película destacada…</h1>
+
+          <ul class="hero__meta" data-hero-meta>
+            <li class="hero__rating" data-hero-rating>★ –</li>
+            <li data-hero-runtime>– min</li>
+            <li data-hero-genres>–</li>
+            <li data-hero-year>–</li>
+          </ul>
+
+          <p class="hero__overview" data-hero-overview></p>
+
+          <div class="hero__actions">
+            <a class="button button--primary" href="#" data-hero-buy>Buy Tickets</a>
+            <button type="button" class="button button--ghost" data-hero-trailer>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              Watch Trailer
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!--  QUICK BOOKING                                                   -->
+      <!-- ================================================================ -->
+      <section class="quick-booking" aria-label="Reserva rápida">
+        <form class="quick-booking__form container" id="quick-booking-form">
+          <div class="field">
+            <label class="field__label" for="qb-movie">Select Movie</label>
+            <select class="field__control" id="qb-movie" name="movie" required>
+              <option value="">Elige una película…</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="qb-date">Select Date</label>
+            <select class="field__control" id="qb-date" name="date" required>
+              <option value="">Elige una fecha…</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="qb-time">Select Time</label>
+            <select class="field__control" id="qb-time" name="time" required>
+              <option value="">Elige una hora…</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="qb-room">Room <span class="field__optional">(opcional)</span></label>
+            <select class="field__control" id="qb-room" name="room">
+              <option value="">Cualquier sala</option>
+            </select>
+          </div>
+
+          <button type="submit" class="button button--primary quick-booking__submit">
+            Find Showtimes
+          </button>
+        </form>
+        <p class="quick-booking__feedback" id="quick-booking-feedback" role="status" aria-live="polite"></p>
+      </section>
+
+      <!-- ================================================================ -->
+      <!--  NOW SHOWING                                                     -->
+      <!-- ================================================================ -->
+      <section class="section" id="now-showing" aria-labelledby="now-showing-title">
+        <div class="section__head container">
+          <h2 class="section__title" id="now-showing-title">Now Showing</h2>
+          <a class="section__link" href="pages/movies.html">See all</a>
+        </div>
+
+        <div class="movie-grid container" id="now-showing-grid" data-state="loading">
+          <p class="state state--loading">Loading movies…</p>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!--  TRENDING NOW                                                    -->
+      <!-- ================================================================ -->
+      <section class="section section--surface" id="trending" aria-labelledby="trending-title">
+        <div class="section__head container">
+          <h2 class="section__title" id="trending-title">Trending Now <span aria-hidden="true">🔥</span></h2>
+          <a class="section__link" href="pages/movies.html">View all</a>
+        </div>
+
+        <ol class="trending-list container" id="trending-list" data-state="loading">
+          <li class="state state--loading">Loading trending…</li>
+        </ol>
+      </section>
+
+      <!-- ================================================================ -->
+      <!--  DON'T KNOW WHAT TO WATCH?                                       -->
+      <!-- ================================================================ -->
+      <section class="surprise" aria-labelledby="surprise-title">
+        <div class="surprise__inner container">
+          <div class="surprise__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="4" />
+              <circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" />
+              <circle cx="15.5" cy="8.5" r="1.4" fill="currentColor" />
+              <circle cx="12" cy="12" r="1.4" fill="currentColor" />
+              <circle cx="8.5" cy="15.5" r="1.4" fill="currentColor" />
+              <circle cx="15.5" cy="15.5" r="1.4" fill="currentColor" />
+            </svg>
+          </div>
+
+          <div class="surprise__body">
+            <h2 class="surprise__title" id="surprise-title">Don't know what to watch?</h2>
+            <p class="surprise__text">Let us surprise you with your next movie.</p>
+          </div>
+
+          <button type="button" class="button button--primary" id="surprise-btn">
+            Surprise me
+          </button>
+        </div>
+
+        <!-- Resultado de la selección aleatoria (se muestra en Fase 10) -->
+        <div class="surprise__result container" id="surprise-result" hidden aria-live="polite"></div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!--  EXPLORE BY CATEGORY                                             -->
+      <!-- ================================================================ -->
+      <section class="section" id="categories" aria-labelledby="categories-title">
+        <div class="section__head container">
+          <h2 class="section__title" id="categories-title">Explore by Category</h2>
+        </div>
+
+        <ul class="category-list container" id="category-list">
+          <li>
+            <a class="category-chip" href="pages/category.html?genre=28" data-genre-id="28">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
+              </svg>
+              <span>Action</span>
+            </a>
+          </li>
+          <li>
+            <a class="category-chip" href="pages/category.html?genre=35" data-genre-id="35">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                <line x1="9" y1="9" x2="9.01" y2="9" />
+                <line x1="15" y1="9" x2="15.01" y2="9" />
+              </svg>
+              <span>Comedy</span>
+            </a>
+          </li>
+          <li>
+            <a class="category-chip" href="pages/category.html?genre=27" data-genre-id="27">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2a8 8 0 0 0-8 8v5l1.5 1.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-3.5L20 15v-5a8 8 0 0 0-8-8Z" />
+                <circle cx="9" cy="11" r="1.5" fill="currentColor" />
+                <circle cx="15" cy="11" r="1.5" fill="currentColor" />
+              </svg>
+              <span>Horror</span>
+            </a>
+          </li>
+          <li>
+            <a class="category-chip" href="pages/category.html?genre=878" data-genre-id="878">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 15c-1 3-1 5-1 5s2 0 5-1M5 15a12 12 0 0 1 10-10c4 0 4 0 4 0s0 4-1 6" />
+                <path d="M5 15c1.5.5 3.5 2.5 4 4M15 5c-2 1-4 3-4 3" />
+                <circle cx="14" cy="10" r="1.5" />
+              </svg>
+              <span>Sci-Fi</span>
+            </a>
+          </li>
+          <li>
+            <a class="category-chip" href="pages/category.html?genre=10749" data-genre-id="10749">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                <path d="M12 21s-7-4.35-9.5-8.5C.5 9 2.5 5 6.5 5 9 5 12 7.5 12 7.5S15 5 17.5 5c4 0 6 4 4 7.5C19 16.65 12 21 12 21Z" />
+              </svg>
+              <span>Romance</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ================================================================ -->
+      <!--  FEATURED TRAILERS                                               -->
+      <!-- ================================================================ -->
+      <section class="section section--surface" id="trailers" aria-labelledby="trailers-title">
+        <div class="section__head container">
+          <h2 class="section__title" id="trailers-title">Featured Trailers</h2>
+          <a class="section__link" href="pages/movies.html">More</a>
+        </div>
+
+        <div class="trailers container">
+          <article class="trailer-feature" id="trailer-feature" data-state="loading">
+            <button type="button" class="trailer-feature__play" data-trailer-key="" aria-label="Reproducir trailer" hidden>
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+            <span class="badge trailer-feature__badge">Official Trailer</span>
+            <div class="trailer-feature__info">
+              <h3 class="trailer-feature__title" data-trailer-title>Loading trailer…</h3>
+              <p class="trailer-feature__meta" data-trailer-meta></p>
+            </div>
+          </article>
+
+          <ul class="trailer-list" id="trailer-list" data-state="loading">
+            <li class="state state--loading">Loading trailers…</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!--  POPULAR AT CINEHUB  (datos propios: reservations + purchases)   -->
+      <!-- ================================================================ -->
+      <section class="section" id="popular" aria-labelledby="popular-title">
+        <div class="section__head container">
+          <h2 class="section__title" id="popular-title">Popular at CINEHUB <span aria-hidden="true">🍿</span></h2>
+        </div>
+        <p class="section__subtitle container">What everyone is booking right now.</p>
+
+        <ol class="popular-list container" id="popular-list" data-state="loading">
+          <li class="state state--loading">Calculating…</li>
+        </ol>
+      </section>
+
+      <!-- ================================================================ -->
+      <!--  COMING SOON                                                     -->
+      <!-- ================================================================ -->
+      <section class="section section--surface" id="coming-soon" aria-labelledby="coming-soon-title">
+        <div class="section__head container">
+          <h2 class="section__title" id="coming-soon-title">Coming Soon</h2>
+          <a class="section__link" href="pages/movies.html">View all</a>
+        </div>
+
+        <div class="movie-grid container" id="coming-soon-grid" data-state="loading">
+          <p class="state state--loading">Loading upcoming…</p>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!--  PREMIUM EXPERIENCE  (contenido estático)                        -->
+      <!-- ================================================================ -->
+      <section class="section" id="premium" aria-labelledby="premium-title">
+        <div class="section__head container">
+          <h2 class="section__title" id="premium-title">Premium Experience</h2>
+        </div>
+
+        <ul class="premium-list container">
+          <li class="premium-card">
+            <span class="premium-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 9h18" />
+              </svg>
+            </span>
+            <h3 class="premium-card__title">IMAX Experience</h3>
+            <p class="premium-card__text">Immersive visuals that pull you into the action.</p>
+          </li>
+          <li class="premium-card">
+            <span class="premium-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 12v6h16v-6" />
+                <path d="M6 12V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4" />
+              </svg>
+            </span>
+            <h3 class="premium-card__title">VIP Seats</h3>
+            <p class="premium-card__text">Luxurious recliners for ultimate comfort.</p>
+          </li>
+          <li class="premium-card">
+            <span class="premium-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 9v6h4l5 4V5L8 9H4Z" />
+                <path d="M17 8a5 5 0 0 1 0 8" />
+              </svg>
+            </span>
+            <h3 class="premium-card__title">Best Sound</h3>
+            <p class="premium-card__text">Dolby Atmos surround sound for every whisper and explosion.</p>
+          </li>
+        </ul>
+      </section>
     </main>
 
-    <!-- type="module" habilita import/export en el navegador -->
+    <!-- ================================================================== -->
+    <!--  FOOTER                                                            -->
+    <!-- ================================================================== -->
+    <footer class="site-footer">
+      <div class="site-footer__inner container">
+        <div class="site-footer__brand">
+          <span class="logo logo--footer">
+            <span class="logo__text">CINEHUB</span>
+          </span>
+          <p class="site-footer__desc">The premium destination for cinematic experiences.</p>
+        </div>
+
+        <nav class="site-footer__col" aria-label="Explore">
+          <h2 class="site-footer__heading">Explore</h2>
+          <ul>
+            <li><a href="pages/movies.html">Movies</a></li>
+            <li><a href="pages/category.html">Categories</a></li>
+            <li><a href="#trending">Trending</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer__col" aria-label="Account">
+          <h2 class="site-footer__heading">Account</h2>
+          <ul>
+            <li><a href="pages/reservations.html">My Reservations</a></li>
+            <li><a href="pages/tickets.html">My Tickets</a></li>
+          </ul>
+        </nav>
+
+        <nav class="site-footer__col" aria-label="Company">
+          <h2 class="site-footer__heading">Company</h2>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Terms &amp; Privacy</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <p class="site-footer__legal">© 2026 CINEHUB. All rights reserved.</p>
+    </footer>
+
+    <!-- ================================================================== -->
+    <!--  TEMPLATES · JavaScript clona estas "formas" en la Fase 9          -->
+    <!-- ================================================================== -->
+
+    <!-- Tarjeta de película (Now Showing / Coming Soon) -->
+    <template id="tpl-movie-card">
+      <article class="movie-card">
+        <a class="movie-card__link" href="#">
+          <div class="movie-card__poster">
+            <img class="movie-card__img" src="" alt="" loading="lazy" />
+            <span class="badge movie-card__badge" hidden></span>
+          </div>
+          <div class="movie-card__body">
+            <h3 class="movie-card__title"></h3>
+            <p class="movie-card__meta"></p>
+            <p class="movie-card__rating"></p>
+          </div>
+        </a>
+      </article>
+    </template>
+
+    <!-- Ítem de Trending (con número de ranking) -->
+    <template id="tpl-trending-item">
+      <li class="trending-item">
+        <span class="trending-item__rank" aria-hidden="true"></span>
+        <a class="trending-item__link" href="#">
+          <img class="trending-item__img" src="" alt="" loading="lazy" />
+          <span class="trending-item__info">
+            <span class="trending-item__title"></span>
+            <span class="trending-item__rating"></span>
+            <span class="trending-item__genre"></span>
+          </span>
+        </a>
+      </li>
+    </template>
+
+    <!-- Ítem de Popular at CINEHUB -->
+    <template id="tpl-popular-item">
+      <li class="popular-item">
+        <span class="popular-item__rank" aria-hidden="true"></span>
+        <img class="popular-item__img" src="" alt="" loading="lazy" />
+        <span class="popular-item__info">
+          <span class="popular-item__title"></span>
+          <span class="badge popular-item__badge"></span>
+          <span class="popular-item__count"></span>
+        </span>
+      </li>
+    </template>
+
+    <!-- Miniatura de trailer secundario -->
+    <template id="tpl-trailer-thumb">
+      <li class="trailer-thumb">
+        <button type="button" class="trailer-thumb__button" data-trailer-key="">
+          <img class="trailer-thumb__img" src="" alt="" loading="lazy" />
+          <span class="trailer-thumb__play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+          </span>
+          <span class="trailer-thumb__title"></span>
+          <span class="trailer-thumb__duration"></span>
+        </button>
+      </li>
+    </template>
+
     <script type="module" src="js/main.js"></script>
   </body>
 </html>

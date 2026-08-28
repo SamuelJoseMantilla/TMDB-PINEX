@@ -1,53 +1,36 @@
 // js/main.js
 // Punto de entrada de la Homepage.
-// Fase 6: comprueba la conexión con JSON Server Y con TMDB.
-// Se reemplazará por la lógica real de la Home a partir de la Fase 7.
+//
+// Fase 7: solo la estructura HTML. Aquí de momento vive únicamente una
+// interacción sencilla y sin datos: abrir / cerrar la barra de búsqueda.
+//
+// En la Fase 9 este archivo pasará a orquestar las secciones (Hero, Now Showing,
+// Trending, etc.) importando sus módulos desde js/modules/.
 
-import { getAll } from "./services/api.service.js";
-import { getMovieDetails } from "./services/tmdb.service.js";
-import { FEATURED_MOVIE_ID } from "./config.js";
+console.log("CINEHUB · Homepage cargada (Fase 7 · solo estructura)");
 
-console.log("CINEHUB · frontend cargado");
+/* ---- Barra de búsqueda del header (mostrar / ocultar) ------------------- */
+function initSearchToggle() {
+  const toggle = document.getElementById("search-toggle");
+  const bar = document.getElementById("search-bar");
+  const input = document.getElementById("search-input");
+  if (!toggle || !bar || !input) return;
 
-const statusEl = document.getElementById("status");
+  toggle.addEventListener("click", () => {
+    const willOpen = bar.hasAttribute("hidden");
+    bar.toggleAttribute("hidden", !willOpen);
+    toggle.setAttribute("aria-expanded", String(willOpen));
+    if (willOpen) input.focus();
+  });
 
-function todayISO() {
-  const d = new Date();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${d.getFullYear()}-${m}-${day}`;
+  // Cerrar con la tecla Escape mientras se escribe
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      bar.setAttribute("hidden", "");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.focus();
+    }
+  });
 }
 
-async function checkJsonServer() {
-  const [users, functionsToday] = await Promise.all([
-    getAll("users"),
-    getAll("functions", { date: todayISO() }),
-  ]);
-  return `JSON Server OK · ${users.length} usuarios · ${functionsToday.length} funciones hoy`;
-}
-
-async function checkTmdb() {
-  const movie = await getMovieDetails(FEATURED_MOVIE_ID);
-  return `TMDB OK · película destacada: ${movie.title}`;
-}
-
-async function bootCheck() {
-  const lines = [];
-
-  try {
-    lines.push(await checkJsonServer());
-  } catch (error) {
-    lines.push(error.message);
-  }
-
-  try {
-    lines.push(await checkTmdb());
-  } catch (error) {
-    lines.push(error.message);
-  }
-
-  statusEl.innerHTML = lines.join("<br>");
-  statusEl.style.color = "var(--color-primary)";
-}
-
-bootCheck();
+initSearchToggle();
