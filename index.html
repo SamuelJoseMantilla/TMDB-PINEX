@@ -18,73 +18,8 @@
   <body>
     <a class="skip-link" href="#main">Saltar al contenido</a>
 
-    <!-- ================================================================== -->
-    <!--  HEADER                                                            -->
-    <!-- ================================================================== -->
-    <header class="site-header">
-      <div class="site-header__inner container">
-        <a class="logo" href="index.html" aria-label="CINEHUB, inicio">
-          <span class="logo__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-              <path d="M4 4h16a1 1 0 0 1 1 1v3H3V5a1 1 0 0 1 1-1Zm-1 6h18v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9Zm4-4-2 2h3l2-2H7Zm5 0-2 2h3l2-2h-3Zm5 0-2 2h3l2-2h-3Z" />
-            </svg>
-          </span>
-          <span class="logo__text">CINEHUB</span>
-        </a>
-
-        <nav class="main-nav" aria-label="Navegación principal">
-          <ul class="main-nav__list">
-            <li><a class="main-nav__link is-active" href="index.html">Home</a></li>
-            <li><a class="main-nav__link" href="pages/movies.html">Movies</a></li>
-            <li><a class="main-nav__link" href="pages/category.html">Categories</a></li>
-            <li><a class="main-nav__link" href="#trending">Trending</a></li>
-            <li><a class="main-nav__link" href="#trailers">Trailers</a></li>
-            <li><a class="main-nav__link" href="pages/reservations.html">My Reservations</a></li>
-          </ul>
-        </nav>
-
-        <div class="site-header__actions">
-          <button
-            type="button"
-            class="icon-button"
-            id="search-toggle"
-            aria-label="Buscar películas"
-            aria-expanded="false"
-            aria-controls="search-bar"
-          >
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </button>
-
-          <a class="icon-button" href="pages/login.html" id="user-menu" aria-label="Mi cuenta">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
-            </svg>
-          </a>
-
-          <a class="button button--primary button--sm" href="pages/login.html" id="login-button">
-            Login
-          </a>
-        </div>
-      </div>
-
-      <!-- Barra de búsqueda desplegable (funcionalidad en Fase 9/17) -->
-      <form class="search-bar container" id="search-bar" role="search" hidden>
-        <label class="visually-hidden" for="search-input">Buscar películas</label>
-        <input
-          type="search"
-          id="search-input"
-          name="q"
-          class="search-bar__input"
-          placeholder="Busca una película por título…"
-          autocomplete="off"
-        />
-        <button type="submit" class="button button--primary button--sm">Buscar</button>
-      </form>
-    </header>
+    <!-- Header compartido · Web Component en js/components/site-header.js -->
+    <site-header active="home"></site-header>
 
     <main id="main">
       <!-- ================================================================ -->
@@ -384,46 +319,8 @@
       </section>
     </main>
 
-    <!-- ================================================================== -->
-    <!--  FOOTER                                                            -->
-    <!-- ================================================================== -->
-    <footer class="site-footer">
-      <div class="site-footer__inner container">
-        <div class="site-footer__brand">
-          <span class="logo logo--footer">
-            <span class="logo__text">CINEHUB</span>
-          </span>
-          <p class="site-footer__desc">The premium destination for cinematic experiences.</p>
-        </div>
-
-        <nav class="site-footer__col" aria-label="Explore">
-          <h2 class="site-footer__heading">Explore</h2>
-          <ul>
-            <li><a href="pages/movies.html">Movies</a></li>
-            <li><a href="pages/category.html">Categories</a></li>
-            <li><a href="#trending">Trending</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer__col" aria-label="Account">
-          <h2 class="site-footer__heading">Account</h2>
-          <ul>
-            <li><a href="pages/reservations.html">My Reservations</a></li>
-            <li><a href="pages/tickets.html">My Tickets</a></li>
-          </ul>
-        </nav>
-
-        <nav class="site-footer__col" aria-label="Company">
-          <h2 class="site-footer__heading">Company</h2>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Terms &amp; Privacy</a></li>
-          </ul>
-        </nav>
-      </div>
-
-      <p class="site-footer__legal">© 2026 CINEHUB. All rights reserved.</p>
-    </footer>
+    <!-- Footer compartido · Web Component en js/components/site-footer.js -->
+    <site-footer></site-footer>
 
     <!-- ================================================================== -->
     <!--  TEMPLATES · JavaScript clona estas "formas" en la Fase 9          -->

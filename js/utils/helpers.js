@@ -102,6 +102,17 @@ export function debounce(fn, delay = 350) {
   };
 }
 
+/**
+ * Construye una ruta relativa a la raíz del sitio, funcione la página desde "/"
+ * o desde "/pages/". Ej: sitePath("pages/login.html")
+ *   - desde index.html        -> "pages/login.html"
+ *   - desde pages/movie.html   -> "../pages/login.html"
+ */
+export function sitePath(path = "") {
+  const inSubfolder = location.pathname.includes("/pages/");
+  return (inSubfolder ? "../" : "") + path;
+}
+
 /** Poster gris para películas sin imagen en TMDB. */
 export const POSTER_PLACEHOLDER =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='342' height='513'%3E%3Crect width='100%25' height='100%25' fill='%231f1f23'/%3E%3Ctext x='50%25' y='50%25' fill='%2367676f' font-family='sans-serif' font-size='18' text-anchor='middle' dominant-baseline='middle'%3ESin imagen%3C/text%3E%3C/svg%3E";
