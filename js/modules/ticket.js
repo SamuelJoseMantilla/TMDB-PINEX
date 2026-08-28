@@ -16,6 +16,7 @@ import {
   POSTER_PLACEHOLDER,
 } from "../utils/helpers.js";
 import { fakeQrSvg } from "../utils/fake-qr.js";
+import { gsap, canAnimate } from "../lib/gsap.js";
 
 const reservationId = new URLSearchParams(location.search).get("reservationId");
 
@@ -91,6 +92,22 @@ function render(main, purchase, poster) {
       </div>
     </div>
   `;
+
+  if (canAnimate) {
+    gsap.from(main.querySelector(".ticket"), {
+      y: 40,
+      autoAlpha: 0,
+      duration: 0.6,
+      ease: "power3.out",
+    });
+    gsap.from(main.querySelector(".ticket__qr"), {
+      scale: 0.5,
+      autoAlpha: 0,
+      duration: 0.5,
+      delay: 0.45,
+      ease: "back.out(1.7)",
+    });
+  }
 }
 
 if (!isLoggedIn()) {
