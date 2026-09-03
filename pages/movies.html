@@ -16,13 +16,17 @@
     <a class="skip-link" href="#main">Saltar al contenido</a>
 
     <site-header active="movies"></site-header>
-
     <main id="main" class="listing-page">
       <div class="container listing-head">
         <h1 class="listing-title">Películas</h1>
         <nav class="genre-chips" id="movies-tabs" aria-label="Secciones">
           <a class="genre-chip is-active" href="movies.html?tab=now" data-tab="now">En cartelera</a>
           <a class="genre-chip" href="movies.html?tab=trending" data-tab="trending">Tendencia</a>
+        <select id="sort">
+          <option value="date">Fecha</option>
+          <option value="rating">Valoración</option>
+        </select>
+      <input id="filter" type="search" placeholder="Filtrar…" />
           <a class="genre-chip" href="movies.html?tab=upcoming" data-tab="upcoming">Próximamente</a>
         </nav>
       </div>
