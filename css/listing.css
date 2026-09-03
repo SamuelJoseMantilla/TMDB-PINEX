@@ -16,6 +16,25 @@
   margin-bottom: var(--space-md);
 }
 
+.listing-sort {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+.listing-sort select {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  padding: var(--space-2xs) var(--space-md);
+  min-height: 40px;
+  font: inherit;
+  cursor: pointer;
+}
+
 .listing-search {
   display: flex;
   gap: var(--space-sm);

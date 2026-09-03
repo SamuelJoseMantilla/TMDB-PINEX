@@ -6,11 +6,11 @@
     <meta name="description" content="Explora películas por categoría · CINEHUB" />
     <title>Categorías · CINEHUB</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="../css/variables.css?v=4" />
-    <link rel="stylesheet" href="../css/main.css?v=4" />
-    <link rel="stylesheet" href="../css/components.css?v=4" />
-    <link rel="stylesheet" href="../css/listing.css?v=4" />
-    <link rel="stylesheet" href="../css/responsive.css?v=4" />
+    <link rel="stylesheet" href="../css/variables.css?v=5" />
+    <link rel="stylesheet" href="../css/main.css?v=5" />
+    <link rel="stylesheet" href="../css/components.css?v=5" />
+    <link rel="stylesheet" href="../css/listing.css?v=5" />
+    <link rel="stylesheet" href="../css/responsive.css?v=5" />
   </head>
   <body>
     <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -20,6 +20,17 @@
     <main id="main" class="listing-page">
       <div class="container listing-head">
         <h1 class="listing-title" id="listing-title">Categorías</h1>
+
+        <div class="listing-sort">
+          <label for="sort-select">Ordenar por</label>
+          <select id="sort-select">
+            <option value="relevance">Relevancia</option>
+            <option value="az">Título · A–Z</option>
+            <option value="za">Título · Z–A</option>
+            <option value="rating-desc">Mejor valoradas</option>
+            <option value="rating-asc">Peor valoradas</option>
+          </select>
+        </div>
       </div>
 
       <nav class="genre-chips container" id="genre-chips" aria-label="Categorías">

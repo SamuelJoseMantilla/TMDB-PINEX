@@ -1,5 +1,5 @@
 // js/modules/category.js
-// Página de categorías: pages/category.html?genre=<genreId>
+// Página de categorías: pages/category.html?genre=<genreId>&sort=<criterio>
 
 import "../components/site-header.js";
 import "../components/site-footer.js";
@@ -10,27 +10,51 @@ import { setLoading, setError, setEmpty, setReady } from "../ui/states.js";
 import { createMovieCard } from "../ui/render.js";
 
 const DEFAULT_GENRE = "28"; // Acción
+const DEFAULT_SORT = "relevance";
+
+// Cada criterio es una función de comparación para Array.prototype.sort.
+// "relevance" no ordena: deja el orden que ya trae TMDB (por popularidad).
+const SORTERS = {
+  relevance: null,
+  az: (a, b) => title(a).localeCompare(title(b), "es"),
+  za: (a, b) => title(b).localeCompare(title(a), "es"),
+  "rating-desc": (a, b) => (b.vote_average ?? 0) - (a.vote_average ?? 0),
+  "rating-asc": (a, b) => (a.vote_average ?? 0) - (b.vote_average ?? 0),
+};
+
+const title = (movie) => movie.title ?? movie.name ?? "";
 
 let genres = [];
 let genreMap = new Map();
+let currentMovies = []; // las películas del género actual, sin ordenar
+
+/** Ordena una copia de currentMovies según el <select> y re-pinta la rejilla. */
+function renderGrid() {
+  const grid = $("#results-grid");
+  const sorter = SORTERS[$("#sort-select").value] ?? null;
+
+  const movies = sorter ? [...currentMovies].sort(sorter) : currentMovies;
+
+  grid.replaceChildren(...movies.map((movie) => createMovieCard(movie, { genreMap })));
+  setReady(grid);
+}
 
 async function loadGenre(genreId) {
   const grid = $("#results-grid");
-  const title = $("#listing-title");
+  const heading = $("#listing-title");
 
   const name = genreMap.get(Number(genreId));
-  title.textContent = name ? `Categoría · ${name}` : "Categorías";
+  heading.textContent = name ? `Categoría · ${name}` : "Categorías";
   renderChips(genreId);
 
   setLoading(grid, "Cargando películas…");
   try {
-    const movies = (await getMoviesByGenre(genreId)).filter((m) => m.poster_path);
-    if (movies.length === 0) {
+    currentMovies = (await getMoviesByGenre(genreId)).filter((m) => m.poster_path);
+    if (currentMovies.length === 0) {
       setEmpty(grid, "No hay películas en esta categoría.");
       return;
     }
-    grid.replaceChildren(...movies.map((movie) => createMovieCard(movie, { genreMap })));
-    setReady(grid);
+    renderGrid();
   } catch {
     setError(grid, "No se pudo cargar la categoría.", () => loadGenre(genreId));
   }
@@ -52,7 +76,13 @@ function renderChips(activeId) {
 
 async function init() {
   const nav = $("#genre-chips");
-  const current = new URLSearchParams(location.search).get("genre") || DEFAULT_GENRE;
+  const sortSelect = $("#sort-select");
+  const params = new URLSearchParams(location.search);
+  const currentGenre = params.get("genre") || DEFAULT_GENRE;
+
+  // El <select> arranca con lo que diga la URL (?sort=), si es un valor válido.
+  const sortFromUrl = params.get("sort");
+  if (sortFromUrl && sortFromUrl in SORTERS) sortSelect.value = sortFromUrl;
 
   try {
     genres = await getGenres();
@@ -69,14 +99,27 @@ async function init() {
     event.preventDefault();
 
     const genreId = chip.dataset.genreId;
-    const url = new URL(location.href);
-    url.searchParams.set("genre", genreId);
-    history.replaceState(null, "", url);
-
+    updateUrl({ genre: genreId });
     loadGenre(genreId);
   });
 
-  loadGenre(current);
+  // Cambiar el orden: no vuelve a llamar a TMDB, solo reordena lo que ya hay.
+  sortSelect.addEventListener("change", () => {
+    updateUrl({ sort: sortSelect.value });
+    if (currentMovies.length > 0) renderGrid();
+  });
+
+  loadGenre(currentGenre);
+}
+
+/** Refleja el estado (género / orden) en la URL para poder compartirla. */
+function updateUrl(patch) {
+  const url = new URL(location.href);
+  for (const [key, value] of Object.entries(patch)) {
+    if (value === DEFAULT_SORT) url.searchParams.delete(key);
+    else url.searchParams.set(key, value);
+  }
+  history.replaceState(null, "", url);
 }
 
 init();
